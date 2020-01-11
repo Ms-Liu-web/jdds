@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.qq" placeholder="输入qq号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      
+
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -32,41 +32,45 @@
 
       <el-table-column label="qq号" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.qq  }}</span>
+          <span>{{ row.qq }}</span>
         </template>
       </el-table-column>
       <el-table-column label="代理折扣" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.discount  }}</span>
+          <span>{{ row.discount }}</span>
         </template>
       </el-table-column>
       <el-table-column label="拿卡数量" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.cardcount  }}</span>
+          <span>{{ row.cardcount }}</span>
         </template>
       </el-table-column>
       <el-table-column label="余额" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.cardcount  }}</span>
+          <span>{{ row.cardcount }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="用户状态" align="center">
         <template slot-scope="{row}">
-          <span v-if="row.account_type === 1">冻结</span>
-          <span v-if="row.account_type === 0">正常</span>
+          <span v-if="row.accountType === 1">冻结</span>
+          <span v-if="row.accountType === 0">正常</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" align="center"  class-name="small-padding fixed-width">
-        <template slot-scope="{row}" >
-          <el-button type="primary" v-if="row.account_type === 1"  @click="handleModifyStatus(row,'unfreeze')">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="{row}">
+          <el-button v-if="row.account_type === 1" type="primary" @click="handleModifyStatus(row,'unfreeze')">
             解除冻结
           </el-button>
-          <el-button   v-else  type="success" @click="handleModifyStatus(row,'freeze')">
+          <el-button v-else type="success" @click="handleModifyStatus(row,'freeze')">
             冻结用户
           </el-button>
+          <el-button type="primary" @click="handleUpdate(row)">
+            修改折扣
+          </el-button>
         </template>
+
       </el-table-column>
     </el-table>
 
@@ -74,13 +78,13 @@
 
     <el-dialog title="添加下级" width="500px" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        
+
         <el-form-item label="账号" prop="user">
-          <el-input v-model="temp.user"  placeholder="请输入用户账号" />
+          <el-input v-model="temp.user" placeholder="请输入用户账号" />
         </el-form-item>
-        
+
         <el-form-item label="QQ号" prop="qq">
-          <el-input  v-model="temp.qq" placeholder="请输入用户qq" />
+          <el-input v-model="temp.qq" placeholder="请输入用户qq" />
         </el-form-item>
 
         <el-form-item label="折扣" prop="discount">
@@ -98,21 +102,43 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="修改折扣" width="500px" :visible.sync="updateSuperiorVisible">
+      <el-form ref="updateSuperiorFrom" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
 
- 
+        <el-form-item label="账号" prop="user">
+          <el-input v-model="temp.user" hidden value="" placeholder="请输入用户账号" />
+        </el-form-item>
+
+        <el-form-item label="QQ号" prop="qq">
+          <el-input v-model="temp.qq" hidden placeholder="请输入用户qq" />
+        </el-form-item>
+
+        <el-form-item label="折扣" prop="discount">
+          <el-input v-model="temp.discount" placeholder="请输入下级折扣" />
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="updateSuperiorVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="updateSuperior">
+          保存
+        </el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import { getSuperior,freezeAgent,unFreezeAgent,bindSuperior } from '@/api/agent'
+import { getSuperior, freezeAgent, unFreezeAgent, bindSuperior, updateSuperior } from '@/api/agent'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
-
-
 export default {
-  name: "agentManage",
+  name: 'AgentManage',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -137,14 +163,14 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        pagesize:20,
-        qq:undefined,
+        pagesize: 20,
+        qq: undefined
       },
       showReviewer: false,
       temp: {
         discount: '',
         qq: '',
-        user: '',
+        user: ''
       },
       dialogFormVisible: false,
       rules: {
@@ -152,6 +178,11 @@ export default {
         discount: [{ required: true, message: '折扣必填', trigger: 'blur' }],
         qq: [{ required: true, message: 'qq必填', trigger: 'blur' }]
       },
+      updateSuperiorVisible: false,
+      rules: {
+        discount: [{ required: true, message: '折扣必填', trigger: 'blur' }]
+      },
+
       downloadLoading: false
     }
   },
@@ -163,8 +194,8 @@ export default {
       this.listLoading = true
 
       getSuperior(this.listQuery).then(response => {
-        this.list = response.data.data
-        this.total = response.data.total
+        this.list = response.data.list
+        this.total = response.data.count
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
@@ -178,27 +209,27 @@ export default {
       冻结与解冻
     */
     handleModifyStatus(row, status) {
-      if (status ==='unfreeze') {
-        const postData = {user:row.user}
+      if (status === 'unfreeze') {
+        const postData = { user: row.user }
         unFreezeAgent(postData).then(response => {
-            this.$confirm('你确定要解冻？', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              this.$message({
-                type: 'success',
-                message: '操作成功'
-              }); 
-              row.account_type = 0
+          this.$confirm('你确定要解冻？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$message({
+              type: 'success',
+              message: '操作成功'
             })
+            row.account_type = 0
+          })
         })
-      } else if (status ==='freeze'){
+      } else if (status === 'freeze') {
         this.$prompt('请输入冻结原因', '冻结', {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
         }).then(({ value }) => {
-          const postData = {user:row.user,msg:value}
+          const postData = { user: row.user, msg: value }
           freezeAgent(postData).then(response => {
             this.$message({
               type: 'success',
@@ -227,7 +258,7 @@ export default {
       this.temp = {
         discount: '',
         qq: '',
-        user: '',
+        user: ''
       }
     },
     handleCreate() {
@@ -235,6 +266,14 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+      })
+    },
+    handleUpdate(row) {
+      this.temp.user = row.user
+      this.temp.qq = row.qq
+      this.updateSuperiorVisible = true
+      this.$nextTick(() => {
+        this.$refs['updateSuperiorFrom'].clearValidate()
       })
     },
     /*
@@ -250,6 +289,27 @@ export default {
             this.$notify({
               title: 'Success',
               message: '绑定成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
+    /*
+      修改下级折扣
+     */
+    updateSuperior() {
+      this.$refs['updateSuperiorFrom'].validate((valid) => {
+        console.log(this.temp)
+        if (valid) {
+          updateSuperior(this.temp).then(() => {
+            this.list.unshift(this.temp)
+            this.dialogFormVisible = false
+            this.getList()
+            this.$notify({
+              title: 'Success',
+              message: '修改成功',
               type: 'success',
               duration: 2000
             })
@@ -284,9 +344,9 @@ export default {
           ? 'descending'
           : ''
     },
-    back(){
-     history.go(0);
-   }
+    back() {
+      history.go(0)
+    }
   }
 }
 </script>

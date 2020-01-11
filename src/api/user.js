@@ -31,7 +31,7 @@ export function captcha() {
 
 export function setingUpdate(data) {
   return request({
-    url: '/agent/seting',
+    url: '/agent/setting',
     method: 'post',
     data
   })

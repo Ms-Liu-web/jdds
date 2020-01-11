@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    
+
     <div class="filter-container">
       <el-input v-model="listQuery.search_user" placeholder="请输入用户账号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
@@ -22,46 +22,55 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('user_id')">
+
+      <el-table-column label="用户名" align="center" width="100">
         <template slot-scope="{row}">
-          <span>{{ row.user_id }}</span>
+          <span>{{ row.user }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="用户名" align="center" width="300">
+      <el-table-column label="账号状态" align="center" width="100">
         <template slot-scope="{row}">
-          <span>{{ row.user  }}</span>
+          <span v-if="row.account_type ===0">正常</span>
+          <span v-if="row.account_type ===1">封停</span>
         </template>
       </el-table-column>
-      <el-table-column label="拿卡总数量" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.card_total_num  }}</span>
-        </template>
-      </el-table-column>
+
       <el-table-column label="拿卡总金额" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.card_total_price  }}</span>
+          <span>{{ row.card_total_price }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="拿卡总数量" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.card_total_num }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="已使用数量" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.already_used_num  }}</span>
+          <span>{{ row.already_used_num }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="未使用数量" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.not_used_num  }}</span>
+          <span>{{ row.card_total_num - row.already_used_num }}</span>
         </template>
       </el-table-column>
 
-      
-      <el-table-column label="操作" align="center"  class-name="small-padding fixed-width">
-        <template slot-scope="{row}"  >
-          
-          <div >
-            <el-button type="primary"  size="mini"  @click="showCardInfo(row)">
+      <el-table-column label="账号过期时间" align="center" width="250">
+        <template slot-scope="{row}">
+          <span>{{ row.expirytime }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="{row}">
+
+          <div>
+            <el-button type="primary" size="mini" @click="showCardInfo(row)">
               卡详情
             </el-button>
           </div>
@@ -71,18 +80,17 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-
   </div>
 </template>
 
 <script>
-import { getCardUserList} from '@/api/agentcard'
+import { getCardUserList } from '@/api/agentcard'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'cardList',
+  name: 'CardList',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -107,14 +115,14 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        pagesize:20,
-        search_user:'',
+        pagesize: 20,
+        search_user: ''
       },
       showReviewer: false,
       temp: {
         count: '',
         cardtypeid: '',
-        mark: '',
+        mark: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -131,7 +139,7 @@ export default {
         mark: [{ required: true, message: '填写备注', trigger: 'blur' }]
       },
       downloadLoading: false,
-      cardTypeList:[
+      cardTypeList: [
       ]
     }
   },
@@ -142,8 +150,8 @@ export default {
     getList() {
       this.listLoading = true
       getCardUserList(this.listQuery).then(response => {
-        this.list = response.data.data
-        this.total = response.data.total
+        this.list = response.data.list
+        this.total = response.data.count
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
@@ -178,12 +186,12 @@ export default {
     /*
       显示详情
     */
-   showCardInfo(row){
-     this.$router.push({path:'/agent/card?carduser='+row.user})
-   },
-   back(){
-     history.go(0);
-   }
+    showCardInfo(row) {
+      this.$router.push({ path: '/agent/card?carduser=' + row.user })
+    },
+    back() {
+      history.go(0)
+    }
   }
 }
 </script>

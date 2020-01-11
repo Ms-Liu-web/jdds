@@ -59,3 +59,14 @@ export function getReportForm(data) {
     data
   })
 }
+
+/**
+ * 获取首页数据
+ */
+export function updateSuperior(data) {
+  return request({
+    url: '/agent/updatesuperior',
+    method: 'POST',
+    data
+  })
+}
