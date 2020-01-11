@@ -4,7 +4,7 @@
 
       <div class="title-container">
         <h3 class="title">
-          <img src="logo2.png" width="60px"><br/>欢迎使用Annaer后台系统</h3>
+          <img src="logo2.png" width="60px"><br>欢迎使用Annaer后台系统</h3>
       </div>
       <el-form-item prop="user">
         <span class="svg-container">
@@ -20,7 +20,6 @@
           autocomplete="on"
         />
       </el-form-item>
-        
 
       <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
         <el-form-item prop="password">
@@ -46,7 +45,7 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-form-item  prop="captcha">
+      <el-form-item prop="captcha">
         <span class="svg-container">
           <svg-icon icon-class="form" />
         </span>
@@ -58,14 +57,13 @@
           autocapitalize="off"
           spellcheck="false"
           maxlength="4"
-          @keyup.enter.native="handleLogin"
           style=" width: 320px;"
-          >
-        </el-input>
-        <span class="show-pwd" >
-            <div class="captcha_code">
-              <img src="" ref="captchaimg"   @click="changeCode">
-            </div>
+          @keyup.enter.native="handleLogin"
+        />
+        <span class="show-pwd">
+          <div class="captcha_code">
+            <img :src="captchaimg" @click="changeCode">
+          </div>
         </span>
       </el-form-item>
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
@@ -76,11 +74,10 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import { login,captcha } from '@/api/user'
+import { login, captcha } from '@/api/user'
 export default {
   name: 'Login',
   data() {
-    
     const validatePassword = (rule, value, callback) => {
       if (value.length < 3) {
         callback(new Error('请输入密码'))
@@ -89,7 +86,7 @@ export default {
       }
     }
     return {
-      logoUrl:'http://localhost:8084/logo2.png',
+      logoUrl: 'http://localhost:8084/logo2.png',
       loginForm: {
         password: '',
         user: '',
@@ -97,16 +94,17 @@ export default {
         type: 2
       },
       loginRules: {
-        user: [{ required: true,message:"请输入用户名", trigger: 'blur'}],
-        password: [{ required: true, trigger: 'blur',message:"请输入密码", validator: validatePassword }],
-        captcha: [{ required: true, trigger: 'blur',message:"请输入验证码" }]
+        user: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        password: [{ required: true, trigger: 'blur', message: '请输入密码', validator: validatePassword }],
+        captcha: [{ required: true, trigger: 'blur', message: '请输入验证码' }]
       },
       passwordType: 'password',
       capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      captchaimg: null
     }
   },
   watch: {
@@ -124,7 +122,7 @@ export default {
   created() {
     this.getcaptcha()
   },
-  
+
   mounted() {
     if (this.loginForm.user === '') {
       this.$refs.user.focus()
@@ -137,11 +135,7 @@ export default {
   },
   methods: {
     getcaptcha() {
-      captcha().then(response => {
-            this.$refs.captchaimg.setAttribute(
-            "src",response.data.captcha_src
-          );
-        })
+      this.captchaimg = process.env.VUE_APP_BASE_API + '/captcha?' + Math.random()
     },
     changeCode() {
       this.getcaptcha()
