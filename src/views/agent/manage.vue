@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.qq" placeholder="输入qq号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      
+
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -74,11 +74,11 @@
 
     <el-dialog title="添加下级" width="500px" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        
+
         <el-form-item label="账号" prop="user">
           <el-input v-model="temp.user"  placeholder="请输入用户账号" />
         </el-form-item>
-        
+
         <el-form-item label="QQ号" prop="qq">
           <el-input  v-model="temp.qq" placeholder="请输入用户qq" />
         </el-form-item>
@@ -99,20 +99,18 @@
     </el-dialog>
 
 
- 
+
   </div>
 </template>
 
 <script>
-import { getSuperior,freezeAgent,unFreezeAgent,bindSuperior } from '@/api/agent'
+import { getSuperior, freezeAgent, unFreezeAgent, bindSuperior } from '@/api/agent'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
-
-
 export default {
-  name: "agentManage",
+  name: 'agentManage',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -120,13 +118,13 @@ export default {
       const statusMap = {
         published: 'success',
         draft: 'info',
-        deleted: 'danger'
+        deleted: 'danger',
       }
       return statusMap[status]
     },
     typeFilter(type) {
       return calendarTypeKeyValue[type]
-    }
+    },
   },
   data() {
     return {
@@ -137,8 +135,8 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        pagesize:20,
-        qq:undefined,
+        pagesize: 20,
+        qq: undefined,
       },
       showReviewer: false,
       temp: {
@@ -150,9 +148,9 @@ export default {
       rules: {
         user: [{ required: true, message: '用户必填', trigger: 'blur' }],
         discount: [{ required: true, message: '折扣必填', trigger: 'blur' }],
-        qq: [{ required: true, message: 'qq必填', trigger: 'blur' }]
+        qq: [{ required: true, message: 'qq必填', trigger: 'blur' }],
       },
-      downloadLoading: false
+      downloadLoading: false,
     }
   },
   created() {
@@ -178,31 +176,31 @@ export default {
       冻结与解冻
     */
     handleModifyStatus(row, status) {
-      if (status ==='unfreeze') {
-        const postData = {user:row.user}
+      if (status === 'unfreeze') {
+        const postData = { user: row.user }
         unFreezeAgent(postData).then(response => {
-            this.$confirm('你确定要解冻？', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              this.$message({
-                type: 'success',
-                message: '操作成功'
-              }); 
-              row.account_type = 0
+          this.$confirm('你确定要解冻？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }).then(() => {
+            this.$message({
+              type: 'success',
+              message: '操作成功',
             })
+            row.account_type = 0
+          })
         })
-      } else if (status ==='freeze'){
+      } else if (status === 'freeze') {
         this.$prompt('请输入冻结原因', '冻结', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消'
+          cancelButtonText: '取消',
         }).then(({ value }) => {
-          const postData = {user:row.user,msg:value}
+          const postData = { user: row.user, msg: value }
           freezeAgent(postData).then(response => {
             this.$message({
               type: 'success',
-              message: '操作成功'
+              message: '操作成功',
             })
             row.account_type = 1
           })
@@ -241,17 +239,17 @@ export default {
       绑定下级
     */
     addSuperior() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
           bindSuperior(this.temp).then(() => {
-            this.list.unshift(this.temp)
+            //this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.getList()
             this.$notify({
               title: 'Success',
               message: '绑定成功',
               type: 'success',
-              duration: 2000
+              duration: 2000,
             })
           })
         }
@@ -262,31 +260,29 @@ export default {
         title: 'Success',
         message: 'Delete Successfully',
         type: 'success',
-        duration: 2000
+        duration: 2000,
       })
       const index = this.list.indexOf(row)
       this.list.splice(index, 1)
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j === 'timestamp') {
+            return parseTime(v[j])
+          } else {
+            return v[j]
+          }
+        }),
+      )
     },
     getSortClass: function(key) {
       const sort = this.listQuery.sort
-      return sort === `+${key}`
-        ? 'ascending'
-        : sort === `-${key}`
-          ? 'descending'
-          : ''
+      return sort === `+${key}` ? 'ascending' : sort === `-${key}` ? 'descending' : ''
     },
-    back(){
-     history.go(0);
-   }
-  }
+    back() {
+      history.go(0)
+    },
+  },
 }
 </script>

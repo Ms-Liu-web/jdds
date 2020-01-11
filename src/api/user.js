@@ -2,7 +2,8 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/agent/login',
+    /*url: '/agent/login',*/
+    url: '/auth/login',
     method: 'post',
     data
   })
