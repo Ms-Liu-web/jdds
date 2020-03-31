@@ -6,34 +6,33 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
-import {getReportForm } from '@/api/agent'
+import { getReportForm } from '@/api/agent'
 export default {
   mixins: [resize],
   props: {
     className: {
       type: String,
-      default: 'chart'
+      default: 'chart',
     },
     width: {
       type: String,
-      default: '100%'
+      default: '100%',
     },
     height: {
       type: String,
-      default: '350px'
+      default: '350px',
     },
     autoResize: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
       chart: null,
-      expectedData:[],
-      actualData:[],
-      xAxis:[],
-      
+      expectedData: [],
+      actualData: [],
+      xAxis: [],
     }
   },
   mounted() {
@@ -50,7 +49,7 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-      
+
       this.setOptions()
     },
     setOptions() {
@@ -59,80 +58,83 @@ export default {
           data: this.xAxis,
           boundaryGap: false,
           axisTick: {
-            show: false
-          }
+            show: false,
+          },
         },
         grid: {
           left: 10,
           right: 10,
           bottom: 20,
           top: 30,
-          containLabel: true
+          containLabel: true,
         },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'cross'
+            type: 'cross',
           },
-          padding: [5, 10]
+          padding: [5, 10],
         },
         yAxis: {
           axisTick: {
-            show: false
-          }
+            show: false,
+          },
         },
         legend: {
-          data: ['总销售数量', '总销售金额']
+          data: ['总销售数量', '总销售金额'],
         },
-        series: [{
-          name: '总销售数量', itemStyle: {
-            normal: {
-              color: '#FF005A',
-              lineStyle: {
+        series: [
+          {
+            name: '总销售数量',
+            itemStyle: {
+              normal: {
                 color: '#FF005A',
-                width: 2
-              }
-            }
-          },
-          smooth: true,
-          type: 'line',
-          data: this.expectedData,
-          animationDuration: 2800,
-          animationEasing: 'cubicInOut'
-        },
-        {
-          name: '总销售金额',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#3888fa',
-              lineStyle: {
-                color: '#3888fa',
-                width: 2
+                lineStyle: {
+                  color: '#FF005A',
+                  width: 2,
+                },
               },
-              areaStyle: {
-                color: '#f3f8ff'
-              }
-            }
+            },
+            smooth: true,
+            type: 'line',
+            data: this.expectedData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut',
           },
-          data: this.actualData,
-          animationDuration: 2800,
-          animationEasing: 'quadraticOut'
-        }]
+          {
+            name: '总销售金额',
+            smooth: true,
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: '#3888fa',
+                lineStyle: {
+                  color: '#3888fa',
+                  width: 2,
+                },
+                areaStyle: {
+                  color: '#f3f8ff',
+                },
+              },
+            },
+            data: this.actualData,
+            animationDuration: 2800,
+            animationEasing: 'quadraticOut',
+          },
+        ],
       })
     },
-    getData(){
+    getData() {
       getReportForm().then(response => {
         let reData = response.data
-        for (var i = 0; i < reData.length; i++) { 
-            this.expectedData.push(reData[i].sell_money)
-            this.actualData.push(reData[i].sell_count)
-            this.xAxis.push(reData[i].time)
+        for (var i = 0; i < reData.length; i++) {
+          this.expectedData.push(reData[i].sell_count)
+          this.actualData.push(reData[i].sell_money)
+          this.xAxis.push(reData[i].time)
         }
         this.setOptions()
       })
-    }
-  }
+    },
+  },
 }
 </script>
