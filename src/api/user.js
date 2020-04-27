@@ -9,6 +9,15 @@ export function login(data) {
   });
 }
 
+export function loginToken(data) {
+  return request({
+    url: "/agent/loginToken",
+    //url: '/auth/login',
+    method: "post",
+    data
+  });
+}
+
 export function getInfo(token) {
   return request({
     url: "/agent/info",

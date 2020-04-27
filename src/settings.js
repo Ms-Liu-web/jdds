@@ -1,5 +1,5 @@
 module.exports = {
-  title: '欢迎使用Annaer管理系统',
+  title: "欢迎使用安娜尔代理后台",
 
   /**
    * @type {boolean} true | false
@@ -31,5 +31,5 @@ module.exports = {
    * The default is only used in the production env
    * If you want to also use it in dev, you can pass ['production', 'development']
    */
-  errorLog: 'production'
-}
+  errorLog: "production"
+};
