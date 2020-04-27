@@ -3,20 +3,48 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <svg-icon icon-class="mingcheng" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            下级代理卡金额
+            用户名
           </div>
-          <count-to :start-val="0" :end-val="total.superior_money" :duration="2600" class="card-panel-num" />
+          <div class="card-panel-num">{{ user.user }}</div>
+        </div>
+      </div>
+    </el-col>
+
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+        <div class="card-panel-icon-wrapper icon-people">
+          <svg-icon icon-class="daili" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">
+            代理等级
+          </div>
+          <count-to :start-val="0" :end-val="user.level" :duration="2600" class="card-panel-num" />
+        </div>
+      </div>
+    </el-col>
+
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+        <div class="card-panel-icon-wrapper icon-people">
+          <svg-icon icon-class="kami" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">
+            卡密销售数量
+          </div>
+          <count-to :start-val="0" :end-val="total.cardsell_count" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+          <svg-icon icon-class="user" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
@@ -35,20 +63,48 @@
           <div class="card-panel-text">
             下级代理数量
           </div>
-          <count-to :start-val="0" :end-val="total.superior_count" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="total.subordinate_count" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
+          <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            	销售卡的金额
+            销售卡的金额
           </div>
           <count-to :start-val="0" :end-val="total.sell_money" :duration="3600" class="card-panel-num" />
+        </div>
+      </div>
+    </el-col>
+
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        <div class="card-panel-icon-wrapper icon-shopping">
+          <svg-icon icon-class="discount" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">
+            拿卡折扣
+          </div>
+          <count-to :start-val="0" :end-val="user.discount" :duration="3600" class="card-panel-num" /> %
+        </div>
+      </div>
+    </el-col>
+
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        <div class="card-panel-icon-wrapper icon-shopping">
+          <svg-icon icon-class="yue" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">
+            余额
+          </div>
+          <div class="card-panel-num">{{ user.balance }}</div>
         </div>
       </div>
     </el-col>
@@ -57,32 +113,42 @@
 
 <script>
 import CountTo from 'vue-count-to'
-import {agentSellInfo } from '@/api/agent'
+import { agentSellInfo } from '@/api/agent'
+import { getInfo } from '@/api/user'
+
 export default {
   components: {
     CountTo
   },
   data() {
     return {
-      total:{
-        'sell_money':0,
-        'superior_money':0,
-        'user_count':0,
-        'superior_count':0,
+      total: {
+        'sell_money': 0,
+        'cardsell_count': 0,
+        'user_count': 0,
+        'subordinate_count': 0
+      },
+      user: {
+
       }
     }
   },
   created() {
-    this.getData()
+    this.getData(),
+    this.getInfo()
   },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
     },
-    getData(){
+    getData() {
       agentSellInfo().then(response => {
         this.total = response.data
-        
+      })
+    },
+    getInfo() {
+      getInfo().then(response => {
+        this.user = response.data
       })
     }
   }

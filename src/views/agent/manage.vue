@@ -252,13 +252,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-
       getSuperior(this.listQuery).then(response => {
         this.list = response.data.list
         this.total = response.data.count
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+        this.listLoading = false
       })
     },
     handleFilter() {

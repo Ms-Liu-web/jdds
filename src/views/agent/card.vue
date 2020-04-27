@@ -200,13 +200,13 @@
         style="width: 400px; margin-left:50px;"
       >
         <el-form-item label="卡数量" prop="user">
-          <el-input v-model="temp.count" placeholder="请输入用户账号" />
+          <el-input v-model="temp.count" placeholder="请输入生成卡数量" />
         </el-form-item>
 
-        <el-form-item label="分类" prop="qq">
+        <el-form-item label="卡密类型" prop="qq">
           <el-select v-model="temp.cardtypeid" placeholder="请选择">
             <el-option
-              v-for="item in cardTypeList"
+              v-for="item in cardTypeList.slice(1)"
               :key="item.id"
               :label="item.name + item.price + '元'"
               :value="item.id"
@@ -318,7 +318,7 @@ export default {
       tableKey: 0,
       list: null,
       total: 0,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -376,10 +376,7 @@ export default {
       getCardList(this.listQuery).then(response => {
         this.list = response.data.list
         this.total = response.data.count
-
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+        this.listLoading = false
       })
     },
     handleFilter() {
