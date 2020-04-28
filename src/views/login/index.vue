@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
 
-    <el-row class="login-loading">
+    <el-row class="login-loading"   :hidden ="isHidden">
 
       <el-col :span="24"><div class="login-loading-icon"><i class="el-icon-warning"></i></div></el-col>
       <el-col :span="24"><div class="login-loading-text">亲！登录出错了啦，请返回重新登录。</div></el-col>
@@ -44,12 +44,16 @@ export default {
       otherQuery: {},
       captchaimg: null,
       saasToken: '',
+      isHidden: true,
     }
   },
   created() {
     this.saasToken = this.$route.query.token
+
     if (this.saasToken) {
       this.loginTokenHandle()
+    } else {
+      this.isHidden = false
     }
   },
   mounted() {},
