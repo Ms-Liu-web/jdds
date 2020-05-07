@@ -1,45 +1,35 @@
 <template>
   <div class="dashboard-editor-container">
-    
-    <panel-group  />
+    <panel-group />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart  />
+      <line-chart />
     </el-row>
-
-    
-
-    
   </div>
 </template>
 
 <script>
-import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
+import PanelGroup from "./components/PanelGroup";
+import LineChart from "./components/LineChart";
 
 export default {
-  name: 'DashboardAdmin',
+  name: "DashboardAdmin",
   components: {
     PanelGroup,
     LineChart
   },
   data() {
     return {
-      chartSetOption:[
-
-      ]
-    }
+      chartSetOption: []
+    };
   },
-  methods: {
-    
-  }
-}
+  methods: {}
+};
 </script>
 
 <style lang="scss" scoped>
 .dashboard-editor-container {
-  padding: 32px;
-  background-color: rgb(240, 242, 245);
+  background-color: #f9faff;
   position: relative;
 
   .github-corner {
@@ -56,7 +46,7 @@ export default {
   }
 }
 
-@media (max-width:1024px) {
+@media (max-width: 1024px) {
   .chart-wrapper {
     padding: 8px;
   }

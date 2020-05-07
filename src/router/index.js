@@ -52,7 +52,7 @@ export const constantRoutes = [
         path: "",
         component: () => import("@/views/dashboard/index"),
         name: "首页",
-        meta: { title: "首页", icon: "dashboard", affix: true }
+        meta: { title: "首页", icon: "index", affix: true }
       }
     ]
   },
@@ -112,7 +112,7 @@ export const asyncRoutes = [
         path: "",
         component: () => import("@/views/agent/carduser"),
         name: "用户管理",
-        meta: { title: "用户管理", icon: "user", noCache: true }
+        meta: { title: "用户管理", icon: "users", noCache: true }
       }
     ]
   },
