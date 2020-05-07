@@ -49,7 +49,6 @@ export default {
   },
   created() {
     this.saasToken = this.$route.query.token
-
     if (this.saasToken) {
       this.loginTokenHandle()
     } else {
