@@ -2,7 +2,7 @@
   .main-container {
     min-height: 100%;
     transition: margin-left 0.28s;
-    margin-left: 214px;
+    margin-left: 180px;
     position: relative;
     top: 64px;
     background-color: #f9faff;
@@ -11,15 +11,15 @@
   /deep/.el-menu-item.is-active {
     color: #3564c0 !important;
     background-color: #f9faff !important;
-    border-radius: 6px 0 0 6px;
+    border-radius: 8px 0 0 8px;
   }
   /deep/.el-menu-item {
-    padding-left: 51px !important;
-    margin-left: 11px;
+    padding-left: 33px !important;
+    margin-left: 13px;
   }
   .sidebar-container {
     transition: width 0.28s;
-    width: 212px !important;
+    width: 180px !important;
     background-color: #3564c0;
     height: 100%;
     position: fixed;
@@ -65,7 +65,7 @@
     }
 
     .svg-icon {
-      margin-right: 16px;
+      margin-right: 11px;
     }
 
     .el-menu {

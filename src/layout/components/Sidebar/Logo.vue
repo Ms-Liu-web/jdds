@@ -49,6 +49,7 @@ export default {
   & .sidebar-logo-link {
     height: 100%;
     width: 100%;
+    border-bottom: 1px #4473ce solid;
 
     & .sidebar-logo {
       width: 32px;

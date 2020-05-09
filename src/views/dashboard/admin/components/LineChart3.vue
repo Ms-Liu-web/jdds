@@ -31,6 +31,7 @@ export default {
     return {
       chart: null,
       expectedData: [],
+      actualData: [],
       xAxis: [],
       mounth: ""
     };
@@ -60,15 +61,15 @@ export default {
           axisTick: {
             show: false
           },
-          axisLabel: {
-            interval: 0,
-            rotate: 20
-          },
           axisLine: {
             show: true,
             lineStyle: {
               color: "#EAEAEA"
             }
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: 20
           }
         },
         grid: {
@@ -95,12 +96,12 @@ export default {
               color: "#EAEAEA"
             }
           },
-          name: "单位:数量",
+          name: "单位：元",
           left: 10
         },
         title: {
           left: "center",
-          text: this.mounth + "月生成卡趋势图",
+          text: this.mounth + "月销售金额趋势图",
           textStyle: {
             fontSize: 14,
             color: "#3564C0"
@@ -112,27 +113,21 @@ export default {
         },
         series: [
           {
-            name: "生成卡数量",
+            name: "总销售金额",
+            smooth: true,
+            type: "line",
             itemStyle: {
               normal: {
-                color: "#3990EF",
+                color: "#9E77F1",
                 lineStyle: {
-                  color: "#3990EF",
+                  color: "#9E77F1",
                   width: 2
                 }
               }
             },
-            lineStyle: {
-              width: 3,
-              shadowColor: "rgba(0,0,0,0.4)",
-              shadowBlur: 10,
-              shadowOffsetY: 10
-            },
-            smooth: true,
-            type: "line",
-            data: this.expectedData,
+            data: this.actualData,
             animationDuration: 2800,
-            animationEasing: "cubicInOut"
+            animationEasing: "quadraticOut"
           }
         ]
       });
@@ -142,7 +137,7 @@ export default {
         let reData = response.data.list;
         this.mounth = response.data.month;
         for (var i = 0; i < reData.length; i++) {
-          this.expectedData.push(reData[i].create_count);
+          this.actualData.push(reData[i].sell_money);
           this.xAxis.push(reData[i].time);
         }
         this.setOptions();

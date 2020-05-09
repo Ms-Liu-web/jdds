@@ -60,15 +60,15 @@ export default {
           axisTick: {
             show: false
           },
-          axisLabel: {
-            interval: 0,
-            rotate: 20
-          },
           axisLine: {
             show: true,
             lineStyle: {
               color: "#EAEAEA"
             }
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: 20
           }
         },
         grid: {
@@ -95,12 +95,11 @@ export default {
               color: "#EAEAEA"
             }
           },
-          name: "单位:数量",
-          left: 10
+          name: "单位:数量"
         },
         title: {
           left: "center",
-          text: this.mounth + "月生成卡趋势图",
+          text: this.mounth + "月销售数量趋势图",
           textStyle: {
             fontSize: 14,
             color: "#3564C0"
@@ -112,21 +111,15 @@ export default {
         },
         series: [
           {
-            name: "生成卡数量",
+            name: "总销售数量",
             itemStyle: {
               normal: {
-                color: "#3990EF",
+                color: "#5C60FA",
                 lineStyle: {
-                  color: "#3990EF",
+                  color: "#5C60FA",
                   width: 2
                 }
               }
-            },
-            lineStyle: {
-              width: 3,
-              shadowColor: "rgba(0,0,0,0.4)",
-              shadowBlur: 10,
-              shadowOffsetY: 10
             },
             smooth: true,
             type: "line",
@@ -142,7 +135,7 @@ export default {
         let reData = response.data.list;
         this.mounth = response.data.month;
         for (var i = 0; i < reData.length; i++) {
-          this.expectedData.push(reData[i].create_count);
+          this.expectedData.push(reData[i].sell_count);
           this.xAxis.push(reData[i].time);
         }
         this.setOptions();

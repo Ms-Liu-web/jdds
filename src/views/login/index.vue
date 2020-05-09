@@ -29,7 +29,12 @@
         />
       </el-form-item>
 
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+      <el-tooltip
+        v-model="capsTooltip"
+        content="Caps lock is On"
+        placement="right"
+        manual
+      >
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
@@ -48,7 +53,9 @@
             @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            <svg-icon
+              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+            />
           </span>
         </el-form-item>
       </el-tooltip>
@@ -79,7 +86,8 @@
         type="primary"
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleLogin"
-      >登录</el-button>
+        >登录</el-button
+      >
     </el-form>
   </div>
 </template>
@@ -191,7 +199,7 @@ export default {
           this.loading = true;
           this.$store
             .dispatch("user/login", this.loginForm)
-            .then(() => {
+            .then(response => {
               this.$router.push({
                 path: this.redirect || "/",
                 query: this.otherQuery

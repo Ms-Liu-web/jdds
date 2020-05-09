@@ -19,7 +19,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">代理等级</div>
-          <count-to :start-val="0" :end-val="user.level" :duration="2600" class="card-panel-num" />
+          <div class="card-panel-num">{{ user.level }}</div>
         </div>
       </div>
     </el-col>
@@ -163,8 +163,6 @@ export default {
 
 <style lang="scss" scoped>
 .panel-group {
-  margin-top: 18px;
-
   .card-panel-col {
     margin-bottom: 32px;
   }
@@ -190,6 +188,7 @@ export default {
     color: #fff;
     width: 100%;
     background-size: cover;
+    box-shadow: 0px 0px 6px 0px rgba(186, 186, 186, 0.22);
     // &:hover {
     //   .card-panel-icon-wrapper {
     //     color: #fff;

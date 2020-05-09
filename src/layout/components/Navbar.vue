@@ -2,28 +2,28 @@
   <div class="navbar">
     <el-header class="navbar2">
       <div class="navbar_left">
-        <span class="toggle-button">
+        <span class="toggle-button" @mouseenter="enter" @click="leave">
           <img src="../../assets/icon/i.png" />
         </span>
         <span class="time_s">
           <img src="../../assets/icon/icon3.png" />
-          上次登陆时间：
+          上次登陆时间：{{ beforeTime }}
         </span>
       </div>
       <div class="navbar_right">
-        <span style="cursor:pointer">
+        <a style="cursor:pointer" href="http://www.apiyz.com:2222/">
           <img src="../../assets/icon/retrunindex.png" />
           首页
-        </span>
-        <span>
+        </a>
+        <a href="http://www.apiyz.com:2222/help">
           <img src="../../assets/icon/icon9.png" />
           帮助中心
-        </span>
-        <span>
+        </a>
+        <a href="http://www.apiyz.com:2222/kf">
           <img src="../../assets/icon/kf.png" />
           联系客服
-        </span>
-        <span class="user_title">
+        </a>
+        <a class="user_title">
           <img src="../../assets/icon/usert.png" class="user-avatar" />
 
           <span class="name">
@@ -57,12 +57,12 @@
                   <img src="../../assets/icon/tijiaojianyi.png" />提交建议
                 </router-link>
               </li>
-              <li>
+              <li @click="SigOut">
                 <img src="../../assets/icon/tuichi.png" />退出登陆
               </li>
             </ul>
           </div>
-        </span>
+        </a>
       </div>
     </el-header>
   </div>
@@ -76,7 +76,8 @@ import ErrorLog from "@/components/ErrorLog";
 import Screenfull from "@/components/Screenfull";
 import SizeSelect from "@/components/SizeSelect";
 import Search from "@/components/HeaderSearch";
-
+import bus from "../components/bus";
+import { logout } from "@/api/user";
 export default {
   components: {
     Breadcrumb,
@@ -86,8 +87,17 @@ export default {
     SizeSelect,
     Search
   },
+  data() {
+    return {
+      isHover: "",
+      beforeTime: ""
+    };
+  },
   computed: {
     ...mapGetters(["sidebar", "avatar", "device"])
+  },
+  mounted() {
+    this.beforeTime = localStorage.getItem("tt");
   },
   methods: {
     toggleSideBar() {
@@ -96,6 +106,39 @@ export default {
     async logout() {
       await this.$store.dispatch("user/logout");
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+    },
+    enter() {
+      this.isHover = true;
+      bus.$emit("hoverSJ", "1");
+      this.$emit("gethover", "1");
+      console.log("移入");
+    },
+    leave() {
+      // this.isHover = false;
+      bus.$emit("clickSJ");
+      // console.log("移除");
+    },
+    SigOut() {
+      this.$confirm(
+        "退出后不会删除任何历史数据，下次登陆依然可以使用本账号。是否确认退出？",
+        "确定要退出登录",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消"
+        }
+      ).then(() => {
+        logout().then(response => {
+          console.log(response);
+          if (response.code == 200) {
+            localStorage.removeItem("Admin-Token");
+            window.location.href = "http://www.apiyz.com:2222/login?logout=1";
+            this.$message({
+              type: "success",
+              message: "操作成功"
+            });
+          }
+        });
+      });
     }
   }
 };
@@ -144,6 +187,9 @@ export default {
           cursor: pointer;
         }
       }
+      .toggle-button:hover .menu_style {
+        display: none;
+      }
       .time_s {
         img {
           position: relative;
@@ -156,7 +202,7 @@ export default {
     .navbar_right {
       float: right;
       margin-right: 43px;
-      span {
+      a {
         margin-left: 60px;
         vertical-align: middle;
         cursor: pointer;
@@ -186,7 +232,7 @@ export default {
       position: absolute;
       background-color: #fff;
       width: 163px;
-      height: 225px;
+      height: 265px;
       box-shadow: 0px 0px 8px 0px rgba(95, 97, 103, 0.1);
       border-radius: 4px;
       z-index: 99;
