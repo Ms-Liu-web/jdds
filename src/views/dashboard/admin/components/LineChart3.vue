@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -96,7 +96,7 @@ export default {
               color: "#EAEAEA"
             }
           },
-          name: "单位：元",
+          name: "单位: 元",
           left: 10
         },
         title: {
