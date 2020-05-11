@@ -1,47 +1,60 @@
 <template>
   <div class="dashboard-editor-container">
-    
-    <panel-group  />
+    <panel-group />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart  />
+    <el-row :gutter="40" class="canves_box">
+      <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
+        <line-chart />
+      </el-col>
+      <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
+        <line-chart2 />
+      </el-col>
+      <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
+        <line-chart3 />
+      </el-col>
     </el-row>
-
-    
-
-    
+    <Notice />
   </div>
 </template>
 
 <script>
-import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
-
+import PanelGroup from "./components/PanelGroup";
+import LineChart from "./components/LineChart";
+import LineChart2 from "./components/LineChart2";
+import LineChart3 from "./components/LineChart3";
+import Notice from "./components/Notice";
 export default {
-  name: 'DashboardAdmin',
+  name: "DashboardAdmin",
   components: {
     PanelGroup,
-    LineChart
+    LineChart,
+    LineChart2,
+    LineChart3,
+    Notice
   },
   data() {
     return {
-      chartSetOption:[
-
-      ]
-    }
+      chartSetOption: []
+    };
   },
-  methods: {
-    
-  }
-}
+  methods: {}
+};
 </script>
 
 <style lang="scss" scoped>
 .dashboard-editor-container {
-  padding: 32px;
-  background-color: rgb(240, 242, 245);
+  background-color: #fff;
   position: relative;
-
+  padding: 25px 28px;
+  .canves_box {
+    background: #fff;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-shadow: 0px 0px 6px 0px rgba(186, 186, 186, 0.1);
+    border-radius: 8px;
+    padding: 28px 0;
+    margin-bottom: 30px;
+  }
   .github-corner {
     position: absolute;
     top: 0px;
@@ -56,7 +69,7 @@ export default {
   }
 }
 
-@media (max-width:1024px) {
+@media (max-width: 1024px) {
   .chart-wrapper {
     padding: 8px;
   }

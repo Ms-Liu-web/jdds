@@ -3,54 +3,54 @@
 </template>
 
 <script>
-import echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
-import resize from './mixins/resize'
-import { getReportForm } from '@/api/agent'
+import echarts from "echarts";
+require("echarts/theme/macarons"); // echarts theme
+import resize from "./mixins/resize";
+import { getReportForm } from "@/api/agent";
 export default {
   mixins: [resize],
   props: {
     className: {
       type: String,
-      default: 'chart',
+      default: "chart"
     },
     width: {
       type: String,
-      default: '100%',
+      default: ""
     },
     height: {
       type: String,
-      default: '350px',
+      default: "350px"
     },
     autoResize: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   data() {
     return {
       chart: null,
       expectedData: [],
-      actualData: [],
       xAxis: [],
-    }
+      mounth: ""
+    };
   },
   mounted() {
-    this.initChart()
-    this.getData()
+    this.initChart();
+    this.getData();
   },
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
-    this.chart.dispose()
-    this.chart = null
+    this.chart.dispose();
+    this.chart = null;
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
+      this.chart = echarts.init(this.$el, "macarons");
 
-      this.setOptions()
+      this.setOptions();
     },
     setOptions() {
       this.chart.setOption({
@@ -58,83 +58,96 @@ export default {
           data: this.xAxis,
           boundaryGap: false,
           axisTick: {
-            show: false,
+            show: false
           },
+          axisLabel: {
+            interval: 0,
+            rotate: 20
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: "#EAEAEA"
+            }
+          }
         },
         grid: {
           left: 10,
           right: 10,
           bottom: 20,
-          top: 30,
-          containLabel: true,
+          top: 40,
+          containLabel: true
         },
         tooltip: {
-          trigger: 'axis',
+          trigger: "axis",
           axisPointer: {
-            type: 'cross',
+            type: "cross"
           },
-          padding: [5, 10],
+          padding: [5, 10]
         },
         yAxis: {
           axisTick: {
-            show: false,
+            show: false
           },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: "#EAEAEA"
+            }
+          },
+          name: "单位:数量",
+          left: 10
         },
-        legend: {
-          data: ['总销售数量', '总销售金额'],
+        title: {
+          left: "center",
+          text: this.mounth + "月生成卡趋势图",
+          textStyle: {
+            fontSize: 14,
+            color: "#3564C0"
+          }
+        },
+        textStyle: {
+          fontSize: 14,
+          color: "#656565"
         },
         series: [
           {
-            name: '总销售数量',
+            name: "生成卡数量",
             itemStyle: {
               normal: {
-                color: '#FF005A',
+                color: "#3990EF",
                 lineStyle: {
-                  color: '#FF005A',
-                  width: 2,
-                },
-              },
+                  color: "#3990EF",
+                  width: 2
+                }
+              }
+            },
+            lineStyle: {
+              width: 3,
+              shadowColor: "rgba(0,0,0,0.4)",
+              shadowBlur: 10,
+              shadowOffsetY: 10
             },
             smooth: true,
-            type: 'line',
+            type: "line",
             data: this.expectedData,
             animationDuration: 2800,
-            animationEasing: 'cubicInOut',
-          },
-          {
-            name: '总销售金额',
-            smooth: true,
-            type: 'line',
-            itemStyle: {
-              normal: {
-                color: '#3888fa',
-                lineStyle: {
-                  color: '#3888fa',
-                  width: 2,
-                },
-                areaStyle: {
-                  color: '#f3f8ff',
-                },
-              },
-            },
-            data: this.actualData,
-            animationDuration: 2800,
-            animationEasing: 'quadraticOut',
-          },
-        ],
-      })
+            animationEasing: "cubicInOut"
+          }
+        ]
+      });
     },
     getData() {
       getReportForm().then(response => {
-        let reData = response.data
+        let reData = response.data.list;
+        this.mounth = response.data.month;
         for (var i = 0; i < reData.length; i++) {
-          this.expectedData.push(reData[i].sell_count)
-          this.actualData.push(reData[i].sell_money)
-          this.xAxis.push(reData[i].time)
+          this.expectedData.push(reData[i].create_count);
+          this.xAxis.push(reData[i].time);
         }
-        this.setOptions()
-      })
-    },
-  },
-}
+        this.setOptions();
+      });
+    }
+  }
+};
 </script>
