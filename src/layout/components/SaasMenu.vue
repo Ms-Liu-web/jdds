@@ -82,8 +82,8 @@ export default {
   display: none;
   transition: all 0.25s ease-in-out 0s;
   ul li {
-    height: 70px;
-    line-height: 70px;
+    height: 54px;
+    line-height: 54px;
     padding-left: 45px;
     list-style: none;
     img {

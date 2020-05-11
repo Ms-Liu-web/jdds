@@ -60,6 +60,9 @@ const actions = {
         .then(response => {
           const { data } = response;
           commit("SET_TOKEN", data.token);
+          localStorage.setItem("key", response.data.lock_ip);
+          localStorage.setItem("rName", response.data.title);
+          localStorage.setItem("befortime", response.data.tt);
           setToken(data.token);
           resolve();
         })
@@ -81,10 +84,6 @@ const actions = {
           const { user } = data;
           commit("SET_ROLES", ["admin"]);
           commit("SET_NAME", user);
-          commit(
-            "SET_AVATAR",
-            "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
-          );
           commit("SET_INTRODUCTION", "代理后台");
           resolve(data);
         })

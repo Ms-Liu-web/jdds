@@ -87,22 +87,16 @@ export default {
   mounted() {
     this.rIP = localStorage.getItem("key");
     this.rName = localStorage.getItem("rName");
-    this.getInfo2();
   },
   methods: {
     getUser() {
       getInfo().then(response => {
         console.log(response);
+        this.user = response.data;
         this.form = {
           ip: response.data.ip,
           appname: response.data.custom_title
         };
-      });
-    },
-    getInfo2() {
-      getInfo().then(response => {
-        this.user = response.data;
-        console.log(this.user);
       });
     },
     onSubmit() {

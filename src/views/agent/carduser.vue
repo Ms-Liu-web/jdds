@@ -76,32 +76,32 @@
         style="width: 100%;"
         @sort-change="sortChange"
       >
-        <el-table-column label="用户名" sortable="custom" align="center" width="100">
+        <el-table-column label="用户名" align="center" width="100">
           <template slot-scope="{ row }">
             <span>{{ row.user }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="账号状态" sortable="custom" align="center" width="100">
+        <el-table-column label="账号状态" align="center" width="100">
           <template slot-scope="{ row }">
             <span v-if="row.account_type === 0">正常</span>
             <span v-if="row.account_type === 1">封停</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="拿卡总金额" sortable="custom" align="center">
+        <el-table-column label="拿卡总金额" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.card_total_price }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="拿卡总数量" sortable="custom" align="center">
+        <el-table-column label="拿卡总数量" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.card_total_num }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="已使用数量" sortable="custom" align="center">
+        <el-table-column label="已使用数量" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.already_used_num }}</span>
           </template>
@@ -113,18 +113,13 @@
         </template>
         </el-table-column>-->
 
-        <el-table-column label="账号过期时间" sortable="custom" align="center" width="250">
+        <el-table-column label="账号过期时间" align="center" width="250">
           <template slot-scope="{ row }">
             <span>{{ row.expirytime }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column
-          label="操作"
-          align="center"
-          sortable="custom"
-          class-name="small-padding fixed-width"
-        >
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
             <div>
               <el-button type="primary" class="djUser" size="mini" @click="showCardInfo(row)">
@@ -208,11 +203,13 @@ export default {
       cardTypeList: []
     };
   },
-  created() {
-    this.getList();
-  },
+  // created() {
+
+  // },
   mounted() {
-    this.getInfo();
+    console.log(123456789);
+    this.getList();
+    this.getInfo2();
   },
   methods: {
     getList() {
@@ -223,7 +220,7 @@ export default {
         this.listLoading = false;
       });
     },
-    getInfo() {
+    getInfo2() {
       getInfo().then(response => {
         this.user = response.data;
         console.log(this.user);
@@ -262,7 +259,9 @@ export default {
       this.$router.push({ path: "/agent/card?carduser=" + row.user });
     },
     back() {
-      history.go(0);
+      this.listQuery.page = 1;
+      this.listQuery.search_user = "";
+      this.getList();
     }
   }
 };

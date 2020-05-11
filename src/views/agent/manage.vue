@@ -77,7 +77,6 @@
         <el-table-column
           label="用户"
           prop="id"
-          sortable="custom"
           align="center"
           width="80"
           :class-name="getSortClass('id')"
@@ -87,33 +86,28 @@
           </template>
         </el-table-column>
 
-        <el-table-column
-          label="qq号"
-          align="center"
-          sortable="custom"
-          :class-name="getSortClass('id')"
-        >
+        <el-table-column label="qq号" align="center" :class-name="getSortClass('id')">
           <template slot-scope="{ row }">
             <span>{{ row.qq }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="代理折扣" align="center" sortable="custom">
+        <el-table-column label="代理折扣" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.discount }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="拿卡数量" align="center" sortable="custom">
+        <el-table-column label="拿卡数量" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.cardcount }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="余额" align="center" sortable="custom">
+        <el-table-column label="余额" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.cardcount }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="用户状态" align="center" sortable="custom">
+        <el-table-column label="用户状态" align="center">
           <template slot-scope="{ row }">
             <span v-if="row.accountType === 1">冻结</span>
             <span v-if="row.accountType === 0">正常</span>
@@ -124,7 +118,6 @@
           label="操作"
           align="center"
           class-name="small-padding fixed-width"
-          sortable="custom"
           width="280"
         >
           <template slot-scope="{ row }">
@@ -472,7 +465,9 @@ export default {
         : "";
     },
     back() {
-      history.go(0);
+      this.listQuery.page = 1;
+      this.listQuery.qq = "";
+      this.getList();
     }
   }
 };

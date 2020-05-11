@@ -99,7 +99,7 @@ export default {
     ...mapGetters(["sidebar", "avatar", "device"])
   },
   mounted() {
-    this.beforeTime = localStorage.getItem("tt");
+    this.beforeTime = localStorage.getItem("befortime");
   },
   methods: {
     toggleSideBar() {

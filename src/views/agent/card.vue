@@ -112,7 +112,7 @@
         <!-- <el-table-column
         label="ID"
         prop="id"
-        sortable="custom"
+
         align="center"
         width="80"
         :class-name="getSortClass('id')"
@@ -122,42 +122,42 @@
         </template>
         </el-table-column>-->
 
-        <el-table-column label="卡密" sortable="custom" align="center" width="300">
+        <el-table-column label="卡密" align="center" width="300">
           <template slot-scope="{ row }">
             <span>{{ row.cardnumber }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="价格" sortable="custom" align="center">
+        <el-table-column label="价格" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.price }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" sortable="custom" align="center">
+        <el-table-column label="创建时间" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.created_time }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="过期时间" sortable="custom" align="center">
+        <el-table-column label="过期时间" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.expire_time }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="卡类型" sortable="custom" align="center">
+        <el-table-column label="卡类型" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.cardtypename }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="是否封停" sortable="custom" align="center">
+        <el-table-column label="是否封停" align="center">
           <template slot-scope="{ row }">
             <span v-if="row.cardfreeze === 1">封停</span>
             <span v-if="row.cardfreeze === 0">正常</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="状态" sortable="custom" align="center">
+        <el-table-column label="状态" align="center">
           <template slot-scope="{ row }">
             <span v-if="row.status === 1">已使用</span>
             <span v-if="row.status === 0">未使用</span>
@@ -168,7 +168,6 @@
         <el-table-column
           label="操作"
           align="center"
-          sortable="custom"
           width="220"
           class-name="small-padding fixed-width"
         >
@@ -445,6 +444,7 @@ export default {
       this.getList();
     },
     getInfo() {
+      console.log(123456);
       getInfo().then(response => {
         this.user = response.data;
       });
@@ -588,7 +588,11 @@ export default {
       });
     },
     back() {
-      history.go(0);
+      this.listQuery.page = 1;
+      this.listQuery.card_user = "";
+      this.listQuery.cardtype = -1;
+      this.listQuery.cardstatus = -1;
+      this.getList();
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
+  <div :class="classObj" class="app-wrapper" id="appWrapper" ref="appWrapper">
     <div
       v-if="device === 'mobile' && sidebar.opened"
       class="drawer-bg"
@@ -92,12 +92,14 @@ export default {
     },
     getmenuHover(msg) {
       this.modalhover = msg;
+      this.$refs.appWrapper.style = "overflow-y:hidden";
+      console.log();
       console.log("fu" + this.modalhover);
     },
     hiddenModal() {
       this.modalhover = "0";
       this.hmenu = "0";
-
+      this.$refs.appWrapper.style = "overflow-y:auto";
       console.log(this.modalhover);
     }
   }

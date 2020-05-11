@@ -11,6 +11,7 @@
           {{list.notice}}
         </li>
       </ul>
+      <div v-if="noticedata.length == '0' " class="noticeKong">暂无数据</div>
     </div>
   </div>
 </template>
@@ -30,7 +31,7 @@ export default {
     getData() {
       getNotice().then(response => {
         this.noticedata = response.data;
-        console.log(response);
+        console.log(this.noticedata);
       });
     }
   }
@@ -42,6 +43,11 @@ export default {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 0px 6px 0px rgba(186, 186, 186, 0.22);
   border-radius: 8px 0px 0px 8px;
+  .noticeKong {
+    text-align: center;
+    line-height: 50px;
+    color: #666;
+  }
   .title {
     margin: 0 23px;
     height: 47px;
