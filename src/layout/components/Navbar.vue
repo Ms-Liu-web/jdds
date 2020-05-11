@@ -121,14 +121,10 @@ export default {
       // console.log("移除");
     },
     SigOut() {
-      this.$confirm(
-        "退出后不会删除任何历史数据，下次登陆依然可以使用本账号。是否确认退出？",
-        "确定要退出登录",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消"
-        }
-      ).then(() => {
+      this.$confirm("确定要退出登录", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      }).then(() => {
         logout().then(response => {
           console.log(response);
           if (response.code == 200) {

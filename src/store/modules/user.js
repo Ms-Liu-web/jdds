@@ -44,6 +44,7 @@ const actions = {
           commit("SET_TOKEN", data.token);
           localStorage.setItem("key", response.data.lock_ip);
           localStorage.setItem("rName", response.data.title);
+          localStorage.setItem("befortime", response.data.tt);
           setToken(data.token);
           resolve();
         })
