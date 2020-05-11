@@ -161,6 +161,7 @@
 
       <pagination
         v-show="total > 20"
+        class="pagestyle"
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
@@ -174,7 +175,7 @@
           :model="temp"
           label-position="left"
           label-width="70px"
-          style="width: 400px; margin-left:50px;"
+          style="width: 400px; margin-left:30px;"
         >
           <el-form-item label="账号" prop="user">
             <el-input v-model="temp.user" placeholder="请输入用户账号" />
@@ -511,6 +512,13 @@ export default {
 .app-container {
   background-color: #fff;
   border-radius: 6px;
+  .pagestyle {
+    /deep/.el-input--medium .el-input__inner {
+      border: 1px solid rgba(230, 230, 230, 1);
+      border-radius: 4px;
+      width: 50px;
+    }
+  }
   .title {
     height: 36px;
     line-height: 25px;
@@ -552,7 +560,7 @@ export default {
       height: 38px;
       border: 1px solid rgba(45, 135, 253, 1);
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #2d87fd;
       padding: 0;
       img {
@@ -566,7 +574,7 @@ export default {
       height: 38px;
       border: 1px solid #9e77f1;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #9e77f1;
       padding: 0;
       img {
@@ -606,9 +614,9 @@ export default {
     .djUser {
       width: 80px;
       height: 30px;
-      border: 1px solid rgba(45, 135, 253, 1);
+      border: 1px solid rgba(45, 135, 253, 1) !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: rgba(45, 135, 253, 1);
       padding: 0;
       img {
@@ -619,9 +627,9 @@ export default {
     .modify {
       width: 80px;
       height: 30px;
-      border: 1px solid #b37bec;
+      border: 1px solid #b37bec !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #b37bec;
       padding: 0;
       margin-left: 10px !important;
@@ -634,9 +642,9 @@ export default {
     .jc {
       width: 80px;
       height: 30px;
-      border: 1px solid #0dc504;
+      border: 1px solid #0dc504 !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #0dc504;
       padding: 0;
       img {
@@ -648,9 +656,9 @@ export default {
     .cz {
       width: 64px;
       height: 30px;
-      border: 1px solid #fc8403;
+      border: 1px solid #fc8403 !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #fc8403;
       padding: 0;
       img {

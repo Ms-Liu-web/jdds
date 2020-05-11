@@ -11,15 +11,15 @@
         </span>
       </div>
       <div class="navbar_right">
-        <a style="cursor:pointer" href="http://www.apiyz.com:2222/">
+        <a style="cursor:pointer" :href="saasurl">
           <img src="../../assets/icon/retrunindex.png" />
           首页
         </a>
-        <a href="http://www.apiyz.com:2222/help">
+        <a :href="saasurl+'help' ">
           <img src="../../assets/icon/icon9.png" />
           帮助中心
         </a>
-        <a href="http://www.apiyz.com:2222/kf">
+        <a :href="saasurl+'kf' ">
           <img src="../../assets/icon/kf.png" />
           联系客服
         </a>
@@ -33,29 +33,29 @@
           <div class="name_hover">
             <ul>
               <li>
-                <router-link to="/infoModify" tag="div">
+                <a :href="saasurl+'infoModify' ">
                   <img src="../../assets/icon/jichuxinxi.png" />基础信息修改
-                </router-link>
+                </a>
               </li>
               <li>
-                <router-link to="/passwordModify" tag="div">
+                <a :href="saasurl+'passwordModify' ">
                   <img src="../../assets/icon/mimaxiugai.png" />登陆密码修改
-                </router-link>
+                </a>
               </li>
               <li>
-                <router-link to="/payment" tag="div">
+                <a :href="saasurl+'payment' ">
                   <img src="../../assets/icon/zhifumima.png" />设置支付密码
-                </router-link>
+                </a>
               </li>
               <li>
-                <router-link to="/paymentModify" tag="div">
+                <a :href="saasurl+'paymentModify' ">
                   <img src="../../assets/icon/genggai.png" />更改支付密码
-                </router-link>
+                </a>
               </li>
               <li>
-                <router-link to="/proposal" tag="div">
+                <a :href="saasurl+'proposal' ">
                   <img src="../../assets/icon/tijiaojianyi.png" />提交建议
-                </router-link>
+                </a>
               </li>
               <li @click="SigOut">
                 <img src="../../assets/icon/tuichi.png" />退出登陆
@@ -78,6 +78,7 @@ import SizeSelect from "@/components/SizeSelect";
 import Search from "@/components/HeaderSearch";
 import bus from "../components/bus";
 import { logout } from "@/api/user";
+import { saasurl } from "@/utils/saas-link";
 export default {
   components: {
     Breadcrumb,
@@ -90,7 +91,8 @@ export default {
   data() {
     return {
       isHover: "",
-      beforeTime: ""
+      beforeTime: "",
+      saasurl: saasurl
     };
   },
   computed: {
@@ -245,6 +247,9 @@ export default {
         line-height: 44px;
         cursor: pointer;
         list-style: none;
+        a {
+          margin-left: 0;
+        }
         img {
           position: relative;
           top: 2px;

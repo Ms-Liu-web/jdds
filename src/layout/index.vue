@@ -11,10 +11,7 @@
     </div>
     <saas-menu :ishover="hmenu" />
     <div class="main-container">
-      <div
-        :class="[modalhover == '1' ? 'hover_saas' : '']"
-        @click="hiddenModal"
-      ></div>
+      <div :class="[modalhover == '1' ? 'hover_saas' : '']" @click="hiddenModal"></div>
       <sidebar class="sidebar-container" />
       <app-main />
       <footer class="footer">版权所有@四川聚达鼎盛科技有限公司</footer>
@@ -157,7 +154,7 @@ export default {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 9;
+  z-index: 99;
   width: 100%;
   // width: calc(100% - #{$sideBarWidth});
   transition: width 0.28s;

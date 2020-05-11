@@ -12,7 +12,7 @@
         @mouseenter.native="changeImageSrc"
         @mouseleave.native="changeImageSrc"
       >
-        <a>
+        <a :href="list.href">
           <svg-icon :icon-class="list.icon" />
           {{list.name}}
         </a>
@@ -23,6 +23,7 @@
 
 <script>
 import bus from "../components/bus";
+import { saasurl } from "@/utils/saas-link";
 export default {
   props: ["ishover"],
   data() {
@@ -30,13 +31,14 @@ export default {
       menu: [
         {
           icon: "sy",
-          name: "首页"
+          name: "首页",
+          href: saasurl
         },
-        { icon: "cp", name: "产品中心" },
-        { icon: "buy", name: "我的购买" },
-        { icon: "order", name: "我的订单" },
-        { icon: "mx", name: "交易明细" },
-        { icon: "msg", name: "消息通知" }
+        { icon: "cp", name: "产品中心", href: saasurl + "product" },
+        { icon: "buy", name: "我的产品", href: saasurl + "mybuy" },
+        { icon: "order", name: "我的订单", href: saasurl + "order" },
+        { icon: "mx", name: "交易明细", href: saasurl + "transaction" },
+        { icon: "msg", name: "消息通知", href: saasurl + "news" }
       ]
     };
   },

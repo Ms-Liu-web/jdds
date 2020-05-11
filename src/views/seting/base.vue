@@ -40,22 +40,16 @@
       </div>
       <el-form ref="form" :model="form" class="base_box" label-width="120px">
         <el-form-item label="当前软件ip:">
-          <span>123456</span>
+          <span>{{rIP}}</span>
         </el-form-item>
         <el-form-item label="设置软件ip:">
-          <el-input
-            v-model="form.ip"
-            placeholder="请设置当前软件唯一绑定ip"
-          ></el-input>
+          <el-input v-model="form.ip" placeholder="请设置当前软件唯一绑定ip"></el-input>
         </el-form-item>
         <el-form-item label="当前软件名称:" style="margin-top:44px;">
-          <span>123456</span>
+          <span>{{rName}}</span>
         </el-form-item>
         <el-form-item label="设置软件名称:">
-          <el-input
-            v-model="form.appname"
-            placeholder="请设置当前软件名称"
-          ></el-input>
+          <el-input v-model="form.appname" placeholder="请设置当前软件名称"></el-input>
         </el-form-item>
 
         <el-form-item class="btn_center" style="margin-left:0">
@@ -79,6 +73,8 @@ export default {
   data() {
     return {
       user: "",
+      rIP: "",
+      rName: "",
       form: {
         ip: "",
         appname: ""
@@ -89,6 +85,8 @@ export default {
     this.getUser();
   },
   mounted() {
+    this.rIP = localStorage.getItem("key");
+    this.rName = localStorage.getItem("rName");
     this.getInfo2();
   },
   methods: {
@@ -164,10 +162,16 @@ export default {
       top: 2px;
     }
   }
+  .el-input--medium {
+    text-align: left !important;
+  }
   .base_box {
     width: 600px;
     margin: auto;
     margin-top: 64px;
+    /deep/.el-form-item {
+      margin-bottom: 10px;
+    }
   }
   /deep/.el-form-item__label {
     font-size: 16px;

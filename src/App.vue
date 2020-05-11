@@ -36,6 +36,11 @@ export default {
 .el-message-box__title {
   color: #2d6afa;
 }
+.el-button--primary {
+  color: #fff;
+  background-color: #2d6afa !important;
+  border-color: #2d6afa !important;
+}
 .el-input--medium .el-input__inner {
   height: 40px;
   line-height: 40px;

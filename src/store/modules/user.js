@@ -40,9 +40,10 @@ const actions = {
         captcha: captcha
       })
         .then(response => {
-          console.log(response);
           const { data } = response;
           commit("SET_TOKEN", data.token);
+          localStorage.setItem("key", response.data.lock_ip);
+          localStorage.setItem("rName", response.data.title);
           setToken(data.token);
           resolve();
         })

@@ -341,9 +341,9 @@ export default {
     .addBtn {
       width: 97px;
       height: 38px;
-      border: 1px solid rgba(45, 135, 253, 1);
+      border: 1px solid rgba(45, 135, 253, 1) !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #2d87fd;
       padding: 0;
       img {
@@ -355,9 +355,9 @@ export default {
     .sx {
       width: 74px;
       height: 38px;
-      border: 1px solid #9e77f1;
+      border: 1px solid #9e77f1 !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #9e77f1;
       padding: 0;
       img {
@@ -397,9 +397,9 @@ export default {
     .djUser {
       width: 88px;
       height: 30px;
-      border: 1px solid rgba(45, 135, 253, 1);
+      border: 1px solid rgba(45, 135, 253, 1) !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: rgba(45, 135, 253, 1);
       padding: 0;
       img {

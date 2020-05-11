@@ -40,20 +40,11 @@
       </div>
       <div class="filter-container">
         <div class="s_left">
-          <el-button
-            class="filter-item s_card"
-            type="primary"
-            @click="handleCreate"
-          >
+          <el-button class="filter-item s_card" type="primary" @click="handleCreate">
             <img src="../../assets/icon/k3.png" />生成卡
           </el-button>
 
-          <el-button
-            v-waves
-            class="filter-item sx"
-            type="primary"
-            @click="back"
-          >
+          <el-button v-waves class="filter-item sx" type="primary" @click="back">
             <img src="../../assets/icon/k4.png" />刷新
           </el-button>
         </div>
@@ -64,6 +55,7 @@
               v-model="listQuery.cardtype"
               style="width: 140px"
               class="filter-item"
+              @change="selectActive"
             >
               <el-option
                 v-for="item in cardTypeList"
@@ -79,6 +71,7 @@
               v-model="listQuery.cardstatus"
               style="width: 140px"
               class="filter-item"
+              @change="selectStatus"
             >
               <el-option
                 v-for="item in cardStatus"
@@ -101,8 +94,7 @@
               type="primary"
               icon="el-icon-search"
               @click="handleFilter"
-              >搜索</el-button
-            >
+            >搜索</el-button>
             <div style="clear:both"></div>
           </div>
         </div>
@@ -130,12 +122,7 @@
         </template>
         </el-table-column>-->
 
-        <el-table-column
-          label="卡密"
-          sortable="custom"
-          align="center"
-          width="300"
-        >
+        <el-table-column label="卡密" sortable="custom" align="center" width="300">
           <template slot-scope="{ row }">
             <span>{{ row.cardnumber }}</span>
           </template>
@@ -192,8 +179,7 @@
                 type="primary"
                 size="mini"
                 @click="handleModifyStatus(row, 'unfreeze')"
-                >解冻</el-button
-              >
+              >解冻</el-button>
               <el-button
                 v-else
                 type="success"
@@ -231,8 +217,7 @@
                 class="modify"
                 style="margin:5px 0 0 0"
                 @click="showCardInfo(row)"
-                >详情</el-button
-              >
+              >详情</el-button>
               <el-button
                 v-if="row.status !== 2"
                 type="danger"
@@ -240,15 +225,15 @@
                 size="mini"
                 class="detale"
                 @click="deleteCard(row)"
-                >删除</el-button
-              >
+              >删除</el-button>
             </div>
           </template>
         </el-table-column>
       </el-table>
 
       <pagination
-        v-show="total > 20"
+        v-show="total >20"
+        class="pagestyle"
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
@@ -280,11 +265,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="备注" prop="discount">
-            <el-input
-              v-model="temp.mark"
-              type="textarea"
-              placeholder="请输入备注"
-            />
+            <el-input v-model="temp.mark" type="textarea" style="width:290px" placeholder="请输入备注" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -296,6 +277,7 @@
       <el-dialog
         title="查看详情"
         width="550px"
+        class="cardDetails"
         :visible.sync="dialogShowCardVisible"
       >
         <el-form
@@ -454,6 +436,14 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
+    selectActive() {
+      this.listQuery.page = 1;
+      this.getList();
+    },
+    selectStatus() {
+      this.listQuery.page = 1;
+      this.getList();
+    },
     getInfo() {
       getInfo().then(response => {
         this.user = response.data;
@@ -520,8 +510,7 @@ export default {
     deleteCard(row) {
       this.$confirm("你确定要删除？", "提示", {
         confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+        cancelButtonText: "取消"
       }).then(() => {
         const delete1 = { card: row.cardnumber };
         deleteCard(delete1).then(response => {
@@ -605,6 +594,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+/deep/.el-input--medium {
+  text-align: left !important;
+}
 .app-nav {
   width: 100%;
   height: 78px;
@@ -639,6 +631,27 @@ export default {
 .app-container {
   background-color: #fff;
   border-radius: 6px;
+  .cardDetails {
+    /deep/.el-dialog__title {
+      color: #2d6afa;
+      margin-right: 20px;
+    }
+    /deep/.el-form-item {
+      margin-bottom: 0;
+      height: 41px;
+    }
+    /deep/.el-form-item__label {
+      color: #2d6afa;
+      margin-right: 20px;
+    }
+  }
+  .pagestyle {
+    /deep/.el-input--medium .el-input__inner {
+      border: 1px solid rgba(230, 230, 230, 1);
+      border-radius: 4px;
+      width: 50px;
+    }
+  }
   .title {
     height: 36px;
     line-height: 25px;
@@ -700,9 +713,9 @@ export default {
     .addBtn {
       width: 97px;
       height: 38px;
-      border: 1px solid rgba(45, 135, 253, 1);
+      border: 1px solid rgba(45, 135, 253, 1) !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #2d87fd;
       padding: 0;
       img {
@@ -725,9 +738,9 @@ export default {
     .sx {
       width: 74px;
       height: 38px;
-      border: 1px solid #9e77f1;
+      border: 1px solid #9e77f1 !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #9e77f1;
       padding: 0;
       img {
@@ -767,9 +780,9 @@ export default {
     .djUser {
       width: 64px;
       height: 30px;
-      border: 1px solid rgba(45, 135, 253, 1);
+      border: 1px solid rgba(45, 135, 253, 1) !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: rgba(45, 135, 253, 1);
       padding: 0;
       img {
@@ -780,9 +793,9 @@ export default {
     .modify {
       width: 64px;
       height: 30px;
-      border: 1px solid #b37bec;
+      border: 1px solid #b37bec !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #b37bec;
       padding: 0;
       img {
@@ -794,9 +807,9 @@ export default {
     .detale {
       width: 64px;
       height: 30px;
-      border: 1px solid #fd0012;
+      border: 1px solid #fd0012 !important;
       border-radius: 4px;
-      background-color: transparent;
+      background-color: transparent !important;
       color: #fd0012;
       padding: 0;
       img {

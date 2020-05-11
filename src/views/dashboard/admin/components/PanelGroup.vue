@@ -101,7 +101,8 @@
             :end-val="user.discount"
             :duration="3600"
             class="card-panel-num"
-          />%
+          />
+          <span style="font-size:30px;">%</span>
         </div>
       </div>
     </el-col>
