@@ -1,93 +1,158 @@
 <template>
   <div class="login-container">
-    <el-row class="login-loading" :hidden="isHidden">
-      <el-col :span="24">
-        <div class="login-loading-icon">
-          <i class="el-icon-warning"></i>
-        </div>
-      </el-col>
-      <el-col :span="24">
-        <div class="login-loading-text">亲！该系统登录拥挤，请稍后再试！</div>
-         <el-button type="danger" @click="goSaasLogin">点击返回</el-button>
-      </el-col>
-      <el-col :span="24">
-        <div class="login-loading-span">
-          联系我们
-        </div>
-      </el-col>
-    </el-row>
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      autocomplete="on"
+      label-position="left"
+    >
+      <div class="title-container">
+        <h3 class="title">
+          <img src="logo2.png" width="60px" />
+          <br />欢迎使用Annaer后台系统
+        </h3>
+      </div>
+      <el-form-item prop="user">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input
+          ref="user"
+          v-model="loginForm.user"
+          placeholder="请输入账号"
+          name="user"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
+      </el-form-item>
+
+      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="请输入密码"
+            name="password"
+            tabindex="2"
+            autocomplete="on"
+            @keyup.native="checkCapslock"
+            @blur="capsTooltip = false"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
+        </el-form-item>
+      </el-tooltip>
+
+      <el-form-item prop="captcha">
+        <span class="svg-container">
+          <svg-icon icon-class="form" />
+        </span>
+        <el-input
+          v-model="loginForm.captcha"
+          placeholder="验证码"
+          prefix-icon="lj-icon-yanzhengma"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          maxlength="4"
+          style=" width: 320px;"
+          @keyup.enter.native="handleLogin"
+        />
+        <span class="show-pwd">
+          <div class="captcha_code">
+            <img :src="captchaimg" @click="changeCode" />
+          </div>
+        </span>
+      </el-form-item>
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width:100%;margin-bottom:30px;"
+        @click.native.prevent="handleLogin"
+      >登录</el-button>
+    </el-form>
   </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-import { login, captcha } from '@/api/user'
+import { validUsername } from "@/utils/validate";
+import { login, captcha } from "@/api/user";
 export default {
-  name: 'Login',
+  name: "Login",
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value.length < 3) {
-        callback(new Error('请输入密码'))
+        callback(new Error("请输入密码"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
-      logoUrl: 'http://localhost:8084/logo2.png',
+      logoUrl: "http://localhost:8084/logo2.png",
       loginForm: {
-        password: '',
-        user: '',
-        captcha: '',
-        type: 2,
+        password: "",
+        user: "",
+        captcha: "",
+        type: 2
       },
       loginRules: {
-        user: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        user: [{ required: true, message: "请输入用户名", trigger: "blur" }],
         password: [
           {
             required: true,
-            trigger: 'blur',
-            message: '请输入密码',
-            validator: validatePassword,
-          },
+            trigger: "blur",
+            message: "请输入密码",
+            validator: validatePassword
+          }
         ],
-        captcha: [{ required: true, trigger: 'blur', message: '请输入验证码' }],
+        captcha: [{ required: true, trigger: "blur", message: "请输入验证码" }]
       },
-      passwordType: 'password',
+      passwordType: "password",
       capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined,
       otherQuery: {},
-      captchaimg: null,
-    }
+      captchaimg: null
+    };
   },
   watch: {
     $route: {
       handler: function(route) {
-        const query = route.query
+        const query = route.query;
         if (query) {
-          this.redirect = query.redirect
-          this.otherQuery = this.getOtherQuery(query)
+          this.redirect = query.redirect;
+          this.otherQuery = this.getOtherQuery(query);
         }
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   created() {
-    this.getcaptcha()
-    this.saasToken = this.$route.query.token
+    this.getcaptcha();
+    this.saasToken = this.$route.query.token;
     if (this.saasToken) {
-      this.loginTokenHandle()
+      this.loginTokenHandle();
     } else {
-      this.isHidden = false
+      this.isHidden = false;
     }
   },
 
   mounted() {
-    if (this.loginForm.user === '') {
-      this.$refs.user.focus()
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus()
+    if (this.loginForm.user === "") {
+      this.$refs.user.focus();
+    } else if (this.loginForm.password === "") {
+      this.$refs.password.focus();
     }
   },
   destroyed() {
@@ -97,85 +162,89 @@ export default {
     loginTokenHandle() {
       const loading = this.$loading({
         lock: true,
-        text: '请稍后，正在登录代理系统！',
-        background: 'rgb(218, 218, 218)',
-      })
-      const postData = { token: this.saasToken }
+        text: "请稍后，正在登录代理系统！",
+        background: "rgb(218, 218, 218)"
+      });
+      const postData = { token: this.saasToken };
       this.$store
-        .dispatch('user/loginToken', postData)
+        .dispatch("user/loginToken", postData)
         .then(() => {
           setTimeout(() => {
-            loading.close()
-            this.$router.push({ path: '/' })
-          }, 2000)
+            loading.close();
+            this.$router.push({ path: "/" });
+          }, 2000);
         })
         .catch(() => {
           // this.loading = false
-        })
+        });
     },
     getcaptcha() {
-      this.captchaimg = process.env.VUE_APP_BASE_API + '/captcha?' + Math.random()
+      this.captchaimg =
+        process.env.VUE_APP_BASE_API + "/captcha?" + Math.random();
     },
     changeCode() {
-      this.getcaptcha()
+      this.getcaptcha();
     },
     checkCapslock({ shiftKey, key } = {}) {
       if (key && key.length === 1) {
-        if ((shiftKey && key >= 'a' && key <= 'z') || (!shiftKey && key >= 'A' && key <= 'Z')) {
-          this.capsTooltip = true
+        if (
+          (shiftKey && key >= "a" && key <= "z") ||
+          (!shiftKey && key >= "A" && key <= "Z")
+        ) {
+          this.capsTooltip = true;
         } else {
-          this.capsTooltip = false
+          this.capsTooltip = false;
         }
       }
-      if (key === 'CapsLock' && this.capsTooltip === true) {
-        this.capsTooltip = false
+      if (key === "CapsLock" && this.capsTooltip === true) {
+        this.capsTooltip = false;
       }
     },
     showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
+      if (this.passwordType === "password") {
+        this.passwordType = "";
       } else {
-        this.passwordType = 'password'
+        this.passwordType = "password";
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
+        this.$refs.password.focus();
+      });
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
+          this.loading = true;
           this.$store
-            .dispatch('user/login', this.loginForm)
+            .dispatch("user/login", this.loginForm)
             .then(response => {
-              console.log(response)
+              console.log(response);
               this.$router.push({
-                path: this.redirect || '/',
-                query: this.otherQuery,
-              })
-              this.loading = false
+                path: this.redirect || "/",
+                query: this.otherQuery
+              });
+              this.loading = false;
             })
             .catch(() => {
-              this.loading = false
-            })
+              this.loading = false;
+            });
         } else {
-          return false
+          return false;
         }
-      })
+      });
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
-        if (cur !== 'redirect') {
-          acc[cur] = query[cur]
+        if (cur !== "redirect") {
+          acc[cur] = query[cur];
         }
-        return acc
-      }, {})
+        return acc;
+      }, {});
     },
     goSaasLogin() {
-      window.location.href = 'http://www.apiyz.com:2222/login?logout=1'
-    },
-  },
-}
+      window.location.href = "http://www.apiyz.com:2222/login?logout=1";
+    }
+  }
+};
 </script>
 
 <style lang="scss">

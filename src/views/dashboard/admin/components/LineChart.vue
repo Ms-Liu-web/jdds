@@ -7,9 +7,14 @@ import echarts from "echarts";
 require("echarts/theme/macarons"); // echarts theme
 import resize from "./mixins/resize";
 import { getReportForm } from "@/api/agent";
+import { array } from "jszip/lib/support";
 export default {
   mixins: [resize],
   props: {
+    childData: {},
+    childMoutn: {
+      type: String
+    },
     className: {
       type: String,
       default: "chart"
@@ -35,10 +40,13 @@ export default {
       mounth: ""
     };
   },
-  mounted() {
-    this.initChart();
-    this.getData();
+  watch: {
+    childData() {
+      this.initChart();
+      this.getData();
+    }
   },
+  mounted() {},
   beforeDestroy() {
     if (!this.chart) {
       return;
@@ -138,15 +146,15 @@ export default {
       });
     },
     getData() {
-      getReportForm().then(response => {
-        let reData = response.data.list;
-        this.mounth = response.data.month;
-        for (var i = 0; i < reData.length; i++) {
-          this.expectedData.push(reData[i].create_count);
-          this.xAxis.push(reData[i].time);
-        }
-        this.setOptions();
-      });
+      let reData = this.childData;
+      this.mounth = this.childMoutn;
+      for (var i = 0; i < reData.length; i++) {
+        this.expectedData.push(reData[i].create_count);
+        this.xAxis.push(reData[i].time);
+
+        console.log(this.expectedData);
+      }
+      this.setOptions();
     }
   }
 };
