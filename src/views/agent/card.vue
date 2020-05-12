@@ -1,38 +1,6 @@
 <template>
   <div>
-    <div class="app-nav">
-      <div class="lie">
-        <span>
-          <img src="../../assets/icon/xj1.png" />
-        </span>
-        <div class="text_p">
-          <p class="p1">代理级别</p>
-          <p class="p2">{{ user.level }}</p>
-        </div>
-        <div style="clear:both"></div>
-      </div>
-      <div class="lie">
-        <span>
-          <img src="../../assets/icon/xj2.png" />
-        </span>
-        <div class="text_p">
-          <p class="p1">拿卡折扣</p>
-          <p class="p2">{{ user.discount }}%</p>
-        </div>
-        <div style="clear:both"></div>
-      </div>
-      <div class="lie">
-        <span>
-          <img src="../../assets/icon/xj3.png" />
-        </span>
-        <div class="text_p">
-          <p class="p1">余额</p>
-          <p class="p2">{{ user.balance }}</p>
-        </div>
-        <div style="clear:both"></div>
-      </div>
-      <div style="clear:both"></div>
-    </div>
+    <contentTop />
     <div class="app-container">
       <div class="title">
         <img src="../../assets/icon/icon12.png" />
@@ -339,14 +307,14 @@ import {
   showCardInfo,
   deleteCard
 } from "@/api/agentcard";
-import { getInfo } from "@/api/user";
+import contentTop from "@/components/contentTop/index";
 import waves from "@/directive/waves"; // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 
 export default {
   name: "CardList",
-  components: { Pagination },
+  components: { Pagination, contentTop },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -409,17 +377,13 @@ export default {
       ]
     };
   },
-  activated() {
-    console.log(234);
-  },
+  activated() {},
   created() {
     this.listQuery.card_user = this.$route.query.carduser;
     this.getList();
     this.getCardTypeList();
   },
-  mounted() {
-    this.getInfo();
-  },
+  mounted() {},
   methods: {
     getList() {
       this.listQuery.start = this.getStartTime();
@@ -442,12 +406,6 @@ export default {
     selectStatus() {
       this.listQuery.page = 1;
       this.getList();
-    },
-    getInfo() {
-      console.log(123456);
-      getInfo().then(response => {
-        this.user = response.data;
-      });
     },
     getCardTypeList() {
       getCardType().then(response => {
@@ -600,37 +558,6 @@ export default {
 <style lang="scss" scoped>
 /deep/.el-input--medium {
   text-align: left !important;
-}
-.app-nav {
-  width: 100%;
-  height: 78px;
-  background-color: #fff;
-  margin-bottom: 18px;
-  padding: 0 23px;
-  .lie {
-    padding-top: 15px;
-    margin-right: 120px;
-    float: left;
-    span {
-      float: left;
-      display: inline-block;
-      width: 48px;
-      height: 48px;
-      margin-right: 10px;
-    }
-    .text_p {
-      float: left;
-      .p1 {
-        font-size: 14px;
-        color: #999;
-        line-height: 23px;
-      }
-      .p2 {
-        font-size: 22px;
-        color: #3564c0;
-      }
-    }
-  }
 }
 .app-container {
   background-color: #fff;

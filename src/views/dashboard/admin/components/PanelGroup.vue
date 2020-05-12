@@ -156,6 +156,8 @@ export default {
     getInfo() {
       getInfo().then(response => {
         this.user = response.data;
+
+        localStorage.setItem("user", JSON.stringify(response.data));
       });
     }
   }

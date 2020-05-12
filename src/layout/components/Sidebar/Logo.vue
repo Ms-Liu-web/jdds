@@ -2,7 +2,6 @@
   <div class="sidebar-logo-container">
     <transition name="sidebarLogoFade">
       <router-link key="collapse" class="sidebar-logo-link" to="/">
-        <img :src="logo" class="sidebar-logo" />
         <h1 class="sidebar-title">{{ title }}</h1>
       </router-link>
     </transition>
@@ -20,8 +19,7 @@ export default {
   },
   data() {
     return {
-      title: "Annaer",
-      logo: "logo2.png"
+      title: "Annaer代理"
     };
   }
 };
@@ -40,8 +38,8 @@ export default {
 .sidebar-logo-container {
   position: relative;
   width: 100%;
-  height: 100px;
-  line-height: 100px;
+  height: 73px;
+  line-height: 73px;
   background: #3564c0;
   text-align: center;
   overflow: hidden;
@@ -64,7 +62,7 @@ export default {
       color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 14px;
+      font-size: 18px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }
