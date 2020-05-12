@@ -113,7 +113,7 @@ export default {
       this.isHover = true;
       bus.$emit("hoverSJ", "1");
       this.$emit("gethover", "1");
-      console.log("移入");
+      // console.log("移入");
     },
     leave() {
       // this.isHover = false;
@@ -126,7 +126,6 @@ export default {
         cancelButtonText: "取消"
       }).then(() => {
         logout().then(response => {
-          console.log(response);
           if (response.code == 200) {
             localStorage.removeItem("Admin-Token");
             window.location.href = "http://www.apiyz.com:2222/login?logout=1";

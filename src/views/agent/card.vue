@@ -279,49 +279,61 @@
         class="cardDetails"
         :visible.sync="dialogShowCardVisible"
       >
-        <el-form
-          :model="cardInfo"
-          label-position="left"
-          label-width="70px"
-          style="width: 400px; margin-left:50px;"
-        >
-          <el-form-item label="购买者" prop="user">
-            <div v-if="cardInfo.user == null">尚未售出</div>
-            <div v-if="cardInfo.user !== null">{{ cardInfo.user }}</div>
-          </el-form-item>
-
-          <el-form-item label="卡密" prop="user">
-            <div>{{ cardInfo.cardnumber }}</div>
-          </el-form-item>
-
-          <el-form-item label="备注" prop="user">
-            <div>{{ cardInfo.remarks }}</div>
-          </el-form-item>
-
-          <el-form-item label="类型" prop="user">
-            <div>{{ cardInfo.cardtypename }}</div>
-          </el-form-item>
-
-          <el-form-item label="是否冻结" prop="user">
-            <div v-if="cardInfo.cardfreeze === 0">否</div>
-            <div v-if="cardInfo.cardfreeze === 1">是</div>
-          </el-form-item>
-
-          <el-form-item label="卡状态" prop="user">
-            <div v-if="cardInfo.status === 0">未使用</div>
-            <div v-if="cardInfo.status === 1">已使用</div>
-            <div v-if="cardInfo.status === 2">已删除</div>
-          </el-form-item>
-
-          <el-form-item label="过期时间" prop="user">
-            <div>{{ cardInfo.expire_time }}</div>
-          </el-form-item>
-
-          <el-form-item label="创建时间" prop="user">
-            <div>{{ cardInfo.created_time }}</div>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
+        <table :model="cardInfo" class="buyTable" cellpadding="0" cellspacing="0">
+          <tr>
+            <td class="t1">购买者</td>
+            <td class="t2">
+              <div v-if="cardInfo.user == null">尚未售出</div>
+              <div v-if="cardInfo.user !== null">{{ cardInfo.user }}</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="t1">卡密</td>
+            <td class="t2">
+              <div>{{ cardInfo.cardnumber }}</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="t1">备注</td>
+            <td class="t2">
+              <div>{{ cardInfo.remarks }}</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="t1">类型</td>
+            <td class="t2">
+              <div>{{ cardInfo.cardtypename }}</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="t1">是否冻结</td>
+            <td class="t2">
+              <div v-if="cardInfo.cardfreeze === 0">否</div>
+              <div v-if="cardInfo.cardfreeze === 1">是</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="t1">卡状态</td>
+            <td class="t2">
+              <div v-if="cardInfo.status === 0">未使用</div>
+              <div v-if="cardInfo.status === 1">已使用</div>
+              <div v-if="cardInfo.status === 2">已删除</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="t1">过期时间</td>
+            <td class="t2">
+              <div>{{ cardInfo.expire_time }}</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="t1">创建时间</td>
+            <td class="t2">
+              <div>{{ cardInfo.created_time }}</div>
+            </td>
+          </tr>
+        </table>
+        <div slot="footer" class="dialog-footer card_btn">
           <el-button @click="dialogShowCardVisible = false">关闭</el-button>
         </div>
       </el-dialog>
@@ -409,9 +421,7 @@ export default {
       ]
     };
   },
-  activated() {
-    console.log(234);
-  },
+  activated() {},
   created() {
     this.listQuery.card_user = this.$route.query.carduser;
     this.getList();
@@ -444,7 +454,6 @@ export default {
       this.getList();
     },
     getInfo() {
-      console.log(123456);
       getInfo().then(response => {
         this.user = response.data;
       });
@@ -821,6 +830,35 @@ export default {
         margin-right: 3px;
         top: 1px;
       }
+    }
+  }
+  .buyTable {
+    width: 420px;
+    margin: auto;
+    border: 1px solid #e6e6e6;
+    border-collapse: collapse;
+    tr td {
+      border: 1px #e6e6e6 solid;
+      height: 40px;
+      line-height: 40px;
+    }
+    tr td.t1 {
+      width: 101px;
+      text-align: center;
+      color: #2d6afa;
+    }
+    tr td.t2 {
+      width: 318px;
+      padding-left: 23px;
+      color: #333;
+    }
+  }
+  .card_btn {
+    text-align: center;
+    /deep/.el-button {
+      border: 1px solid rgba(53, 100, 192, 1);
+      border-radius: 4px;
+      color: #2d6afa;
     }
   }
 }

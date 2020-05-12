@@ -207,7 +207,6 @@ export default {
 
   // },
   mounted() {
-    console.log(123456789);
     this.getList();
     this.getInfo2();
   },
@@ -223,7 +222,6 @@ export default {
     getInfo2() {
       getInfo().then(response => {
         this.user = response.data;
-        console.log(this.user);
       });
     },
     handleFilter() {

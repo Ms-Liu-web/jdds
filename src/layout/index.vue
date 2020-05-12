@@ -10,9 +10,12 @@
       <!-- <tags-view v-if="needTagsView" /> -->
     </div>
     <saas-menu :ishover="hmenu" />
-    <div class="main-container">
+    <div class="main-container" :class="{'hiddenClass2':hiddenClass}">
       <div :class="[modalhover == '1' ? 'hover_saas' : '']" @click="hiddenModal"></div>
-      <sidebar class="sidebar-container" />
+      <sidebar class="sidebar-container" :class="{'hiddenClass':hiddenClass}" />
+      <div class="shou_img" @click="activeMenu" :class="{'hiddenimg':hiddenClass}">
+        <img src="../assets/icon/shou.png" />
+      </div>
       <app-main />
       <footer class="footer">版权所有@四川聚达鼎盛科技有限公司</footer>
     </div>
@@ -32,7 +35,10 @@ export default {
   data() {
     return {
       modalhover: "",
-      hmenu: "0"
+      hmenu: "0",
+      hiddenClass: false,
+      hiddenClass2: false,
+      hiddenimg: false
     };
   },
   components: {
@@ -77,8 +83,6 @@ export default {
         }
       });
     });
-    console.log(11111);
-
     // this.lock();
   },
   methods: {
@@ -93,14 +97,16 @@ export default {
     getmenuHover(msg) {
       this.modalhover = msg;
       this.$refs.appWrapper.style = "overflow-y:hidden";
-      console.log();
-      console.log("fu" + this.modalhover);
     },
     hiddenModal() {
       this.modalhover = "0";
       this.hmenu = "0";
       this.$refs.appWrapper.style = "overflow-y:auto";
-      console.log(this.modalhover);
+    },
+    activeMenu(a) {
+      this.hiddenClass = !this.hiddenClass;
+      this.hiddenClass2 = !this.hiddenClass2;
+      this.hiddenimg = !this.hiddenimg;
     }
   }
 };
@@ -109,6 +115,24 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 @import "~@/styles/variables.scss";
+.shou_img {
+  position: fixed;
+  top: 45%;
+  left: 180px;
+  z-index: 9;
+  cursor: pointer;
+}
+.hiddenClass {
+  pointer-events: none;
+  transition-duration: 0.3s;
+  transform: translate3d(-210px, 0, 0);
+}
+.hiddenClass2 {
+  margin-left: 0px !important;
+}
+.hiddenimg {
+  left: 0px !important;
+}
 .footer {
   // position: absolute;
   bottom: 0;
