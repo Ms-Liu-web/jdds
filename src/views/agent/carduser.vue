@@ -1,38 +1,6 @@
 <template>
   <div>
-    <div class="app-nav">
-      <div class="lie">
-        <span>
-          <img src="../../assets/icon/xj1.png" />
-        </span>
-        <div class="text_p">
-          <p class="p1">代理级别</p>
-          <p class="p2">{{user.level}}</p>
-        </div>
-        <div style="clear:both"></div>
-      </div>
-      <div class="lie">
-        <span>
-          <img src="../../assets/icon/xj2.png" />
-        </span>
-        <div class="text_p">
-          <p class="p1">拿卡折扣</p>
-          <p class="p2">{{user.discount}}%</p>
-        </div>
-        <div style="clear:both"></div>
-      </div>
-      <div class="lie">
-        <span>
-          <img src="../../assets/icon/xj3.png" />
-        </span>
-        <div class="text_p">
-          <p class="p1">余额</p>
-          <p class="p2">{{user.balance}}</p>
-        </div>
-        <div style="clear:both"></div>
-      </div>
-      <div style="clear:both"></div>
-    </div>
+    <contentTop />
     <div class="app-container">
       <div class="title">
         <img src="../../assets/icon/icon12.png" />
@@ -143,14 +111,14 @@
 
 <script>
 import { getCardUserList } from "@/api/agentcard";
-import { getInfo } from "@/api/user";
+import contentTop from "@/components/contentTop/index";
 import waves from "@/directive/waves"; // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 
 export default {
   name: "CardList",
-  components: { Pagination },
+  components: { Pagination, contentTop },
   directives: { waves },
   filters: {
     statusFilter(status) {
