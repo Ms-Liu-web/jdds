@@ -310,6 +310,7 @@ import {
 import contentTop from "@/components/contentTop/index";
 import waves from "@/directive/waves"; // waves directive
 // import { parseTime } from '@/utils'
+import { getInfo } from "@/api/user";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 
 export default {
@@ -426,8 +427,14 @@ export default {
               type: "success",
               duration: 2000
             });
+            this.getInfo();
           });
         }
+      });
+    },
+    getInfo() {
+      getInfo().then(response => {
+        this.$store.dispatch("user/setUserInfo", response.data);
       });
     },
     /*

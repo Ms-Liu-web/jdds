@@ -252,27 +252,19 @@ export default {
   created() {
     this.getList();
   },
-  mounted() {
-    this.getInfo();
-  },
+  mounted() {},
   methods: {
     getList() {
       this.listLoading = true;
       getSuperior(this.listQuery).then(response => {
         this.list = response.data.list;
-        this.total = response.data.count;
+        this.total = response.data.count ? response.data.count : 0;
         this.listLoading = false;
       });
     },
     handleFilter() {
       this.listQuery.page = 1;
       this.getList();
-    },
-    getInfo() {
-      getInfo().then(response => {
-        this.user = response.data;
-        console.log(this.user);
-      });
     },
     /*
       冻结与解冻
