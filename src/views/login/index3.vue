@@ -7,12 +7,11 @@
         </div>
       </el-col>
       <el-col :span="24">
-        <div class="login-loading-text">亲！登录出错了啦，请返回重新登录。</div>
+        <div class="login-loading-text">亲！该系统登录拥挤，请稍后再试！</div>
+        <el-button type="danger" @click="goSaasLogin">点击返回</el-button>
       </el-col>
       <el-col :span="24">
-        <div class="login-loading-span">
-          返回saas平台&nbsp;&nbsp;|&nbsp;&nbsp;联系我们
-        </div>
+        <div class="login-loading-span">联系我们</div>
       </el-col>
     </el-row>
   </div>
@@ -189,6 +188,7 @@ export default {
 .login-loading-text {
   color: #fff;
   font-size: 24px;
+  margin-bottom: 20px;
 }
 
 .login-loading-span {
@@ -201,7 +201,6 @@ export default {
   font-size: 57px;
   line-height: 90px;
 }
-
 $bg: #283443;
 $light_gray: #fff;
 $cursor: #fff;
