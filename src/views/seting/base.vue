@@ -139,10 +139,11 @@ export default {
 .app-container {
   background-color: #fff;
   border-radius: 6px;
+  min-height: calc(100vh - 250px);
   .title {
     height: 36px;
     line-height: 25px;
-    border-bottom: 1px #a4bffe dashed;
+    border-bottom: 1px #dce7ff dashed;
     margin-bottom: 13px;
     color: #3c70d5;
     img {

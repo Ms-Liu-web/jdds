@@ -6,6 +6,7 @@
 @import "./btn.scss";
 
 body {
+  min-width: 875px;
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;

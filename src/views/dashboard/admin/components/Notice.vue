@@ -52,7 +52,7 @@ export default {
     margin: 0 23px;
     height: 47px;
     line-height: 47px;
-    border-bottom: 1px #a4bffe dashed;
+    border-bottom: 1px #dce7ff dashed;
     margin-bottom: 13px;
     color: #3c70d5;
     img {

@@ -74,6 +74,12 @@ export default {
   width: 290px;
   margin: auto;
 }
+.el-table:before {
+  height: 0 !important;
+}
+.el-table__empty-block {
+  min-height: 110px !important;
+}
 </style>
 
 

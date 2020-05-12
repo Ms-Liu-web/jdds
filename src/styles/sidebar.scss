@@ -17,6 +17,9 @@
     padding-left: 33px !important;
     margin-left: 13px;
   }
+  /deep/.el-menu-item:hover {
+    border-radius: 8px 0 0 8px;
+  }
   .sidebar-container {
     transition: width 0.28s;
     width: 180px !important;

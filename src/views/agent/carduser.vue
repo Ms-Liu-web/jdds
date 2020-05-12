@@ -8,13 +8,9 @@
       </div>
       <div class="filter-container">
         <div class="s_left">
-          <el-button
-            v-waves
-            class="filter-item"
-            type="primary"
-            icon="el-icon-search"
-            @click="back"
-          >刷新</el-button>
+          <el-button v-waves class="filter-item sx" type="primary" @click="back">
+            <img src="../../assets/icon/k4.png" />刷新
+          </el-button>
         </div>
         <div class="search">
           <el-input
@@ -249,7 +245,7 @@ export default {
         line-height: 23px;
       }
       .p2 {
-        font-size: 22px;
+        font-size: 18px;
         color: #3564c0;
       }
     }
@@ -258,10 +254,11 @@ export default {
 .app-container {
   background-color: #fff;
   border-radius: 6px;
+  min-height: calc(100vh - 250px);
   .title {
     height: 36px;
     line-height: 25px;
-    border-bottom: 1px #a4bffe dashed;
+    border-bottom: 1px #dce7ff dashed;
     margin-bottom: 13px;
     color: #3c70d5;
     img {
