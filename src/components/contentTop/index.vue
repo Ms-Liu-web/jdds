@@ -40,7 +40,8 @@
 export default {
   computed: {
     user() {
-      return JSON.parse(localStorage.getItem("user"));
+      return this.$store.state.user.userInfo;
+      // return JSON.parse(localStorage.getItem("user"));
     }
   },
   methods: {}

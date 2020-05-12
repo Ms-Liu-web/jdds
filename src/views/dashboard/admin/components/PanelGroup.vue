@@ -156,8 +156,8 @@ export default {
     getInfo() {
       getInfo().then(response => {
         this.user = response.data;
-
-        localStorage.setItem("user", JSON.stringify(response.data));
+        this.$store.dispatch("user/setUserInfo", response.data);
+        // commit("SET_USERINFO", response.data);
       });
     }
   }

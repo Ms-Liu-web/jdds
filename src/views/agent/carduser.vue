@@ -171,12 +171,8 @@ export default {
       cardTypeList: []
     };
   },
-  // created() {
-
-  // },
   mounted() {
     this.getList();
-    this.getInfo2();
   },
   methods: {
     getList() {
@@ -185,11 +181,6 @@ export default {
         this.list = response.data.list;
         this.total = response.data.count;
         this.listLoading = false;
-      });
-    },
-    getInfo2() {
-      getInfo().then(response => {
-        this.user = response.data;
       });
     },
     handleFilter() {

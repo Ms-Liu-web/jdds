@@ -7,7 +7,8 @@ const state = {
   name: "",
   avatar: "",
   introduction: "",
-  roles: []
+  roles: [],
+  userInfo: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
 };
 
 const mutations = {
@@ -18,6 +19,7 @@ const mutations = {
     state.introduction = introduction;
   },
   SET_NAME: (state, name) => {
+    console.log(3333)
     state.name = name;
   },
   SET_AVATAR: (state, avatar) => {
@@ -25,12 +27,20 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles;
+  },
+  SET_USERINFO: (state, userinfo) => {
+    console.log(234343433)
+    localStorage.setItem("user", JSON.stringify(userinfo));
+    state.userInfo = userinfo;
   }
 };
 
 const actions = {
+  setUserInfo ({ commit }, userInfo) {
+    commit("SET_USERINFO", userInfo);
+  },
   // user login
-  login({ commit }, userInfo) {
+  login ({ commit }, userInfo) {
     const { user, password, type, captcha } = userInfo;
     return new Promise((resolve, reject) => {
       login({
@@ -54,7 +64,7 @@ const actions = {
     });
   },
   // user login
-  loginToken({ commit }, postData) {
+  loginToken ({ commit }, postData) {
     const { token } = postData;
     return new Promise((resolve, reject) => {
       loginToken({ token: token })
@@ -74,7 +84,7 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getInfo ({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token)
         .then(response => {
@@ -85,6 +95,7 @@ const actions = {
           const { user } = data;
           commit("SET_ROLES", ["admin"]);
           commit("SET_NAME", user);
+
           commit("SET_INTRODUCTION", "代理后台");
           resolve(data);
         })
@@ -95,7 +106,7 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state, dispatch }) {
+  logout ({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout(state.token)
         .then(() => {
@@ -117,7 +128,7 @@ const actions = {
   },
 
   // remove token
-  resetToken({ commit }) {
+  resetToken ({ commit }) {
     return new Promise(resolve => {
       commit("SET_TOKEN", "");
       commit("SET_ROLES", []);
@@ -127,7 +138,7 @@ const actions = {
   },
 
   // dynamically modify permissions
-  changeRoles({ commit, dispatch }, role) {
+  changeRoles ({ commit, dispatch }, role) {
     return new Promise(async resolve => {
       const token = role + "-token";
 
