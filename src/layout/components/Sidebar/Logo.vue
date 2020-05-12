@@ -38,11 +38,12 @@ export default {
 .sidebar-logo-container {
   position: relative;
   width: 100%;
-  height: 73px;
-  line-height: 73px;
+  height: 65px;
+  line-height: 65px;
   background: #3564c0;
   text-align: center;
   overflow: hidden;
+  margin-bottom: 50px;
 
   & .sidebar-logo-link {
     height: 100%;

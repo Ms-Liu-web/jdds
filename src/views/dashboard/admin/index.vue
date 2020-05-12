@@ -42,10 +42,8 @@ export default {
   },
   created() {
     getReportForm().then(response => {
-      console.log(response);
       this.chartData2 = response.data.list;
       this.mounth = response.data.month;
-      console.log(this.chartData2);
     });
   },
   mounted() {},

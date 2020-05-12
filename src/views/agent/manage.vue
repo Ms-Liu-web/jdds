@@ -527,7 +527,7 @@ export default {
     .sx {
       width: 74px;
       height: 38px;
-      border: 1px solid #9e77f1;
+      border: 1px solid #9e77f1 !important;
       border-radius: 4px;
       background-color: transparent !important;
       color: #9e77f1;

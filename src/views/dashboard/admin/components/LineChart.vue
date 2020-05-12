@@ -151,8 +151,6 @@ export default {
       for (var i = 0; i < reData.length; i++) {
         this.expectedData.push(reData[i].create_count);
         this.xAxis.push(reData[i].time);
-
-        console.log(this.expectedData);
       }
       this.setOptions();
     }
