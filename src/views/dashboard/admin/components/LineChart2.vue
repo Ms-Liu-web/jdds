@@ -10,6 +10,10 @@ import { getReportForm } from "@/api/agent";
 export default {
   mixins: [resize],
   props: {
+    childData: {},
+    childMoutn: {
+      type: String
+    },
     className: {
       type: String,
       default: "chart"
@@ -35,9 +39,11 @@ export default {
       mounth: ""
     };
   },
-  mounted() {
-    this.initChart();
-    this.getData();
+  watch: {
+    childData() {
+      this.initChart();
+      this.getData();
+    }
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -131,15 +137,15 @@ export default {
       });
     },
     getData() {
-      getReportForm().then(response => {
-        let reData = response.data.list;
-        this.mounth = response.data.month;
-        for (var i = 0; i < reData.length; i++) {
-          this.expectedData.push(reData[i].sell_count);
-          this.xAxis.push(reData[i].time);
-        }
-        this.setOptions();
-      });
+      // getReportForm().then(response => {
+      let reData = this.childData;
+      this.mounth = this.childMoutn;
+      for (var i = 0; i < reData.length; i++) {
+        this.expectedData.push(reData[i].sell_count);
+        this.xAxis.push(reData[i].time);
+      }
+      this.setOptions();
+      // });
     }
   }
 };

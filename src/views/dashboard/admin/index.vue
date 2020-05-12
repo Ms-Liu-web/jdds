@@ -4,13 +4,13 @@
 
     <el-row :gutter="40" class="canves_box">
       <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
-        <line-chart />
+        <line-chart :child-data="chartData2" :child-moutn="mounth" />
       </el-col>
       <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
-        <line-chart2 />
+        <line-chart2 :child-data="chartData2" :child-moutn="mounth" />
       </el-col>
       <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
-        <line-chart3 />
+        <line-chart3 :child-data="chartData2" :child-moutn="mounth" />
       </el-col>
     </el-row>
     <Notice />
@@ -23,6 +23,7 @@ import LineChart from "./components/LineChart";
 import LineChart2 from "./components/LineChart2";
 import LineChart3 from "./components/LineChart3";
 import Notice from "./components/Notice";
+import { getReportForm } from "@/api/agent";
 export default {
   name: "DashboardAdmin",
   components: {
@@ -34,9 +35,20 @@ export default {
   },
   data() {
     return {
-      chartSetOption: []
+      chartSetOption: [],
+      chartData2: [],
+      mounth: ""
     };
   },
+  created() {
+    getReportForm().then(response => {
+      console.log(response);
+      this.chartData2 = response.data.list;
+      this.mounth = response.data.month;
+      console.log(this.chartData2);
+    });
+  },
+  mounted() {},
   methods: {}
 };
 </script>
