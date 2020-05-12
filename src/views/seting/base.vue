@@ -1,59 +1,28 @@
 <template>
   <div>
-    <div class="app-nav">
-      <div class="lie">
-        <span>
-          <img src="../../assets/icon/xj1.png" />
-        </span>
-        <div class="text_p">
-          <p class="p1">代理级别</p>
-          <p class="p2">{{ user.level }}</p>
-        </div>
-        <div style="clear:both"></div>
-      </div>
-      <div class="lie">
-        <span>
-          <img src="../../assets/icon/xj2.png" />
-        </span>
-        <div class="text_p">
-          <p class="p1">拿卡折扣</p>
-          <p class="p2">{{ user.discount }}%</p>
-        </div>
-        <div style="clear:both"></div>
-      </div>
-      <div class="lie">
-        <span>
-          <img src="../../assets/icon/xj3.png" />
-        </span>
-        <div class="text_p">
-          <p class="p1">余额</p>
-          <p class="p2">{{ user.balance }}</p>
-        </div>
-        <div style="clear:both"></div>
-      </div>
-      <div style="clear:both"></div>
-    </div>
+    <contentTop />
+
     <div class="app-container">
       <div class="title">
         <img src="../../assets/icon/icon12.png" />
         <span>用户管理</span>
       </div>
-      <el-form ref="form" :model="form" class="base_box" label-width="120px">
-        <el-form-item label="当前软件ip:">
+      <el-form ref="form" :model="form" :rules="rules" class="base_box" label-width="160px">
+        <!-- <el-form-item label="当前软件ip:">
           <span>{{rIP}}</span>
-        </el-form-item>
-        <el-form-item label="设置软件ip:">
+        </el-form-item>-->
+        <el-form-item label="设置软件ip：" prop="ip">
           <el-input v-model="form.ip" placeholder="请设置当前软件唯一绑定ip"></el-input>
         </el-form-item>
-        <el-form-item label="当前软件名称:" style="margin-top:44px;">
+        <!-- <el-form-item label="当前软件名称:" style="margin-top:44px;">
           <span>{{rName}}</span>
-        </el-form-item>
-        <el-form-item label="设置软件名称:">
+        </el-form-item>-->
+        <el-form-item label="设置软件名称：" prop="appname">
           <el-input v-model="form.appname" placeholder="请设置当前软件名称"></el-input>
         </el-form-item>
 
         <el-form-item class="btn_center" style="margin-left:0">
-          <el-button type="primary" @click="onSubmit">保存</el-button>
+          <el-button type="primary" @click="onSubmit('form')">保存</el-button>
           <el-button>取消</el-button>
         </el-form-item>
       </el-form>
@@ -64,11 +33,21 @@
 <script>
 import { mapGetters } from "vuex";
 import { getInfo2 } from "@/api/user";
+import contentTop from "@/components/contentTop/index";
 import waves from "@/directive/waves"; // waves directive
 import { setingUpdate, getInfo } from "@/api/user";
+var validateIp = (rule, value, callback) => {
+  console.log(value);
+  var reg1 = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+  if (value && !reg1.test(value)) {
+    callback(new Error("请输入正确的ip，ip地址格式错误"));
+  }
+  callback();
+};
 
 export default {
   name: "seting",
+  components: { contentTop },
   directives: { waves },
   data() {
     return {
@@ -78,6 +57,9 @@ export default {
       form: {
         ip: "",
         appname: ""
+      },
+      rules: {
+        ip: [{ required: true, validator: validateIp, trigger: "blur" }]
       }
     };
   },
@@ -91,26 +73,38 @@ export default {
   methods: {
     getUser() {
       getInfo().then(response => {
-        console.log(response);
-        this.user = response.data;
-        this.form = {
-          ip: response.data.ip,
-          appname: response.data.custom_title
-        };
+        this.form.ip = response.data.lockIp;
+        this.form.appname = response.data.customTitle;
+
+        this.rIP = response.data.lockIp;
+        this.rName = response.data.customTitle;
       });
     },
-    onSubmit() {
-      setingUpdate(this.form).then(response => {
-        this.$message({
-          type: "success",
-          message: "操作成功"
-        });
+    onSubmit(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          setingUpdate(this.form).then(response => {
+            this.$message({
+              type: "success",
+              message: "操作成功"
+            });
+          });
+        } else {
+          return false;
+        }
       });
     }
   }
 };
 </script>
 <style lang="scss" scoped>
+.app-container {
+  .base_box {
+    .el-form-item {
+      margin-bottom: 27px !important;
+    }
+  }
+}
 .app-nav {
   width: 100%;
   height: 78px;
