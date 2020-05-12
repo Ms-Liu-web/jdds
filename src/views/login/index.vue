@@ -1,86 +1,19 @@
 <template>
   <div class="login-container">
-    <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
-      class="login-form"
-      autocomplete="on"
-      label-position="left"
-    >
-      <div class="title-container">
-        <h3 class="title">
-          <img src="logo2.png" width="60px" />
-          <br />欢迎使用Annaer后台系统
-        </h3>
-      </div>
-      <el-form-item prop="user">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="user"
-          v-model="loginForm.user"
-          placeholder="请输入账号"
-          name="user"
-          type="text"
-          tabindex="1"
-          autocomplete="on"
-        />
-      </el-form-item>
-
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password" />
-          </span>
-          <el-input
-            :key="passwordType"
-            ref="password"
-            v-model="loginForm.password"
-            :type="passwordType"
-            placeholder="请输入密码"
-            name="password"
-            tabindex="2"
-            autocomplete="on"
-            @keyup.native="checkCapslock"
-            @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
-          />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-          </span>
-        </el-form-item>
-      </el-tooltip>
-
-      <el-form-item prop="captcha">
-        <span class="svg-container">
-          <svg-icon icon-class="form" />
-        </span>
-        <el-input
-          v-model="loginForm.captcha"
-          placeholder="验证码"
-          prefix-icon="lj-icon-yanzhengma"
-          autocomplete="off"
-          autocapitalize="off"
-          spellcheck="false"
-          maxlength="4"
-          style=" width: 320px;"
-          @keyup.enter.native="handleLogin"
-        />
-        <span class="show-pwd">
-          <div class="captcha_code">
-            <img :src="captchaimg" @click="changeCode" />
-          </div>
-        </span>
-      </el-form-item>
-      <el-button
-        :loading="loading"
-        type="primary"
-        style="width:100%;margin-bottom:30px;"
-        @click.native.prevent="handleLogin"
-      >登录</el-button>
-    </el-form>
+    <el-row class="login-loading" :hidden="isHidden">
+      <el-col :span="24">
+        <div class="login-loading-icon">
+          <i class="el-icon-warning"></i>
+        </div>
+      </el-col>
+      <el-col :span="24">
+        <div class="login-loading-text">亲！该系统登录拥挤，请稍后再试！</div>
+        <el-button type="danger" @click="goSaasLogin">点击返回</el-button>
+      </el-col>
+      <el-col :span="24">
+        <div class="login-loading-span">联系我们</div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -239,9 +172,6 @@ export default {
         }
         return acc;
       }, {});
-    },
-    goSaasLogin() {
-      window.location.href = "http://www.apiyz.com:2222/login?logout=1";
     }
   }
 };
@@ -271,7 +201,6 @@ export default {
   font-size: 57px;
   line-height: 90px;
 }
-
 $bg: #283443;
 $light_gray: #fff;
 $cursor: #fff;
@@ -281,7 +210,7 @@ $cursor: #fff;
     color: $cursor;
   }
 }
- 
+
 /* reset element-ui css */
 .login-container {
   .el-input {
