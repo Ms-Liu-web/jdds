@@ -14,7 +14,8 @@
       <div :class="[modalhover == '1' ? 'hover_saas' : '']" @click="hiddenModal"></div>
       <sidebar class="sidebar-container" :class="{'hiddenClass':hiddenClass}" />
       <div class="shou_img" @click="activeMenu" :class="{'hiddenimg':hiddenClass}">
-        <img src="../assets/icon/shou.png" />
+        <img v-if="!hiddenClass" src="../assets/icon/shou.png" />
+        <img v-if="hiddenClass" src="../assets/icon/shou2.png" />
       </div>
       <app-main />
       <footer class="footer">版权所有@四川聚达鼎盛科技有限公司</footer>

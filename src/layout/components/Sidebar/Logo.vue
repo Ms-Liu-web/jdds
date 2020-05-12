@@ -43,7 +43,7 @@ export default {
   background: #3564c0;
   text-align: center;
   overflow: hidden;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 
   & .sidebar-logo-link {
     height: 100%;

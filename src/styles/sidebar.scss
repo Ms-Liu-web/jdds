@@ -162,8 +162,8 @@
     }
 
     .sidebar-container {
-      transition: transform 0.28s;
-      width: $sideBarWidth !important;
+      // transition: transform 0.28s;
+      // width: $sideBarWidth !important;
     }
 
     &.hideSidebar {
@@ -171,6 +171,9 @@
         pointer-events: none;
         transition-duration: 0.3s;
         transform: translate3d(-$sideBarWidth, 0, 0);
+      }
+      .shou_img {
+        display: none;
       }
     }
   }

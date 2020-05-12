@@ -11,9 +11,9 @@
         </span>
       </div>
       <div class="navbar_right">
-        <a style="cursor:pointer" :href="saasurl">
+        <a style="cursor:pointer" :href="saasurl+'home'">
           <img src="../../assets/icon/retrunindex.png" />
-          首页
+          去控制台
         </a>
         <a :href="saasurl+'help' ">
           <img src="../../assets/icon/icon9.png" />
@@ -27,6 +27,7 @@
           <img src="../../assets/icon/usert.png" class="user-avatar" />
 
           <span class="name">
+            {{ username.userName}}
             <img src="../../assets/icon/icon24.png" />
           </span>
           <div style="clear:both"></div>
@@ -92,7 +93,8 @@ export default {
     return {
       isHover: "",
       beforeTime: "",
-      saasurl: saasurl
+      saasurl: saasurl,
+      username: ""
     };
   },
   computed: {
@@ -100,6 +102,7 @@ export default {
   },
   mounted() {
     this.beforeTime = localStorage.getItem("befortime");
+    this.username = JSON.parse(localStorage.getItem("userInfo"));
   },
   methods: {
     toggleSideBar() {

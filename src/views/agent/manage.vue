@@ -343,7 +343,8 @@ export default {
       this.temp = {
         discount: "",
         qq: "",
-        user: ""
+        user: "",
+        discount: ""
       };
     },
     handleCreate() {
@@ -356,6 +357,8 @@ export default {
     handleUpdate(row) {
       this.temp.user = row.user;
       this.temp.qq = row.qq;
+      this.temp.discount = row.discount;
+
       this.updateSuperiorVisible = true;
       this.$nextTick(() => {
         this.$refs["updateSuperiorFrom"].clearValidate();

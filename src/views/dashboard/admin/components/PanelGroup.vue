@@ -170,16 +170,16 @@ export default {
     margin-bottom: 32px;
   }
   .card_u1 {
-    background: url("../../../../assets/icon/card3.png") no-repeat;
+    background: url("../../../../assets/icon/card3.png");
   }
   .card_u2 {
-    background: url("../../../../assets/icon/card1.png") no-repeat;
+    background: url("../../../../assets/icon/card1.png");
   }
   .card_u3 {
-    background: url("../../../../assets/icon/card2.png") no-repeat;
+    background: url("../../../../assets/icon/card2.png");
   }
   .card_u4 {
-    background: url("../../../../assets/icon/card4.png") no-repeat;
+    background: url("../../../../assets/icon/card4.png");
   }
 
   .card-panel {
@@ -190,7 +190,7 @@ export default {
     overflow: hidden;
     color: #fff;
     width: 100%;
-    background-size: cover;
+    // background-size: cover;
     box-shadow: 0px 0px 6px 0px rgba(186, 186, 186, 0.22);
     // &:hover {
     //   .card-panel-icon-wrapper {
