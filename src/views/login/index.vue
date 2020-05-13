@@ -172,6 +172,9 @@ export default {
         }
         return acc;
       }, {});
+    },
+    goSaasLogin() {
+      window.location.href = "http://www.apiyz.com:2222/login?logout=1";
     }
   }
 };

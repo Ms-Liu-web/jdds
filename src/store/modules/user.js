@@ -29,7 +29,6 @@ const mutations = {
     state.roles = roles;
   },
   SET_USERINFO: (state, userinfo) => {
-    console.log(234343433)
     localStorage.setItem("user", JSON.stringify(userinfo));
     state.userInfo = userinfo;
   }
