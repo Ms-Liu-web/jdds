@@ -31,7 +31,6 @@ export default {
       }
     };
     return {
-      logoUrl: "http://localhost:8084/logo2.png",
       loginForm: {
         password: "",
         user: "",
