@@ -31,8 +31,8 @@ export default {
       menu: [
         {
           icon: "sy",
-          name: "首页",
-          href: saasurl
+          name: "主页",
+          href: saasurl + "home"
         },
         { icon: "cp", name: "产品中心", href: saasurl + "product" },
         { icon: "buy", name: "我的产品", href: saasurl + "mybuy" },

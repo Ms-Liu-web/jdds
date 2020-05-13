@@ -218,6 +218,20 @@ export default {
     }
   },
   data() {
+    var checkdiscount = (rule, value, callback) => {
+      var reg = new RegExp("^([1-9]|[1-9]\\d|100)$");
+      console.log(value);
+      if (!value) {
+        return callback(new Error("折扣不能为空"));
+      }
+      setTimeout(() => {
+        if (!reg.test(value)) {
+          callback(new Error("请输入1到一百到整数，折扣不能低于自己"));
+        } else {
+          callback();
+        }
+      }, 1000);
+    };
     return {
       tableKey: 0,
       list: null,
@@ -239,13 +253,15 @@ export default {
       dialogFormVisible: false,
       rules: {
         user: [{ required: true, message: "用户必填", trigger: "blur" }],
-        discount: [{ required: true, message: "折扣必填", trigger: "blur" }],
+        discount: [
+          {
+            trigger: "blur",
+            validator: checkdiscount
+          }
+        ],
         qq: [{ required: true, message: "qq必填", trigger: "blur" }]
       },
       updateSuperiorVisible: false,
-      rules: {
-        discount: [{ required: true, message: "折扣必填", trigger: "blur" }]
-      },
       downloadLoading: false
     };
   },
@@ -386,7 +402,7 @@ export default {
         if (valid) {
           updateSuperior(this.temp).then(() => {
             this.list.unshift(this.temp);
-            this.dialogFormVisible = false;
+            this.updateSuperiorVisible = false;
             this.getList();
             this.$notify({
               title: "Success",
@@ -436,6 +452,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+/deep/.el-input--medium {
+  text-align: left;
+}
 .app-nav {
   width: 100%;
   height: 78px;

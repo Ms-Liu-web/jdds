@@ -13,7 +13,7 @@
       <div class="navbar_right">
         <a style="cursor:pointer" :href="saasurl+'home'">
           <img src="../../assets/icon/retrunindex.png" />
-          去控制台
+          控制台
         </a>
         <a :href="saasurl+'help' ">
           <img src="../../assets/icon/icon9.png" />
@@ -27,7 +27,7 @@
           <img src="../../assets/icon/usert.png" class="user-avatar" />
 
           <span class="name">
-            {{ username.user}}
+            {{ username}}
             <img src="../../assets/icon/icon24.png" />
           </span>
           <div style="clear:both"></div>
@@ -102,9 +102,10 @@ export default {
   },
   mounted() {
     this.beforeTime = localStorage.getItem("befortime");
-    this.username = JSON.parse(localStorage.getItem("user"));
+    this.username = localStorage.getItem("userInfo");
     console.log(this.username);
   },
+
   methods: {
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
