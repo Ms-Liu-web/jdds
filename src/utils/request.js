@@ -52,7 +52,7 @@ service.interceptors.response.use(
         duration: 5 * 1000
       });
       if (res.code === 401) {
-        window.location.href = "http://www.apiyz.com:2222/login?logout=1";
+        window.location.href = process.env.SAAS_WEB_LINK + "/login?logout=1";
       }
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {

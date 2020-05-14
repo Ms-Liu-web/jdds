@@ -133,7 +133,8 @@ export default {
         logout().then(response => {
           if (response.code == 200) {
             localStorage.removeItem("Admin-Token");
-            window.location.href = "http://www.apiyz.com:2222/login?logout=1";
+            window.location.href =
+              process.env.SAAS_WEB_LINK + "/login?logout=1";
             this.$message({
               type: "success",
               message: "操作成功"

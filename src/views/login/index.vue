@@ -77,7 +77,7 @@ export default {
           console.log("代理系统登录");
           window.parent.postMessage(
             { type: "loginToken", service: "agent" },
-            "http://localhost:8080"
+            process.env.SAAS_WEB_LINK
           );
         })
         .catch(() => {
@@ -93,7 +93,7 @@ export default {
       }, {});
     },
     goSaasLogin() {
-      window.location.href = "http://www.apiyz.com:2222/login?logout=1";
+      window.location.href = process.env.SAAS_WEB_LINK + "/login?logout=1";
     }
   }
 };
