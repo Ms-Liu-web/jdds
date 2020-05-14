@@ -134,7 +134,7 @@ export default {
           if (response.code == 200) {
             localStorage.removeItem("Admin-Token");
             window.location.href =
-              process.env.SAAS_WEB_LINK + "/login?logout=1";
+              saasurl + "/login?logout=1";
             this.$message({
               type: "success",
               message: "操作成功"

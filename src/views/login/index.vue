@@ -20,6 +20,7 @@
 <script>
 import { validUsername } from "@/utils/validate";
 import { login, captcha } from "@/api/user";
+import { saasurl } from "@/utils/saas-link";
 export default {
   name: "Login",
   data() {
@@ -67,6 +68,7 @@ export default {
         background: "rgb(218, 218, 218)"
       });
       const postData = { token: this.saasToken };
+
       this.$store
         .dispatch("user/loginToken", postData)
         .then(() => {
@@ -77,7 +79,7 @@ export default {
           console.log("代理系统登录");
           window.parent.postMessage(
             { type: "loginToken", service: "agent" },
-            process.env.SAAS_WEB_LINK
+            saasurl
           );
         })
         .catch(() => {
@@ -93,7 +95,7 @@ export default {
       }, {});
     },
     goSaasLogin() {
-      window.location.href = process.env.SAAS_WEB_LINK + "/login?logout=1";
+      window.location.href = saasurl + "/login?logout=1";
     }
   }
 };
