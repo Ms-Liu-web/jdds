@@ -23,39 +23,14 @@ import { login, captcha } from "@/api/user";
 export default {
   name: "Login",
   data() {
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 3) {
-        callback(new Error("请输入密码"));
-      } else {
-        callback();
-      }
-    };
     return {
-      loginForm: {
-        password: "",
-        user: "",
-        captcha: "",
-        type: 2
-      },
-      loginRules: {
-        user: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-        password: [
-          {
-            required: true,
-            trigger: "blur",
-            message: "请输入密码",
-            validator: validatePassword
-          }
-        ],
-        captcha: [{ required: true, trigger: "blur", message: "请输入验证码" }]
-      },
-      passwordType: "password",
       capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined,
       otherQuery: {},
-      captchaimg: null
+      captchaimg: null,
+      isHidden: true
     };
   },
   watch: {
@@ -71,8 +46,8 @@ export default {
     }
   },
   created() {
-    this.getcaptcha();
     this.saasToken = this.$route.query.token;
+    console.log(this.saasToken);
     if (this.saasToken) {
       this.loginTokenHandle();
     } else {
@@ -80,13 +55,7 @@ export default {
     }
   },
 
-  mounted() {
-    if (this.loginForm.user === "") {
-      this.$refs.user.focus();
-    } else if (this.loginForm.password === "") {
-      this.$refs.password.focus();
-    }
-  },
+  mounted() {},
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
   },
@@ -101,68 +70,19 @@ export default {
       this.$store
         .dispatch("user/loginToken", postData)
         .then(() => {
-          setTimeout(() => {
-            loading.close();
-            this.$router.push({ path: "/" });
-          }, 2000);
+          // setTimeout(() => {
+          //   loading.close();
+          //   this.$router.push({ path: "/" });
+          // }, 2000);
+          console.log("代理系统登录");
+          window.parent.postMessage(
+            { type: "loginToken", service: "agent" },
+            "http://localhost:8080"
+          );
         })
         .catch(() => {
           // this.loading = false
         });
-    },
-    getcaptcha() {
-      this.captchaimg =
-        process.env.VUE_APP_BASE_API + "/captcha?" + Math.random();
-    },
-    changeCode() {
-      this.getcaptcha();
-    },
-    checkCapslock({ shiftKey, key } = {}) {
-      if (key && key.length === 1) {
-        if (
-          (shiftKey && key >= "a" && key <= "z") ||
-          (!shiftKey && key >= "A" && key <= "Z")
-        ) {
-          this.capsTooltip = true;
-        } else {
-          this.capsTooltip = false;
-        }
-      }
-      if (key === "CapsLock" && this.capsTooltip === true) {
-        this.capsTooltip = false;
-      }
-    },
-    showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
-      } else {
-        this.passwordType = "password";
-      }
-      this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(response => {
-              console.log(response);
-              this.$router.push({
-                path: this.redirect || "/",
-                query: this.otherQuery
-              });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          return false;
-        }
-      });
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
