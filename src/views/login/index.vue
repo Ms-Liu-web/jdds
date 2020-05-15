@@ -71,7 +71,7 @@ export default {
       this.$store
         .dispatch("user/loginToken", postData)
         .then(() => {
-          console.log("代理走到了登录");
+          
           window.parent.postMessage(
             { type: "loginToken", service: "agent" },
             saasurl
