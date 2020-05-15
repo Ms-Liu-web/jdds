@@ -68,15 +68,10 @@ export default {
         background: "rgb(218, 218, 218)"
       });
       const postData = { token: this.saasToken };
-
       this.$store
         .dispatch("user/loginToken", postData)
         .then(() => {
-          // setTimeout(() => {
-          //   loading.close();
-          //   this.$router.push({ path: "/" });
-          // }, 2000);
-          console.log("代理系统登录");
+          console.log("代理走到了登录");
           window.parent.postMessage(
             { type: "loginToken", service: "agent" },
             saasurl
@@ -95,7 +90,7 @@ export default {
       }, {});
     },
     goSaasLogin() {
-      window.location.href = saasurl + "/login?logout=1";
+      window.location.href = saasurl + "login?logout=1";
     }
   }
 };

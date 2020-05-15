@@ -5,7 +5,7 @@ import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
 import { getToken } from "@/utils/auth"; // get token from cookie
 import getPageTitle from "@/utils/get-page-title";
-
+import { saasurl } from "@/utils/saas-link";
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 const whiteList = ["/login", "/auth-redirect"]; // no redirect whitelist
@@ -49,8 +49,11 @@ router.beforeEach(async (to, from, next) => {
           // remove token and go to login page to re-login
           await store.dispatch("user/resetToken");
           Message.error(error || "Has Error");
-          next(`/login?redirect=${to.path}`);
+          // next(`/login?redirect=${to.path}`);
+          // window.location.href = saasurl + "sso?ssoServiceId=2";
+          window.location.href = saasurl + 'login'
           NProgress.done();
+
         }
       }
     }
@@ -61,8 +64,9 @@ router.beforeEach(async (to, from, next) => {
       next();
     } else {
       // other pages that do not have permission to access are redirected to the login page.
-      // window.location.href = 'http://www.apiyz.com:2222/login'
-      next(`/login?redirect=${to.path}`);
+      window.location.href = saasurl + 'login'
+      // window.location.href = saasurl + "sso?ssoServiceId=2";
+      // next(`/login?redirect=${to.path}`);
       NProgress.done();
     }
   }
