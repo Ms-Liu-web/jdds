@@ -50,10 +50,9 @@ router.beforeEach(async (to, from, next) => {
           await store.dispatch("user/resetToken");
           Message.error(error || "Has Error");
           // next(`/login?redirect=${to.path}`);
-          window.location.href = saasurl + "sso?ssoServiceId=2";
+          // window.location.href = saasurl + "sso?ssoServiceId=2";
           // window.location.href = saasurl + 'login'
           NProgress.done();
-
         }
       }
     }
@@ -65,7 +64,7 @@ router.beforeEach(async (to, from, next) => {
     } else {
       // other pages that do not have permission to access are redirected to the login page.
       // window.location.href = saasurl + 'login'
-      window.location.href = saasurl + "sso?ssoServiceId=2";
+      // window.location.href = saasurl + "sso?ssoServiceId=2";
       // next(`/login?redirect=${to.path}`);
       NProgress.done();
     }
