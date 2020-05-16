@@ -12,7 +12,7 @@
         @mouseenter.native="changeImageSrc"
         @mouseleave.native="changeImageSrc"
       >
-        <a :href="list.href">
+        <a :href="list.href" target="_blank">
           <svg-icon :icon-class="list.icon" />
           {{list.name}}
         </a>
