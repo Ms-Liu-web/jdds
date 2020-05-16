@@ -96,6 +96,7 @@ const actions = {
           const { user } = data;
           commit("SET_ROLES", ["admin"]);
           commit("SET_NAME", user);
+
           commit("SET_INTRODUCTION", "代理后台");
           resolve(data);
         })

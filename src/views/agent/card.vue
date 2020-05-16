@@ -145,8 +145,11 @@
                 v-if="row.cardfreeze === 1"
                 type="primary"
                 size="mini"
+                class="jc"
                 @click="handleModifyStatus(row, 'unfreeze')"
-              >解冻</el-button>
+              >
+                <img src="../../assets/icon/jc.png" />解冻
+              </el-button>
               <el-button
                 v-else
                 type="success"
@@ -184,7 +187,9 @@
                 class="modify"
                 style="margin:5px 0 0 0"
                 @click="showCardInfo(row)"
-              >详情</el-button>
+              >
+                <img src="../../assets/icon/k6.png" />详情
+              </el-button>
               <el-button
                 v-if="row.status !== 2"
                 type="danger"
@@ -351,8 +356,8 @@ export default {
       listLoading: false,
       listQuery: {
         page: 1,
-        limit: 20,
-        pagesize: 20,
+        limit: 10,
+        pagesize: 10,
         cardtype: -1,
         cardstatus: -1,
         card_user: 0,
@@ -496,6 +501,9 @@ export default {
       }).then(() => {
         const delete1 = { card: row.cardnumber };
         deleteCard(delete1).then(response => {
+          getInfo().then(response => {
+            this.$store.dispatch("user/setUserInfo", response.data);
+          });
           this.$message({
             type: "success",
             message: "操作成功"
@@ -743,6 +751,20 @@ export default {
       img {
         position: relative;
         margin-right: 3px;
+      }
+    }
+    .jc {
+      width: 64px;
+      height: 30px;
+      border: 1px solid #0dc504 !important;
+      border-radius: 4px;
+      background-color: transparent !important;
+      color: #0dc504;
+      padding: 0;
+      img {
+        position: relative;
+        margin-right: 3px;
+        top: 1px;
       }
     }
     .modify {

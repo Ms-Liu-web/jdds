@@ -240,8 +240,8 @@ export default {
       user: "",
       listQuery: {
         page: 1,
-        limit: 20,
-        pagesize: 20,
+        limit: 10,
+        pagesize: 10,
         qq: undefined
       },
       showReviewer: false,
@@ -293,6 +293,7 @@ export default {
             confirmButtonText: "确定",
             cancelButtonText: "取消"
           }).then(() => {
+            this.getList();
             this.$message({
               type: "success",
               message: "操作成功"
@@ -307,6 +308,7 @@ export default {
         }).then(({ value }) => {
           const postData = { user: row.user, msg: value };
           freezeAgent(postData).then(response => {
+            this.getList();
             this.$message({
               type: "success",
               message: "操作成功"
@@ -327,6 +329,7 @@ export default {
         console.log(value);
         const postData = { qq: row.qq, user: row.user, money: value };
         addMoney(postData).then(response => {
+          this.getList();
           this.$message({
             type: "success",
             message: "恭喜你，充值成功"
