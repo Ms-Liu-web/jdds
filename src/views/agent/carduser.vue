@@ -138,8 +138,8 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
-        pagesize: 20,
+        limit: 10,
+        pagesize: 10,
         search_user: ""
       },
       showReviewer: false,

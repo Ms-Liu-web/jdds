@@ -68,6 +68,9 @@ export default {
     font-size: 14px;
     color: #666;
     list-style: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     span {
       width: 8px;
       height: 8px;

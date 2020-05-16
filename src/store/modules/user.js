@@ -21,7 +21,6 @@ const mutations = {
     state.introduction = introduction;
   },
   SET_NAME: (state, name) => {
-    console.log(3333);
     state.name = name;
   },
   SET_AVATAR: (state, avatar) => {
@@ -97,6 +96,7 @@ const actions = {
           const { user } = data;
           commit("SET_ROLES", ["admin"]);
           commit("SET_NAME", user);
+
           commit("SET_INTRODUCTION", "代理后台");
           resolve(data);
         })

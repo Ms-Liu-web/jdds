@@ -27,7 +27,7 @@
           <img src="../../assets/icon/usert.png" class="user-avatar" />
 
           <span class="name">
-            {{ username}}
+            {{ username.userName}}
             <img src="../../assets/icon/icon24.png" />
           </span>
           <div style="clear:both"></div>
@@ -102,8 +102,7 @@ export default {
   },
   mounted() {
     this.beforeTime = localStorage.getItem("befortime");
-    this.username = localStorage.getItem("userInfo");
-    console.log(this.username);
+    this.username = JSON.parse(localStorage.getItem("userInfo"));
   },
 
   methods: {
