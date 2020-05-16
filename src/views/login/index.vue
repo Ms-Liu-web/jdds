@@ -103,7 +103,7 @@ export default {
         password: "",
         user: "",
         captcha: "",
-        type: 2
+        type: 1
       },
       loginRules: {
         user: [{ required: true, message: "请输入用户名", trigger: "blur" }],
@@ -169,7 +169,6 @@ export default {
       this.$store
         .dispatch("user/loginToken", postData)
         .then(() => {
-
           window.parent.postMessage(
             { type: "loginToken", service: "agent" },
             saasurl

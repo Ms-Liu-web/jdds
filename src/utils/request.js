@@ -52,9 +52,7 @@ service.interceptors.response.use(
         duration: 5 * 1000
       });
       if (res.code === 401) {
-        // alert(res.code)
-        // alert(saasurl + "sso?ssoServiceId=2")
-        window.location.href = saasurl + "sso?ssoServiceId=2";
+        // window.location.href = saasurl + "sso?ssoServiceId=2";
         return false;
       }
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
