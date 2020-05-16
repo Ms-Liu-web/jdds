@@ -1,37 +1,129 @@
 <template>
   <div class="login-container">
-    <el-row class="login-loading" :hidden="isHidden">
-      <el-col :span="24">
-        <div class="login-loading-icon">
-          <i class="el-icon-warning"></i>
-        </div>
-      </el-col>
-      <el-col :span="24">
-        <div class="login-loading-text">亲！该系统登录拥挤，请稍后再试！</div>
-        <el-button type="danger" @click="goSaasLogin">点击返回</el-button>
-      </el-col>
-      <el-col :span="24">
-        <div class="login-loading-span">联系我们</div>
-      </el-col>
-    </el-row>
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      autocomplete="on"
+      label-position="left"
+    >
+      <div class="title-container">
+        <h3 class="title">
+          <img src="logo2.png" width="60px" />
+          <br />欢迎使用Annaer后台系统
+        </h3>
+      </div>
+      <el-form-item prop="user">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input
+          ref="user"
+          v-model="loginForm.user"
+          placeholder="请输入账号"
+          name="user"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
+      </el-form-item>
+
+      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="请输入密码"
+            name="password"
+            tabindex="2"
+            autocomplete="on"
+            @keyup.native="checkCapslock"
+            @blur="capsTooltip = false"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
+        </el-form-item>
+      </el-tooltip>
+
+      <el-form-item prop="captcha">
+        <span class="svg-container">
+          <svg-icon icon-class="form" />
+        </span>
+        <el-input
+          v-model="loginForm.captcha"
+          placeholder="验证码"
+          prefix-icon="lj-icon-yanzhengma"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          maxlength="4"
+          style=" width: 320px;"
+          @keyup.enter.native="handleLogin"
+        />
+        <span class="show-pwd">
+          <div class="captcha_code">
+            <img :src="captchaimg" @click="changeCode" />
+          </div>
+        </span>
+      </el-form-item>
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width:100%;margin-bottom:30px;"
+        @click.native.prevent="handleLogin"
+      >登录</el-button>
+    </el-form>
   </div>
 </template>
 
 <script>
 import { validUsername } from "@/utils/validate";
 import { login, captcha } from "@/api/user";
-import { saasurl } from "@/utils/saas-link";
 export default {
   name: "Login",
   data() {
+    const validatePassword = (rule, value, callback) => {
+      if (value.length < 3) {
+        callback(new Error("请输入密码"));
+      } else {
+        callback();
+      }
+    };
     return {
+      logoUrl: "http://localhost:8084/logo2.png",
+      loginForm: {
+        password: "",
+        user: "",
+        captcha: "",
+        type: 2
+      },
+      loginRules: {
+        user: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+        password: [
+          {
+            required: true,
+            trigger: "blur",
+            message: "请输入密码",
+            validator: validatePassword
+          }
+        ],
+        captcha: [{ required: true, trigger: "blur", message: "请输入验证码" }]
+      },
+      passwordType: "password",
       capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined,
       otherQuery: {},
-      captchaimg: null,
-      isHidden: true
+      captchaimg: null
     };
   },
   watch: {
@@ -47,8 +139,8 @@ export default {
     }
   },
   created() {
+    this.getcaptcha();
     this.saasToken = this.$route.query.token;
-    console.log(this.saasToken);
     if (this.saasToken) {
       this.loginTokenHandle();
     } else {
@@ -56,7 +148,13 @@ export default {
     }
   },
 
-  mounted() {},
+  mounted() {
+    if (this.loginForm.user === "") {
+      this.$refs.user.focus();
+    } else if (this.loginForm.password === "") {
+      this.$refs.password.focus();
+    }
+  },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
   },
@@ -71,7 +169,7 @@ export default {
       this.$store
         .dispatch("user/loginToken", postData)
         .then(() => {
-          
+
           window.parent.postMessage(
             { type: "loginToken", service: "agent" },
             saasurl
@@ -80,6 +178,60 @@ export default {
         .catch(() => {
           // this.loading = false
         });
+    },
+    getcaptcha() {
+      this.captchaimg =
+        process.env.VUE_APP_BASE_API + "/captcha?" + Math.random();
+    },
+    changeCode() {
+      this.getcaptcha();
+    },
+    checkCapslock({ shiftKey, key } = {}) {
+      if (key && key.length === 1) {
+        if (
+          (shiftKey && key >= "a" && key <= "z") ||
+          (!shiftKey && key >= "A" && key <= "Z")
+        ) {
+          this.capsTooltip = true;
+        } else {
+          this.capsTooltip = false;
+        }
+      }
+      if (key === "CapsLock" && this.capsTooltip === true) {
+        this.capsTooltip = false;
+      }
+    },
+    showPwd() {
+      if (this.passwordType === "password") {
+        this.passwordType = "";
+      } else {
+        this.passwordType = "password";
+      }
+      this.$nextTick(() => {
+        this.$refs.password.focus();
+      });
+    },
+    handleLogin() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.loading = true;
+          this.$store
+            .dispatch("user/login", this.loginForm)
+            .then(response => {
+              console.log(response);
+              this.$router.push({
+                path: this.redirect || "/",
+                query: this.otherQuery
+              });
+              this.loading = false;
+            })
+            .catch(() => {
+              this.loading = false;
+            });
+        } else {
+          return false;
+        }
+      });
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
@@ -120,6 +272,7 @@ export default {
   font-size: 57px;
   line-height: 90px;
 }
+
 $bg: #283443;
 $light_gray: #fff;
 $cursor: #fff;
