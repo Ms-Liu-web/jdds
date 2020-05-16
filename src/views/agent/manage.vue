@@ -71,7 +71,7 @@
         </el-table-column>
         <el-table-column label="余额" align="center">
           <template slot-scope="{ row }">
-            <span>{{ row.cardcount }}</span>
+            <span>{{ row.balance }}</span>
           </template>
         </el-table-column>
 

@@ -145,7 +145,7 @@ export default {
 }
 .hover_saas {
   position: absolute;
-  z-index: 99;
+  z-index: 9;
   background-color: rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 100%;

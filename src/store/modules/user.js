@@ -21,7 +21,6 @@ const mutations = {
     state.introduction = introduction;
   },
   SET_NAME: (state, name) => {
-    console.log(3333);
     state.name = name;
   },
   SET_AVATAR: (state, avatar) => {
