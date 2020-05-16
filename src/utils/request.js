@@ -56,7 +56,7 @@ service.interceptors.response.use(
         return false;
       }
       if (res.code === 402) {
-        window.location.href = saasurl + "serviceNotice?serviceNotice=2&noticeMsg=账号已被冻结";
+        window.location.href = saasurl + "serviceNotice?serviceNotice=2&noticeMsg=" + res.msg;
         return false;
       }
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
