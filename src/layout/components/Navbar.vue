@@ -11,15 +11,15 @@
         </span>
       </div>
       <div class="navbar_right">
-        <a style="cursor:pointer" :href="saasurl+'home'">
+        <a style="cursor:pointer" :href="saasurl+'home'" target="_blank">
           <img src="../../assets/icon/retrunindex.png" />
           控制台
         </a>
-        <a :href="saasurl+'help' ">
+        <a :href="saasurl+'help' " target="_blank">
           <img src="../../assets/icon/icon9.png" />
           帮助中心
         </a>
-        <a :href="saasurl+'kf' ">
+        <a :href="saasurl+'kf' " target="_blank">
           <img src="../../assets/icon/kf.png" />
           联系客服
         </a>
@@ -34,27 +34,27 @@
           <div class="name_hover">
             <ul>
               <li>
-                <a :href="saasurl+'infoModify' ">
+                <a :href="saasurl+'infoModify' " target="_blank">
                   <img src="../../assets/icon/jichuxinxi.png" />基础信息修改
                 </a>
               </li>
               <li>
-                <a :href="saasurl+'passwordModify' ">
+                <a :href="saasurl+'passwordModify' " target="_blank">
                   <img src="../../assets/icon/mimaxiugai.png" />登陆密码修改
                 </a>
               </li>
               <li>
-                <a :href="saasurl+'payment' ">
+                <a :href="saasurl+'payment' " target="_blank">
                   <img src="../../assets/icon/zhifumima.png" />设置支付密码
                 </a>
               </li>
               <li>
-                <a :href="saasurl+'paymentModify' ">
+                <a :href="saasurl+'paymentModify' " target="_blank">
                   <img src="../../assets/icon/genggai.png" />更改支付密码
                 </a>
               </li>
               <li>
-                <a :href="saasurl+'proposal' ">
+                <a :href="saasurl+'proposal' " target="_blank">
                   <img src="../../assets/icon/tijiaojianyi.png" />提交建议
                 </a>
               </li>
