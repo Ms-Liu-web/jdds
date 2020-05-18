@@ -52,7 +52,7 @@ service.interceptors.response.use(
         duration: 5 * 1000
       });
       if (res.code === 401) {
-        window.location.href = saasurl + "sso?ssoServiceId=2";
+        // window.location.href = saasurl + "sso?ssoServiceId=2";
         return false;
       }
       if (res.code === 402) {

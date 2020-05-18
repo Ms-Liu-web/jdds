@@ -40,15 +40,16 @@
               </li>
               <li>
                 <a :href="saasurl+'passwordModify' " target="_blank">
-                  <img src="../../assets/icon/mimaxiugai.png" />登陆密码修改
+                  <img src="../../assets/icon/mimaxiugai.png" />
+                  登陆密码修改
                 </a>
               </li>
-              <li>
+              <li v-if="user.payPassword == '0'">
                 <a :href="saasurl+'payment' " target="_blank">
                   <img src="../../assets/icon/zhifumima.png" />设置支付密码
                 </a>
               </li>
-              <li>
+              <li v-if="user.payPassword == '1'">
                 <a :href="saasurl+'paymentModify' " target="_blank">
                   <img src="../../assets/icon/genggai.png" />更改支付密码
                 </a>
@@ -94,7 +95,8 @@ export default {
       isHover: "",
       beforeTime: "",
       saasurl: saasurl,
-      username: ""
+      username: "",
+      user: ""
     };
   },
   computed: {
@@ -103,6 +105,7 @@ export default {
   mounted() {
     this.beforeTime = localStorage.getItem("befortime");
     this.username = JSON.parse(localStorage.getItem("userInfo"));
+    this.user = JSON.parse(localStorage.getItem("user"));
   },
 
   methods: {
@@ -233,7 +236,7 @@ export default {
       position: absolute;
       background-color: #fff;
       width: 163px;
-      height: 265px;
+      height: 225px;
       box-shadow: 0px 0px 8px 0px rgba(95, 97, 103, 0.1);
       border-radius: 4px;
       z-index: 99;
