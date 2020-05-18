@@ -56,7 +56,8 @@ service.interceptors.response.use(
         return false;
       }
       if (res.code === 402) {
-        window.location.href = saasurl + "home?serviceNotice=2&noticeMsg=" + res.msg;
+        window.location.href =
+          saasurl + "home?serviceNotice=2&noticeMsg=" + res.msg;
         return false;
       }
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;

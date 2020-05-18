@@ -55,6 +55,7 @@ const actions = {
           localStorage.setItem("key", response.data.lock_ip);
           localStorage.setItem("rName", response.data.title);
           localStorage.setItem("befortime", response.data.tt);
+          localStorage.setItem("userInfo", JSON.stringify(response.data));
           setToken(data.token);
           resolve();
         })
@@ -74,7 +75,7 @@ const actions = {
           localStorage.setItem("key", response.data.lock_ip);
           localStorage.setItem("rName", response.data.title);
           localStorage.setItem("befortime", response.data.tt);
-          localStorage.setItem("userInfo", response.data.user);
+          localStorage.setItem("userInfo", JSON.stringify(response.data));
           setToken(data.token);
           resolve();
         })
