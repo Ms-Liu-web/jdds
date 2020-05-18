@@ -48,10 +48,11 @@ router.beforeEach(async (to, from, next) => {
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch("user/resetToken");
-          Message.error(error || "Has Error");
-          //window.location.href = saasurl + "sso?ssoServiceId=2";
-          next(`/login?redirect=${to.path}`);
-
+          // Message.error(error || "Has Error");
+          // window.location.href = saasurl + "sso?ssoServiceId=2";
+          window.location.href =
+            saasurl + "home?serviceNotice=2&noticeMsg=系统错误请稍后再试";
+          // next(`/login?redirect=${to.path}`);
           NProgress.done();
         }
       }
