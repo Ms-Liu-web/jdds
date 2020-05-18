@@ -95,7 +95,7 @@
       </el-table>
 
       <pagination
-        v-show="total > 20"
+        v-show="total > 10"
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
@@ -332,6 +332,9 @@ export default {
         top: 2px;
       }
     }
+    .cz:hover {
+      background-color: rgba(232, 132, 3, 0.1) !important;
+    }
   }
   .custom_table {
     /deep/ thead {
@@ -360,6 +363,9 @@ export default {
         margin-right: 3px;
         top: 2px;
       }
+    }
+    .djUser:hover {
+      background-color: rgba(45, 135, 253, 0.1) !important;
     }
   }
 }

@@ -60,6 +60,9 @@ export default {
       top: 2px;
     }
   }
+  ul li:last-child {
+    border-bottom: 0;
+  }
   ul li {
     margin: 0 12px 0 42px;
     height: 40px;

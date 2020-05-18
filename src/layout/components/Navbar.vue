@@ -27,7 +27,7 @@
           <img src="../../assets/icon/usert.png" class="user-avatar" />
 
           <span class="name">
-            {{ username.userName}}
+            {{ username.user}}
             <img src="../../assets/icon/icon24.png" />
           </span>
           <div style="clear:both"></div>

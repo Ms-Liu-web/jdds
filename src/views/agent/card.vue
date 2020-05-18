@@ -204,7 +204,7 @@
       </el-table>
 
       <pagination
-        v-show="total >20"
+        v-show="total >10"
         class="pagestyle"
         :total="total"
         :page.sync="listQuery.page"
@@ -408,6 +408,7 @@ export default {
       this.listQuery.end = this.getEndTime();
       this.listLoading = true;
       getCardList(this.listQuery).then(response => {
+        console.log(4444444444);
         this.list = response.data.list;
         this.total = response.data.count;
         this.listLoading = false;
@@ -442,6 +443,7 @@ export default {
         if (valid) {
           createCard(this.temp).then(response => {
             this.dialogFormVisible = false;
+            console.log(123);
             this.getList();
             this.$notify({
               title: "Success",
@@ -725,6 +727,9 @@ export default {
         top: 2px;
       }
     }
+    .cz:hover {
+      background-color: rgba(232, 132, 3, 0.1) !important;
+    }
   }
   .custom_table {
     /deep/ thead {
@@ -753,6 +758,9 @@ export default {
         margin-right: 3px;
       }
     }
+    .djUser:hover {
+      background-color: rgba(45, 135, 253, 0.1) !important;
+    }
     .jc {
       width: 64px;
       height: 30px;
@@ -766,6 +774,9 @@ export default {
         margin-right: 3px;
         top: 1px;
       }
+    }
+    .jc:hover {
+      background-color: rgba(13, 197, 4, 0.1) !important;
     }
     .modify {
       width: 64px;
@@ -781,6 +792,9 @@ export default {
         top: 1px;
       }
     }
+    .modify:hover {
+      background-color: rgba(179, 123, 236, 0.1) !important;
+    }
     .detale {
       width: 64px;
       height: 30px;
@@ -794,6 +808,9 @@ export default {
         margin-right: 3px;
         top: 1px;
       }
+    }
+    .detale:hover {
+      background-color: rgba(253, 0, 18, 0.1) !important;
     }
   }
   .buyTable {

@@ -5,7 +5,7 @@
     <div class="app-container">
       <div class="title">
         <img src="../../assets/icon/icon12.png" />
-        <span>用户管理</span>
+        <span>基础设置</span>
       </div>
       <el-form ref="form" :model="form" :rules="rules" class="base_box" label-width="160px">
         <!-- <el-form-item label="当前软件ip:">
@@ -59,7 +59,7 @@ export default {
         appname: ""
       },
       rules: {
-        ip: [{ required: true, validator: validateIp, trigger: "blur" }]
+        ip: [{ validator: validateIp, trigger: "blur" }]
       }
     };
   },

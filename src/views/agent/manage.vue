@@ -121,7 +121,7 @@
       </el-table>
 
       <pagination
-        v-show="total > 20"
+        v-show="total > 10"
         class="pagestyle"
         :total="total"
         :page.sync="listQuery.page"
@@ -175,6 +175,7 @@
 
           <el-form-item label="折扣" prop="discount">
             <el-input v-model="temp.discount" placeholder="请输入下级折扣" />
+            <span class="bf">%</span>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -199,7 +200,7 @@ import waves from "@/directive/waves"; // waves directive
 import contentTop from "@/components/contentTop/index";
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-
+import { getInfo } from "@/api/user";
 export default {
   name: "AgentManage",
   components: { Pagination, contentTop },
@@ -238,6 +239,7 @@ export default {
       total: 0,
       listLoading: true,
       user: "",
+      userinfoAgen: {},
       listQuery: {
         page: 1,
         limit: 10,
@@ -325,10 +327,11 @@ export default {
         inputPattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
         inputErrorMessage: "请输入正确金额"
       }).then(({ value }) => {
-        console.log(row);
-        console.log(value);
         const postData = { qq: row.qq, user: row.user, money: value };
         addMoney(postData).then(response => {
+          getInfo().then(response => {
+            this.$store.dispatch("user/setUserInfo", response.data);
+          });
           this.getList();
           this.$message({
             type: "success",
@@ -457,6 +460,11 @@ export default {
 <style lang="scss" scoped>
 /deep/.el-input--medium {
   text-align: left;
+}
+.bf {
+  position: absolute;
+  right: 48px;
+  top: 3px;
 }
 .app-nav {
   width: 100%;
@@ -605,6 +613,9 @@ export default {
         margin-right: 3px;
       }
     }
+    .djUser:hover {
+      background-color: rgba(45, 135, 253, 0.1) !important;
+    }
     .modify {
       width: 80px;
       height: 30px;
@@ -620,6 +631,9 @@ export default {
         top: 1px;
       }
     }
+    .modify:hover {
+      background-color: rgba(179, 123, 236, 0.1) !important;
+    }
     .jc {
       width: 80px;
       height: 30px;
@@ -634,6 +648,9 @@ export default {
         top: 1px;
       }
     }
+    .jc:hover {
+      background-color: rgba(13, 197, 4, 0.1) !important;
+    }
     .cz {
       width: 64px;
       height: 30px;
@@ -647,6 +664,9 @@ export default {
         margin-right: 3px;
         top: 1px;
       }
+    }
+    .cz:hover {
+      background-color: rgba(232, 132, 3, 0.1) !important;
     }
   }
 }
