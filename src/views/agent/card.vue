@@ -405,7 +405,7 @@ export default {
   methods: {
     getList() {
       this.listQuery.start = this.getStartTime();
-      this.listQuery.end = this.getEndTime();
+      this.listQuery.end = this.getEndTime() + 10;
       this.listLoading = true;
       getCardList(this.listQuery).then(response => {
         console.log(4444444444);
