@@ -1,10 +1,10 @@
 <template>
   <div>
-    <contentTop />
+    <!-- <contentTop /> -->
     <div class="app-container">
       <div class="title">
         <img src="../../assets/icon/icon12.png" />
-        <span>卡密管理</span>
+        <span>返利设置</span>
       </div>
       <div class="filter-container">
         <div class="s_left">

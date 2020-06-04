@@ -1,37 +1,24 @@
 <template>
-  <div class="dashboard-editor-container">
-    <panel-group />
-
-    <el-row :gutter="40" class="canves_box">
-      <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
-        <line-chart :child-data="chartData2" :child-moutn="mounth" />
-      </el-col>
-      <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
-        <line-chart2 :child-data="chartData2" :child-moutn="mounth" />
-      </el-col>
-      <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
-        <line-chart3 :child-data="chartData2" :child-moutn="mounth" />
-      </el-col>
-    </el-row>
-    <Notice />
+  <div class>
+    <div class="index_img"></div>
   </div>
 </template>
 
 <script>
-import PanelGroup from "./components/PanelGroup";
-import LineChart from "./components/LineChart";
-import LineChart2 from "./components/LineChart2";
-import LineChart3 from "./components/LineChart3";
-import Notice from "./components/Notice";
+// import PanelGroup from "./components/PanelGroup";
+// import LineChart from "./components/LineChart";
+// import LineChart2 from "./components/LineChart2";
+// import LineChart3 from "./components/LineChart3";
+// import Notice from "./components/Notice";
 import { getReportForm } from "@/api/agent";
 export default {
   name: "DashboardAdmin",
   components: {
-    PanelGroup,
-    LineChart,
-    LineChart2,
-    LineChart3,
-    Notice
+    // PanelGroup,
+    // LineChart,
+    // LineChart2,
+    // LineChart3,
+    // Notice
   },
   data() {
     return {
@@ -52,6 +39,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.index_img {
+  background-image: url("../../../assets/icon/cms1.png");
+  width: 100%;
+  height: calc(100vh - 134px);
+  background-size: cover;
+}
 .dashboard-editor-container {
   background-color: #fff;
   position: relative;

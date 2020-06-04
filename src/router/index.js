@@ -85,8 +85,8 @@ export const asyncRoutes = [
       {
         path: "",
         component: () => import("@/views/agent/manage"),
-        name: "下级代理",
-        meta: { title: "下级代理", icon: "list", noCache: true }
+        name: "基础信息",
+        meta: { title: "基础信息", icon: "fl", noCache: true }
       }
     ]
   },
@@ -98,8 +98,8 @@ export const asyncRoutes = [
       {
         path: "",
         component: () => import("@/views/agent/card"),
-        name: "卡密管理",
-        meta: { title: "卡密管理", icon: "size", noCache: true }
+        name: "返利设置",
+        meta: { title: "返利设置", icon: "chart", noCache: true }
       }
     ]
   },
@@ -111,8 +111,8 @@ export const asyncRoutes = [
       {
         path: "",
         component: () => import("@/views/agent/carduser"),
-        name: "用户管理",
-        meta: { title: "用户管理", icon: "users", noCache: true }
+        name: "客户信息",
+        meta: { title: "客户信息", icon: "kf", noCache: true }
       }
     ]
   },
@@ -124,8 +124,8 @@ export const asyncRoutes = [
       {
         path: "base",
         component: () => import("@/views/seting/base"),
-        name: "基础设置",
-        meta: { title: "基础设置", icon: "chart", noCache: true }
+        name: "商品筛选",
+        meta: { title: "商品筛选", icon: "chart", noCache: true }
       }
     ]
   },

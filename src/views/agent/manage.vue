@@ -1,511 +1,140 @@
 <template>
   <div>
-    <contentTop />
+    <!-- <contentTop /> -->
+
     <div class="app-container">
       <div class="title">
         <img src="../../assets/icon/icon12.png" />
-        <span>下级代理</span>
+        <span>基础设置</span>
       </div>
-      <div class="filter-container">
-        <div class="s_left">
-          <el-button class="filter-item addBtn" type="primary" @click="handleCreate">
-            <img src="../../assets/icon/x1.png" />添加下级
-          </el-button>
-          <el-button v-waves class="filter-item sx" type="primary" @click="back">
-            <img src="../../assets/icon/k4.png" />刷新
-          </el-button>
+      <el-form ref="form" :model="form" :rules="rules" class="base_box" label-width="160px">
+        <el-form-item label="商品名称:" prop="ip">
+          <el-input v-model="form.ip" placeholder="请设置当前软件唯一绑定ip"></el-input>
+        </el-form-item>
+        <el-form-item label="商品域名:" prop="appname">
+          <el-input v-model="form.appname" placeholder="请设置当前软件名称"></el-input>
+        </el-form-item>
+        <div class="fg_line">
+          pid设置
+          <span></span>
         </div>
-        <div class="search">
-          <el-input
-            v-model="listQuery.qq"
-            placeholder="输入qq号"
-            style="width: 200px;"
-            class="filter-item filter_input"
-            @keyup.enter.native="handleFilter"
-          />
-          <el-button
-            v-waves
-            class="filter-item filter_btn"
-            type="primary"
-            icon="el-icon-search"
-            @click="handleFilter"
-          >搜索</el-button>
+        <el-form-item label="淘宝pid:" prop="ip">
+          <el-input v-model="form.ip" placeholder="请设置当前软件唯一绑定ip"></el-input>
+        </el-form-item>
+        <el-form-item label="京东pid:" prop="appname">
+          <el-input v-model="form.appname" placeholder="请设置当前软件名称"></el-input>
+        </el-form-item>
+        <el-form-item label="拼多多:" prop="appname">
+          <el-input v-model="form.appname" placeholder="请设置当前软件名称"></el-input>
+        </el-form-item>
+        <div class="fg_line" style="margin-left: 68px;">
+          token设置
+          <span></span>
         </div>
-      </div>
-      <el-table
-        :key="tableKey"
-        v-loading="listLoading"
-        :data="list"
-        fit
-        highlight-current-row
-        style="width: 100%;"
-        class="custom_table"
-        @sort-change="sortChange"
-      >
-        <el-table-column
-          label="用户"
-          prop="id"
-          align="center"
-          width="80"
-          :class-name="getSortClass('id')"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.user }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="qq号" align="center" :class-name="getSortClass('id')">
-          <template slot-scope="{ row }">
-            <span>{{ row.qq }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="代理折扣" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.discount }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="拿卡数量" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.cardcount }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="余额" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.balance }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="用户状态" align="center">
-          <template slot-scope="{ row }">
-            <span v-if="row.accountType === 1">冻结</span>
-            <span v-if="row.accountType === 0">正常</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          label="操作"
-          align="center"
-          class-name="small-padding fixed-width"
-          width="280"
-        >
-          <template slot-scope="{ row }">
-            <el-button type="primary" class="cz" @click="addMoney(row,'addMoney')">
-              <img src="../../assets/icon/dl.png" />充值
-            </el-button>
-            <el-button
-              v-if="row.accountType === 1"
-              type="primary"
-              class="jc"
-              @click="handleModifyStatus(row, 'unfreeze')"
-            >
-              <img src="../../assets/icon/jc.png" />解除冻结
-            </el-button>
-            <el-button
-              v-else
-              type="success"
-              class="djUser"
-              @click="handleModifyStatus(row, 'freeze')"
-            >
-              <img src="../../assets/icon/dj.png" />冻结用户
-            </el-button>
-            <el-button
-              type="primary"
-              class="modify"
-              style="margin:5px 0 0 0"
-              @click="handleUpdate(row)"
-            >
-              <img src="../../assets/icon/xg.png" />修改折扣
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <pagination
-        v-show="total > 10"
-        class="pagestyle"
-        :total="total"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
-        @pagination="getList"
-      />
-
-      <el-dialog title="添加下级" width="500px" :visible.sync="dialogFormVisible">
-        <el-form
-          ref="dataForm"
-          :rules="rules"
-          :model="temp"
-          label-position="left"
-          label-width="70px"
-          style="width: 400px; margin-left:30px;"
-        >
-          <el-form-item label="账号" prop="user">
-            <el-input v-model="temp.user" placeholder="请输入用户账号" />
-          </el-form-item>
-
-          <el-form-item label="QQ号" prop="qq">
-            <el-input v-model="temp.qq" placeholder="请输入用户qq" />
-          </el-form-item>
-
-          <el-form-item label="折扣" prop="discount">
-            <el-input v-model="temp.discount" placeholder="请输入下级折扣" />
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="addSuperior">保存</el-button>
-        </div>
-      </el-dialog>
-
-      <el-dialog title="修改折扣" width="500px" :visible.sync="updateSuperiorVisible">
-        <el-form
-          ref="updateSuperiorFrom"
-          :rules="rules"
-          :model="temp"
-          label-position="left"
-          label-width="70px"
-          style="width: 400px; margin-left:50px;"
-        >
-          <el-form-item label="账号" prop="user">
-            <el-input v-model="temp.user" hidden value placeholder="请输入用户账号" />
-          </el-form-item>
-
-          <el-form-item label="QQ号" prop="qq">
-            <el-input v-model="temp.qq" hidden placeholder="请输入用户qq" />
-          </el-form-item>
-
-          <el-form-item label="折扣" prop="discount">
-            <el-input v-model="temp.discount" placeholder="请输入下级折扣" />
-            <span class="bf">%</span>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="updateSuperiorVisible = false">取消</el-button>
-          <el-button type="primary" @click="updateSuperior">保存</el-button>
-        </div>
-      </el-dialog>
+        <el-form-item class="btn_center" style="margin-left:0">
+          <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+          <el-button>取消</el-button>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
 
 <script>
-import {
-  getSuperior,
-  freezeAgent,
-  unFreezeAgent,
-  bindSuperior,
-  updateSuperior,
-  addMoney
-} from "@/api/agent";
+import { mapGetters } from "vuex";
+import { getInfo2 } from "@/api/user";
+// import contentTop from "@/components/contentTop/index";
 import waves from "@/directive/waves"; // waves directive
-import contentTop from "@/components/contentTop/index";
-import { parseTime } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-import { getInfo } from "@/api/user";
+import { setingUpdate, getInfo } from "@/api/user";
+var validateIp = (rule, value, callback) => {
+  console.log(value);
+  var reg1 = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+  if (value && !reg1.test(value)) {
+    callback(new Error("请输入正确的ip，ip地址格式错误"));
+  }
+  callback();
+};
+
 export default {
-  name: "AgentManage",
-  components: { Pagination, contentTop },
+  name: "seting",
+  // components: { contentTop },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: "success",
-        draft: "info",
-        deleted: "danger"
-      };
-      return statusMap[status];
-    },
-    typeFilter(type) {
-      // return calendarTypeKeyValue[type]
-    }
-  },
   data() {
-    var checkdiscount = (rule, value, callback) => {
-      var reg = new RegExp("^([1-9]|[1-9]\\d|100)$");
-      console.log(value);
-      if (!value) {
-        return callback(new Error("折扣不能为空"));
-      }
-      setTimeout(() => {
-        if (!reg.test(value)) {
-          callback(new Error("请输入1到一百到整数，折扣不能低于自己"));
-        } else {
-          callback();
-        }
-      }, 1000);
-    };
     return {
-      tableKey: 0,
-      list: null,
-      total: 0,
-      listLoading: true,
       user: "",
-      userinfoAgen: {},
-      listQuery: {
-        page: 1,
-        limit: 10,
-        pagesize: 10,
-        qq: undefined
+      rIP: "",
+      rName: "",
+      form: {
+        ip: "",
+        appname: ""
       },
-      showReviewer: false,
-      temp: {
-        discount: "",
-        qq: "",
-        user: ""
-      },
-      dialogFormVisible: false,
       rules: {
-        user: [{ required: true, message: "用户必填", trigger: "blur" }],
-        discount: [
-          {
-            trigger: "blur",
-            validator: checkdiscount
-          }
-        ],
-        qq: [{ required: true, message: "qq必填", trigger: "blur" }]
-      },
-      updateSuperiorVisible: false,
-      downloadLoading: false
+        ip: [{ validator: validateIp, trigger: "blur" }]
+      }
     };
   },
   created() {
-    this.getList();
+    this.getUser();
   },
-  mounted() {},
+  mounted() {
+    this.rIP = localStorage.getItem("key");
+    this.rName = localStorage.getItem("rName");
+  },
   methods: {
-    getList() {
-      this.listLoading = true;
-      getSuperior(this.listQuery).then(response => {
-        this.list = response.data.list;
-        this.total = response.data.count ? response.data.count : 0;
-        this.listLoading = false;
-      });
-    },
-    handleFilter() {
-      this.listQuery.page = 1;
-      this.getList();
-    },
-    /*
-      冻结与解冻
-    */
-    handleModifyStatus(row, status) {
-      if (status === "unfreeze") {
-        const postData = { user: row.user };
-        unFreezeAgent(postData).then(response => {
-          this.$confirm("你确定要解冻？", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消"
-          }).then(() => {
-            this.getList();
-            this.$message({
-              type: "success",
-              message: "操作成功"
-            });
-            row.account_type = 0;
-          });
-        });
-      } else if (status === "freeze") {
-        this.$prompt("请输入冻结原因", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消"
-        }).then(({ value }) => {
-          const postData = { user: row.user, msg: value };
-          freezeAgent(postData).then(response => {
-            this.getList();
-            this.$message({
-              type: "success",
-              message: "操作成功"
-            });
-            row.account_type = 1;
-          });
-        });
-      }
-    },
-    addMoney(row) {
-      this.$prompt("请输入正确金额（例：100）", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        inputPattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
-        inputErrorMessage: "请输入正确金额"
-      }).then(({ value }) => {
-        const postData = { qq: row.qq, user: row.user, money: value };
-        addMoney(postData).then(response => {
-          getInfo().then(response => {
-            this.$store.dispatch("user/setUserInfo", response.data);
-          });
-          this.getList();
-          this.$message({
-            type: "success",
-            message: "恭喜你，充值成功"
-          });
-        });
-      });
-    },
-    sortChange(data) {
-      const { prop, order } = data;
-      if (prop === "id") {
-        this.sortByID(order);
-      }
-    },
-    sortByID(order) {
-      if (order === "ascending") {
-        this.listQuery.sort = "+id";
-      } else {
-        this.listQuery.sort = "-id";
-      }
-      this.handleFilter();
-    },
-    resetTemp() {
-      this.temp = {
-        discount: "",
-        qq: "",
-        user: "",
-        discount: ""
-      };
-    },
-    handleCreate() {
-      this.resetTemp();
-      this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
-    },
-    handleUpdate(row) {
-      this.temp.user = row.user;
-      this.temp.qq = row.qq;
-      this.temp.discount = row.discount;
+    getUser() {
+      getInfo().then(response => {
+        this.form.ip = response.data.lockIp;
+        this.form.appname = response.data.customTitle;
 
-      this.updateSuperiorVisible = true;
-      this.$nextTick(() => {
-        this.$refs["updateSuperiorFrom"].clearValidate();
+        this.rIP = response.data.lockIp;
+        this.rName = response.data.customTitle;
       });
     },
-    /*
-      绑定下级
-    */
-    addSuperior() {
-      this.$refs["dataForm"].validate(valid => {
+    onSubmit(formName) {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          bindSuperior(this.temp).then(() => {
-            // this.list.unshift(this.temp)
-            this.dialogFormVisible = false;
-            this.getList();
-            this.$notify({
-              title: "Success",
-              message: "绑定成功",
+          setingUpdate(this.form).then(response => {
+            this.$message({
               type: "success",
-              duration: 2000
+              message: "操作成功"
             });
           });
+        } else {
+          return false;
         }
       });
-    },
-    /*
-      修改下级折扣
-     */
-    updateSuperior() {
-      this.$refs["updateSuperiorFrom"].validate(valid => {
-        console.log(this.temp);
-        if (valid) {
-          updateSuperior(this.temp).then(() => {
-            this.list.unshift(this.temp);
-            this.updateSuperiorVisible = false;
-            this.getList();
-            this.$notify({
-              title: "Success",
-              message: "修改成功",
-              type: "success",
-              duration: 2000
-            });
-          });
-        }
-      });
-    },
-    handleDelete(row) {
-      this.$notify({
-        title: "Success",
-        message: "Delete Successfully",
-        type: "success",
-        duration: 2000
-      });
-      const index = this.list.indexOf(row);
-      this.list.splice(index, 1);
-    },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v =>
-        filterVal.map(j => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
-    },
-    getSortClass: function(key) {
-      const sort = this.listQuery.sort;
-      return sort === `+${key}`
-        ? "ascending"
-        : sort === `-${key}`
-        ? "descending"
-        : "";
-    },
-    back() {
-      this.listQuery.page = 1;
-      this.listQuery.qq = "";
-      this.getList();
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-/deep/.el-input--medium {
-  text-align: left;
-}
-.bf {
-  position: absolute;
-  right: 48px;
-  top: 3px;
-}
-.app-nav {
-  width: 100%;
-  height: 78px;
-  background-color: #fff;
-  margin-bottom: 18px;
-  padding: 0 23px;
-  .lie {
-    padding-top: 15px;
-    margin-right: 120px;
-    float: left;
-    span {
-      float: left;
-      display: inline-block;
-      width: 48px;
-      height: 48px;
-      margin-right: 10px;
-    }
-    .text_p {
-      float: left;
-      .p1 {
-        font-size: 14px;
-        color: #999;
-        line-height: 23px;
-      }
-      .p2 {
-        font-size: 22px;
-        color: #3564c0;
-      }
+.app-container {
+  .base_box {
+    .el-form-item {
+      margin-bottom: 13px !important;
     }
   }
 }
+
 .app-container {
   background-color: #fff;
   border-radius: 6px;
   min-height: calc(100vh - 250px);
-  .pagestyle {
-    /deep/.el-input--medium .el-input__inner {
-      border: 1px solid rgba(230, 230, 230, 1);
-      border-radius: 4px;
-      width: 50px;
+  .fg_line {
+    font-size: 18px;
+    color: #3c70d5;
+    margin-left: 84px;
+    margin-top: 30px;
+    margin-bottom: 19px;
+    span {
+      display: inline-block;
+      width: 354px;
+      height: 1px;
+      border: 1px #dce7ff dashed;
+      line-height: 25px;
+      position: relative;
+      top: -5px;
+      margin-left: 13px;
     }
   }
   .title {
@@ -519,154 +148,32 @@ export default {
       top: 2px;
     }
   }
-  .filter-container {
-    .s_left {
-      float: left;
-    }
-    .search {
-      float: right;
-      width: 280px;
-      height: 38px;
-      .filter_input {
-        float: left;
-        /deep/.el-input__inner {
-          height: 38px;
-          line-height: 38px;
-          border-radius: 6px 0 0 6px;
-          width: 200px;
-        }
-      }
-      .filter_btn {
-        float: left;
-        padding: 0;
-        width: 69px;
-        height: 38px;
-        border-radius: 0 6px 6px 0;
-      }
-    }
-    .addBtn {
-      width: 97px;
-      height: 38px;
-      border: 1px solid rgba(45, 135, 253, 1);
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: #2d87fd;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 5px;
-        top: 2px;
-      }
-    }
-    .sx {
-      width: 74px;
-      height: 38px;
-      border: 1px solid #9e77f1 !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: #9e77f1;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 5px;
-        top: 2px;
-      }
-    }
-    .cz {
-      width: 74px;
-      height: 38px;
-      border-radius: 4px;
-      background-color: #2d87fd;
-      color: #fff;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 5px;
-        top: 2px;
-      }
+  .el-input--medium {
+    text-align: left !important;
+  }
+  .base_box {
+    width: 600px;
+    margin-top: 36px;
+    /deep/.el-form-item {
+      margin-bottom: 10px;
     }
   }
-  .custom_table {
-    /deep/ thead {
-      color: #4296fb;
-      font-weight: 500;
-    }
-    /deep/ th {
-      background-color: #f4f7fe;
-      border-bottom: none;
-      font-weight: 500;
-    }
-    /deep/td {
-      border-bottom: 1px solid #f2f3f5;
-      color: #333;
-    }
-    .djUser {
-      width: 80px;
-      height: 30px;
-      border: 1px solid rgba(45, 135, 253, 1) !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: rgba(45, 135, 253, 1);
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 3px;
-      }
-    }
-    .djUser:hover {
-      background-color: rgba(45, 135, 253, 0.1) !important;
-    }
-    .modify {
-      width: 80px;
-      height: 30px;
-      border: 1px solid #b37bec !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: #b37bec;
-      padding: 0;
-      margin-left: 10px !important;
-      img {
-        position: relative;
-        margin-right: 3px;
-        top: 1px;
-      }
-    }
-    .modify:hover {
-      background-color: rgba(179, 123, 236, 0.1) !important;
-    }
-    .jc {
-      width: 80px;
-      height: 30px;
-      border: 1px solid #0dc504 !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: #0dc504;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 3px;
-        top: 1px;
-      }
-    }
-    .jc:hover {
-      background-color: rgba(13, 197, 4, 0.1) !important;
-    }
-    .cz {
-      width: 64px;
-      height: 30px;
-      border: 1px solid #fc8403 !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: #fc8403;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 3px;
-        top: 1px;
-      }
-    }
-    .cz:hover {
-      background-color: rgba(232, 132, 3, 0.1) !important;
+  /deep/.el-form-item__label {
+    font-size: 16px;
+    color: #333;
+    font-weight: 400;
+  }
+  /deep/.el-input__inner {
+    width: 354px;
+    height: 40px;
+    border: 1px solid rgba(230, 230, 230, 1);
+    border-radius: 4px;
+  }
+  .btn_center {
+    /deep/.el-form-item__content {
+      text-align: center;
+      margin-left: 0 !important;
+      margin-top: 60px;
     }
   }
 }
