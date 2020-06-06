@@ -91,41 +91,67 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: "/agent/card",
+    path: "/rebate",
     component: Layout,
-    redirect: "/agent/card",
+    redirect: "/rebate",
     children: [
       {
         path: "",
-        component: () => import("@/views/agent/card"),
+        component: () => import("@/views/rebate/Index"),
         name: "返利设置",
         meta: { title: "返利设置", icon: "chart", noCache: true }
       }
     ]
   },
   {
-    path: "/agent/carduser",
+    path: "/customer",
     component: Layout,
-    redirect: "/agent/carduser",
+    redirect: "/customer",
     children: [
       {
         path: "",
-        component: () => import("@/views/agent/carduser"),
+        component: () => import("@/views/customer/Index"),
         name: "客户信息",
         meta: { title: "客户信息", icon: "kf", noCache: true }
       }
     ]
   },
   {
-    path: "/seting",
+    path: "/commodity",
     component: Layout,
-    redirect: "/seting/base",
+    redirect: "/commodity",
     children: [
       {
         path: "base",
-        component: () => import("@/views/seting/base"),
+        component: () => import("@/views/commodity/Index"),
         name: "商品筛选",
-        meta: { title: "商品筛选", icon: "chart", noCache: true }
+        meta: { title: "商品筛选", icon: "shop", noCache: true }
+      }
+    ]
+  },
+  {
+    path: "/shop",
+    component: Layout,
+    redirect: "/shop",
+    children: [
+      {
+        path: "base",
+        component: () => import("@/views/customshop/Index"),
+        name: "自定义商品",
+        meta: { title: "自定义商品", icon: "sp", noCache: true }
+      }
+    ]
+  },
+  {
+    path: "/custompage",
+    component: Layout,
+    redirect: "/custompage",
+    children: [
+      {
+        path: "base",
+        component: () => import("@/views/custompage/Index"),
+        name: "自定义单页面",
+        meta: { title: "自定义单页面", icon: "dy", noCache: true }
       }
     ]
   },

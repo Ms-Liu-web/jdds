@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      title: "Annaer代理"
+      title: "安娜尔商城"
     };
   }
 };
