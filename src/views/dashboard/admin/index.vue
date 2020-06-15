@@ -1,6 +1,6 @@
 <template>
   <div class>
-    <div class="index_img"></div>
+    <div class="index_img" />
   </div>
 </template>
 
@@ -10,9 +10,9 @@
 // import LineChart2 from "./components/LineChart2";
 // import LineChart3 from "./components/LineChart3";
 // import Notice from "./components/Notice";
-import { getReportForm } from "@/api/agent";
+// import { getReportForm } from "@/api/agent";
 export default {
-  name: "DashboardAdmin",
+  name: 'DashboardAdmin',
   components: {
     // PanelGroup,
     // LineChart,
@@ -24,18 +24,18 @@ export default {
     return {
       chartSetOption: [],
       chartData2: [],
-      mounth: ""
-    };
+      mounth: ''
+    }
   },
   created() {
-    getReportForm().then(response => {
-      this.chartData2 = response.data.list;
-      this.mounth = response.data.month;
-    });
+    // getReportForm().then(response => {
+    //   this.chartData2 = response.data.list;
+    //   this.mounth = response.data.month;
+    // });
   },
   mounted() {},
   methods: {}
-};
+}
 </script>
 
 <style lang="scss" scoped>

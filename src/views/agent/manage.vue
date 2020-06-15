@@ -1,111 +1,166 @@
 <template>
   <div>
-    <!-- <contentTop /> -->
-
     <div class="app-container">
       <div class="title">
-        <img src="../../assets/icon/icon12.png" />
+        <img src="../../assets/icon/icon12.png">
         <span>基础设置</span>
       </div>
-      <el-form ref="form" :model="form" :rules="rules" class="base_box" label-width="160px">
-        <el-form-item label="商品名称:" prop="ip">
-          <el-input v-model="form.ip" placeholder="请设置当前软件唯一绑定ip"></el-input>
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        class="base_box"
+        label-width="160px"
+      >
+        <el-form-item label="商品名称:" prop="wap_title">
+          <el-input v-model="form.wap_title" placeholder="请输入商品名称" />
         </el-form-item>
-        <el-form-item label="商品域名:" prop="appname">
-          <el-input v-model="form.appname" placeholder="请设置当前软件名称"></el-input>
+        <el-form-item label="商品域名:" prop="wap_domain">
+          <el-input v-model="form.wap_domain" placeholder="请输入商品域名" />
         </el-form-item>
         <div class="fg_line">
           pid设置
-          <span></span>
+          <span />
         </div>
-        <el-form-item label="淘宝pid:" prop="ip">
-          <el-input v-model="form.ip" placeholder="请设置当前软件唯一绑定ip"></el-input>
+        <el-form-item label="淘宝pid:" prop="i">
+          <el-input v-model="form.tb_pid" placeholder="请输入淘宝pid" />
         </el-form-item>
-        <el-form-item label="京东pid:" prop="appname">
-          <el-input v-model="form.appname" placeholder="请设置当前软件名称"></el-input>
+        <el-form-item label="京东pid:" prop="">
+          <el-input v-model="form.jd_pid" placeholder="请输入京东pid" />
         </el-form-item>
-        <el-form-item label="拼多多:" prop="appname">
-          <el-input v-model="form.appname" placeholder="请设置当前软件名称"></el-input>
+        <el-form-item label="拼多多pid:" prop="">
+          <el-input v-model="form.pdd_pid" placeholder="请输入平多多pid" />
         </el-form-item>
         <div class="fg_line" style="margin-left: 68px;">
           token设置
-          <span></span>
+          <span />
         </div>
-        <el-form-item class="btn_center" style="margin-left:0">
-          <el-button type="primary" @click="onSubmit('form')">保存</el-button>
-          <el-button>取消</el-button>
+        <el-form-item label="淘宝token:" prop="">
+          <el-input v-model="form.tb_token" placeholder="请输入淘宝token" />
+        </el-form-item>
+        <el-form-item label="京东token:" prop="">
+          <el-input v-model="form.jd_token" placeholder="请输入京东token" />
+        </el-form-item>
+        <el-form-item label="拼多多token:" prop="">
+          <el-input v-model="form.pdd_token" placeholder="请输入拼多多token" />
+        </el-form-item>
+        <el-form-item label="公告设置:" prop="">
+          <el-input
+            v-model="form.wap_notice"
+            placeholder="请输入"
+            type="textarea"
+          />
+        </el-form-item>
+        <el-form-item label="代码统计:" prop="">
+          <div class="manage-codeInfo">
+            <el-input
+              v-model="form.wap_tj_code"
+              type="textarea"
+              placeholder="请输入"
+            />
+          </div>
+        </el-form-item>
+        <el-form-item class="btn_center">
+          <el-button
+type="primary"
+@click="onSubmit('form')"
+>确认保存</el-button>
         </el-form-item>
       </el-form>
+      <!-- dialog弹框 -->
+      <m-dialog width="400px" height="288px" :visible.sync="visible">
+        <template v-slot:title>
+          <img
+            class="imgSize"
+            src="../../assets/success-images/tc1.png"
+            alt=""
+          >
+        </template>
+        <template v-slot:content>
+          <p class="dialogContent">恭喜你,保存成功!</p>
+        </template>
+        <template v-slot:footer>
+          <div class="dialogFooterBtn">
+            <el-button
+type="primary"
+plain
+@click="handleClick"
+>我知道了</el-button>
+          </div>
+        </template>
+      </m-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { getInfo2 } from "@/api/user";
-// import contentTop from "@/components/contentTop/index";
-import waves from "@/directive/waves"; // waves directive
-import { setingUpdate, getInfo } from "@/api/user";
+// 设置基础信息
+import { configEdit } from '@/api/agent'
+import waves from '@/directive/waves' // waves directive
 var validateIp = (rule, value, callback) => {
-  console.log(value);
-  var reg1 = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+  var reg1 = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/
   if (value && !reg1.test(value)) {
-    callback(new Error("请输入正确的ip，ip地址格式错误"));
+    callback(new Error('请输入正确的ip，以http或https开头'))
   }
-  callback();
-};
+  callback()
+}
 
 export default {
-  name: "seting",
-  // components: { contentTop },
+  name: 'Seting',
   directives: { waves },
   data() {
     return {
-      user: "",
-      rIP: "",
-      rName: "",
+      visible: false,
       form: {
-        ip: "",
-        appname: ""
+        wap_title: '',
+        wap_domain: '',
+        tb_pid: '',
+        jd_pid: '',
+        pdd_pid: '',
+        tb_token: '',
+        jd_token: '',
+        pdd_token: '',
+        wap_notice: '',
+        wap_tj_code: ''
       },
       rules: {
-        ip: [{ validator: validateIp, trigger: "blur" }]
+        wap_domain: [
+          { validator: validateIp, trigger: 'blur' },
+          {
+            min: 3,
+            message: '请输入正确的ip，以http或https开头',
+            trigger: 'blur'
+          }
+        ]
       }
-    };
-  },
-  created() {
-    this.getUser();
-  },
-  mounted() {
-    this.rIP = localStorage.getItem("key");
-    this.rName = localStorage.getItem("rName");
+    }
   },
   methods: {
-    getUser() {
-      getInfo().then(response => {
-        this.form.ip = response.data.lockIp;
-        this.form.appname = response.data.customTitle;
-
-        this.rIP = response.data.lockIp;
-        this.rName = response.data.customTitle;
-      });
-    },
+    // 修改基础设置
     onSubmit(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
-          setingUpdate(this.form).then(response => {
+          const { code } = await configEdit(this.form)
+          if (code !== 200) {
             this.$message({
-              type: "success",
-              message: "操作成功"
-            });
-          });
+              type: 'error',
+              message: '操作失败'
+            })
+          }
+          this.visible = true
         } else {
-          return false;
+          this.$message({
+            type: 'error',
+            message: '您输入的值不符合规则'
+          })
         }
-      });
+      })
+    },
+    handleClick() {
+      this.visible = false
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .app-container {
@@ -173,8 +228,45 @@ export default {
     /deep/.el-form-item__content {
       text-align: center;
       margin-left: 0 !important;
-      margin-top: 60px;
+      margin-top: 22px;
+      width: 100%;
     }
   }
+  /deep/.el-textarea__inner {
+    width: 354px;
+    height: 109px;
+    border: 1px solid rgba(230, 230, 230, 1);
+    border-radius: 4px;
+    resize: none；;
+    padding: 0;
+    margin: 0;
+  }
+  .manage-codeInfo {
+    /deep/.el-textarea__inner {
+      width: 354px;
+      height: 99px;
+      border: 1px solid rgba(230, 230, 230, 1);
+      border-radius: 4px;
+    }
+  }
+  /deep/.el-button--primary {
+    width: 110px;
+    height: 40px;
+    margin-left: 787px;
+  }
+  .dialogFooterBtn {
+    /deep/.el-button--primary {
+      margin-top: -10px;
+      margin-left: 0px;
+    }
+  }
+}
+/deep/.el-message-box__headerbtn {
+  display: none;
+}
+.imgSize {
+  width: 60px;
+  height: 60px;
+  margin: 27px auto;
 }
 </style>

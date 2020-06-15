@@ -1,10 +1,11 @@
 import request from '@/utils/request'
+
 /*
   获取卡列表
 */
 export function getCardList(data) {
   return request({
-    url: '/agent/selectsales',
+    url: 'admin/user/goodsAdd',
     method: 'POST',
     data
   })

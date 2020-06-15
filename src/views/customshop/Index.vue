@@ -1,737 +1,405 @@
 <template>
   <div>
     <!-- <contentTop /> -->
+
     <div class="app-container">
       <div class="title">
-        <img src="../../assets/icon/icon12.png" />
-        <span>商品列表</span>
+        <img src="../../assets/icon/icon12.png">
+        <span>添加商品</span>
+        <!-- 表单内容 -->
       </div>
-      <div class="filter-container">
-        <div class="s_left">
-          <el-button class="filter-item s_card" type="primary" @click="handleCreate">
-            <img src="../../assets/icon/k3.png" />添加商品
-          </el-button>
-        </div>
-      </div>
-      <el-table
-        :key="tableKey"
-        v-loading="listLoading"
-        :data="list"
-        class="custom_table"
-        fit
-        highlight-current-row
-        style="width: 100%;"
-        @sort-change="sortChange"
-      >
-        <el-table-column label="商品ID" align="center">11</el-table-column>
-        <el-table-column label="商品名称" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.price }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="商品图片" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.created_time }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="平台" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.expire_time }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="佣金" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.cardtypename }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="价格" align="center">
-          <template slot-scope="{ row }">
-            <span v-if="row.cardfreeze === 1">封停</span>
-            <span v-if="row.cardfreeze === 0">正常</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="30天销售量" align="center">
-          <template slot-scope="{ row }">
-            <span v-if="row.status === 1">已使用</span>
-            <span v-if="row.status === 0">未使用</span>
-            <span v-if="row.status === 2">已删除</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="优惠券" align="center"></el-table-column>
-        <el-table-column label="展示位置" align="center"></el-table-column>
-        <el-table-column label="排序" align="center"></el-table-column>
-        <el-table-column
-          label="操作"
-          align="center"
-          width="220"
-          class-name="small-padding fixed-width"
-        >
-          <template slot-scope="{ row }">
-            <div v-if="row.status === 0">
-              <el-button
-                v-if="row.cardfreeze === 1"
-                type="primary"
-                size="mini"
-                class="jc"
-                @click="handleModifyStatus(row, 'unfreeze')"
-              >
-                <img src="../../assets/icon/jc.png" />解冻
-              </el-button>
-              <el-button
-                v-else
-                type="success"
-                size="mini"
-                class="djUser"
-                @click="handleModifyStatus(row, 'freeze')"
-              >
-                <img src="../../assets/icon/dj.png" />冻结
-              </el-button>
-              <el-button
-                type="primary"
-                size="mini"
-                class="modify"
-                style="margin:5px 0 0 0"
-                @click="showCardInfo(row)"
-              >
-                <img src="../../assets/icon/k6.png" />详情
-              </el-button>
-
-              <el-button
-                v-if="row.status !== 2"
-                type="danger"
-                size="mini"
-                class="detale"
-                style="margin:5px 0 0 0"
-                @click="deleteCard(row)"
-              >
-                <img src="../../assets/icon/k2.png" />删除
-              </el-button>
-            </div>
-            <div v-else>
-              <el-button
-                type="primary"
-                size="mini"
-                class="modify"
-                style="margin:5px 0 0 0"
-                @click="showCardInfo(row)"
-              >
-                <img src="../../assets/icon/k6.png" />详情
-              </el-button>
-              <el-button
-                v-if="row.status !== 2"
-                type="danger"
-                style="margin:5px 0 0 0"
-                size="mini"
-                class="detale"
-                @click="deleteCard(row)"
-              >删除</el-button>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <pagination
-        v-show="total >10"
-        class="pagestyle"
-        :total="total"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
-        @pagination="getList"
-      />
-
-      <el-dialog title="生成卡" width="550px" :visible.sync="dialogFormVisible">
+      <div class="formContainer">
         <el-form
-          ref="dataForm3"
-          :rules="rules"
-          :model="temp"
-          label-position="left"
-          label-width="70px"
-          style="width: 400px; margin-left:50px;"
+          ref="addForm"
+          inline
+          :model="addForm"
+          :rules="addrules"
+          label-width="200px"
         >
-          <el-form-item label="卡数量" prop="user">
-            <el-input v-model="temp.count" placeholder="请输入生成卡数量" />
+          <!-- 商品标题 -->
+          <el-form-item label="商品标题：" prop="title">
+            <el-input
+              v-model="addForm.title"
+              class="inputWidth"
+              placeholder="请输入商品标题"
+            />
           </el-form-item>
-
-          <el-form-item label="卡密类型" prop="qq">
-            <el-select v-model="temp.cardtypeid" placeholder="请选择">
+          <!-- 第三方商品id -->
+          <el-form-item label="第三方商品id：" prop="item_id">
+            <el-input
+              v-model.number="addForm.item_id"
+              placeholder="请输入第三方id"
+            />
+          </el-form-item>
+          <!-- 佣金率 -->
+          <el-form-item label="佣金率：" prop="commission_rate">
+            <el-input
+              v-model.number="addForm.commission_rate"
+              placeholder="请输入佣金率，单位为：万分之"
+            />
+          </el-form-item>
+          <!-- 平台 -->
+          <el-form-item label="平台" prop="type">
+            <el-select
+              v-model="addForm.type"
+              placeholder="请选择"
+              @change="typeHandle"
+            >
               <el-option
-                v-for="item in cardTypeList.slice(1)"
-                :key="item.id"
-                :label="item.name + item.price + '元'"
-                :value="item.id"
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               />
-              <!-- v-if="item.id != -1" -->
             </el-select>
           </el-form-item>
-          <el-form-item label="备注" prop="discount">
-            <el-input v-model="temp.mark" type="textarea" style="width:290px" placeholder="请输入备注" />
+          <!-- 类型 -->
+          <el-form-item label="分类" prop="category_id">
+            <el-select v-model="addForm.category_id" placeholder="请选择">
+              <el-option
+                v-for="item in goodsCateList"
+                :key="item.name"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
           </el-form-item>
+          <!--主图片  -->
+          <el-form-item label="主图片：">
+            <template>
+              <el-upload
+                class="avatar-uploader"
+                list-type="png/jpg/jpeg"
+                action="https://api.apiyz.com/shop/admin/common/upload"
+                :show-file-list="false"
+                :on-success="bigAvatarSuccess"
+                :before-upload="bigBeforeAvatarUpload"
+                :headers="headerObj"
+                name="image"
+              >
+                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
+            </template>
+          </el-form-item>
+          <!-- 缩略图 -->
+          <el-form-item label="缩略图：" class="smallPhoto">
+            <template>
+              <el-upload
+                class="avatar-uploader"
+                list-type="png/jpg/jpeg"
+                action="https://api.apiyz.com/shop/admin/common/upload"
+                :show-file-list="false"
+                :on-success="smallAvatarSuccess"
+                :before-upload="smallBeforeAvatarUpload"
+                :headers="headerObj"
+                name="image"
+              >
+                <img v-if="smallImageUrl" :src="smallImageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
+            </template>
+          </el-form-item>
+          <!-- 价格 -->
+          <el-form-item label="价格：" prop="price">
+            <el-input v-model.number="addForm.price" placeholder="请输入价格" />
+          </el-form-item>
+          <!-- 推荐按理由 -->
+          <el-form-item label="推荐理由：">
+            <div class="costomAddDesciption">
+              <el-input
+                v-model="addForm.description"
+                type="textarea"
+                placeholder="请输入理由"
+              />
+            </div>
+          </el-form-item>
+          <!-- 详情 -->
+          <el-form-item label="详情：" prop="info">
+            <div class="constomAddInfo">
+              <el-input
+                v-model="addForm.info"
+                type="textarea"
+                placeholder="请输入详情"
+              />
+            </div>
+          </el-form-item>
+          <!-- 30天销售总量 -->
+          <el-form-item label="30天销售总量：" prop="sale_totals">
+            <el-input
+              v-model="addForm.sale_totals"
+              placeholder="30天销售总量"
+            />
+          </el-form-item>
+          <!-- 优惠卷面额 -->
+          <el-form-item label="优惠卷面额：" prop="coupon_amount">
+            <el-input
+              v-model="addForm.coupon_amount"
+              placeholder="请输入优惠券面额"
+            />
+          </el-form-item>
+          <!-- 优惠券开始时间 -->
+          <el-form-item label="优惠券开始时间：" prop="coupon_start_time">
+            <el-input
+              v-model="addForm.coupon_start_time"
+              placeholder="请输入优惠开始时间"
+            />
+          </el-form-item>
+          <!-- 优惠券开始时间 -->
+          <el-form-item label="优惠券结束时间" prop="coupon_end_time">
+            <el-input
+              v-model="addForm.coupon_end_time"
+              placeholder="请输入优惠结束时间"
+            />
+          </el-form-item>
+          <!-- 优惠券url -->
+          <el-form-item label="优惠券url：" prop="coupon_url">
+            <el-input
+              v-model="addForm.coupon_url"
+              placeholder="请输入优惠券url"
+            />
+          </el-form-item>
+          <!-- 优惠券总量 -->
+          <el-form-item label="优惠券总量：" prop="coupon_total_count">
+            <el-input
+              v-model="addForm.coupon_total_count"
+              placeholder="请输入优惠券总量"
+            />
+          </el-form-item>
+          <!-- 优惠券剩余量 -->
+          <el-form-item label="优惠券剩余量：" prop="coupon_remain_count">
+            <el-input
+              v-model="addForm.coupon_remain_count"
+              placeholder="请输入优惠券剩余量"
+            />
+          </el-form-item>
+          <!-- 展示位置 -->
+          <div>
+            <el-form-item label="展示位置：">
+              <el-radio-group v-model="place" @change="fn">
+                <el-radio label="精选" />
+                <el-radio label="热门搜索" />
+                <el-radio label="详情页推荐" />
+              </el-radio-group>
+            </el-form-item>
+          </div>
+          <!-- 排序 -->
+          <div>
+            <el-form-item label="排序：">
+              <el-input
+                v-model.number="addForm.order_num"
+                placeholder="请输入0-100之间的排序值，值越大越靠前"
+              />
+            </el-form-item>
+          </div>
+          <div class="constomAddBtn">
+            <el-button
+type="primary"
+@click="submitForm('addForm')"
+>立即创建</el-button>
+          </div>
         </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="addCard">保存</el-button>
-        </div>
-      </el-dialog>
-
-      <el-dialog
-        title="查看详情"
-        width="550px"
-        class="cardDetails"
-        :visible.sync="dialogShowCardVisible"
-      >
-        <table :model="cardInfo" class="buyTable" cellpadding="0" cellspacing="0">
-          <tr>
-            <td class="t1">购买者</td>
-            <td class="t2">
-              <div v-if="cardInfo.user == null">尚未售出</div>
-              <div v-if="cardInfo.user !== null">{{ cardInfo.user }}</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="t1">卡密</td>
-            <td class="t2">
-              <div>{{ cardInfo.cardnumber }}</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="t1">备注</td>
-            <td class="t2">
-              <div>{{ cardInfo.remarks }}</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="t1">类型</td>
-            <td class="t2">
-              <div>{{ cardInfo.cardtypename }}</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="t1">是否冻结</td>
-            <td class="t2">
-              <div v-if="cardInfo.cardfreeze === 0">否</div>
-              <div v-if="cardInfo.cardfreeze === 1">是</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="t1">卡状态</td>
-            <td class="t2">
-              <div v-if="cardInfo.status === 0">未使用</div>
-              <div v-if="cardInfo.status === 1">已使用</div>
-              <div v-if="cardInfo.status === 2">已删除</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="t1">过期时间</td>
-            <td class="t2">
-              <div>{{ cardInfo.expire_time }}</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="t1">创建时间</td>
-            <td class="t2">
-              <div>{{ cardInfo.created_time }}</div>
-            </td>
-          </tr>
-        </table>
-        <div slot="footer" class="dialog-footer card_btn">
-          <el-button @click="dialogShowCardVisible = false">关闭</el-button>
-        </div>
-      </el-dialog>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import {
-  getCardList,
-  getCardType,
-  createCard,
-  freezeCard,
-  thawCard,
-  showCardInfo,
-  deleteCard
-} from "@/api/agentcard";
-import contentTop from "@/components/contentTop/index";
-import waves from "@/directive/waves"; // waves directive
-// import { parseTime } from '@/utils'
-import { getInfo } from "@/api/user";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-
+import waves from '@/directive/waves'
+import { getGoodsCate, getGoodsAdd } from '@/api/agent'
 export default {
-  name: "CardList",
-  components: { Pagination, contentTop },
+  name: 'GoodsAdd',
+  // components: { contentTop },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: "success",
-        draft: "info",
-        deleted: "danger"
-      };
-      return statusMap[status];
-    },
-    typeFilter(type) {
-      // return calendarTypeKeyValue[type]
-    }
-  },
   data() {
     return {
-      tableKey: 0,
-      list: null,
-      total: 0,
-      user: "",
-      listLoading: false,
-      listQuery: {
-        page: 1,
-        limit: 10,
-        pagesize: 10,
-        cardtype: -1,
-        cardstatus: -1,
-        card_user: 0,
-        start: null,
-        end: null
-      },
-      showReviewer: false,
-      temp: {
-        count: "",
-        cardtypeid: "",
-        mark: ""
-      },
-      dialogFormVisible: false,
-      dialogStatus: "",
-      textMap: {
-        update: "Edit",
-        create: "Create"
-      },
-      dialogShowCardVisible: false,
-      cardInfo: {},
-      rules: {
-        count: [{ required: true, message: "数量必填", trigger: "blur" }],
-        cardtypeid: [
-          { required: true, message: "选择分类必填", trigger: "blur" }
-        ],
-        mark: [{ required: true, message: "填写备注", trigger: "blur" }]
-      },
-      downloadLoading: false,
-      cardTypeList: [{ id: -1, name: "全部" }],
-      cardStatus: [
-        { id: -1, name: "全部" },
-        { id: "0", name: "未使用" },
-        { id: "1", name: "已使用" },
-        { id: "2", name: "已删除" }
-      ]
-    };
-  },
-  activated() {},
-  created() {
-    this.listQuery.card_user = this.$route.query.carduser;
-    this.getList();
-    this.getCardTypeList();
-  },
-  mounted() {},
-  methods: {
-    getList() {
-      this.listQuery.start = this.getStartTime();
-      this.listQuery.end = this.getEndTime() + 100;
-      this.listLoading = true;
-      getCardList(this.listQuery).then(response => {
-        console.log(4444444444);
-        this.list = response.data.list;
-        this.total = response.data.count;
-        this.listLoading = false;
-      });
-    },
-    handleFilter() {
-      this.listQuery.page = 1;
-      this.getList();
-    },
-    selectActive() {
-      this.listQuery.page = 1;
-      this.getList();
-    },
-    selectStatus() {
-      this.listQuery.page = 1;
-      this.getList();
-    },
-    getInfo() {
-      getInfo().then(response => {
-        this.user = response.data;
-      });
-    },
-    getCardTypeList() {
-      getCardType().then(response => {
-        response.data.forEach(element => {
-          this.cardTypeList.push(element);
-        });
-      });
-    },
-    addCard() {
-      this.$refs["dataForm3"].validate(valid => {
-        if (valid) {
-          createCard(this.temp).then(response => {
-            this.dialogFormVisible = false;
-            console.log(123);
-            this.getList();
-            this.$notify({
-              title: "Success",
-              message: "生成成功",
-              type: "success",
-              duration: 2000
-            });
-            this.getInfo();
-          });
+      options: [
+        {
+          value: 1,
+          label: '淘宝'
+        },
+        {
+          value: 3,
+          label: '拼多多'
+        },
+        {
+          value: 2,
+          label: '京东'
         }
-      });
-    },
-    getInfo() {
-      getInfo().then(response => {
-        this.$store.dispatch("user/setUserInfo", response.data);
-      });
-    },
-    /*
-      冻结与解冻
-    */
-    handleModifyStatus(row, status) {
-      if (status === "unfreeze") {
-        const postData = { card: row.cardnumber };
-        thawCard(postData).then(response => {
-          this.$confirm("你确定要解冻？", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-            this.$message({
-              type: "success",
-              message: "操作成功"
-            });
-            row.cardfreeze = 0;
-          });
-        });
-      } else if (status === "freeze") {
-        this.$prompt("请输入冻结原因", "冻结", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消"
-        }).then(({ value }) => {
-          const postData = { card: row.cardnumber, msg: value };
-          freezeCard(postData).then(response => {
-            this.$message({
-              type: "success",
-              message: "操作成功"
-            });
-            row.cardfreeze = 1;
-          });
-        });
+      ],
+      goodsType: [],
+      imageUrl: '',
+      smallImageUrl: '',
+      place: '精选',
+      headerObj: {
+        Authorization: ''
+      },
+      addForm: {
+        title: '',
+        item_id: '',
+        commission_rate: 1,
+        category_name: '',
+        type: 1,
+        price: '',
+        description: '',
+        info: '',
+        sale_totals: '',
+        coupon_amount: '',
+        coupon_start_time: '',
+        coupon_end_time: '',
+        coupon_url: '',
+        coupon_total_count: '',
+        coupon_remain_count: '',
+        place: '',
+        order_num: '',
+        images: '',
+        small_images: ''
+      },
+      addrules: {
+        title: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 1, max: 20, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        item_id: [
+          { required: true, message: '请输入第三方id', trigger: 'blur' }
+        ],
+        commission_rate: [
+          {
+            required: true,
+            message: '请输入佣金比例，单位为万分之',
+            trigger: 'blur'
+          }
+        ],
+        type: [
+          { required: true, message: '请选择活动区域', trigger: 'change' }
+        ],
+        category_id: [
+          { required: true, message: '请选择活动区域', trigger: 'change' }
+        ],
+        price: [
+          { required: true, message: '请选择活动区域', trigger: 'change' }
+        ],
+        info: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        coupon_amount: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        coupon_start_time: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        coupon_end_time: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        coupon_total_count: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        coupon_remain_count: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ]
+      },
+      goodsCateList: []
+    }
+  },
+  created() {
+    this.GoodsCate(this.addForm.type)
+    const header = JSON.parse(localStorage.getItem('userInfo'))
+    this.headerObj.Authorization = header.token
+  },
+  methods: {
+    fn() {
+      if (this.place === '精选') {
+        this.addForm.place = 1
+      } else if (this.place === '热门搜索') {
+        this.addForm.place = 2
+      } else if (this.place === '请求页推荐') {
+        this.addForm.place = 3
       }
     },
-    deleteCard(row) {
-      this.$confirm("你确定要删除？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
-      }).then(() => {
-        const delete1 = { card: row.cardnumber };
-        deleteCard(delete1).then(response => {
-          getInfo().then(response => {
-            this.$store.dispatch("user/setUserInfo", response.data);
-          });
-          this.$message({
-            type: "success",
-            message: "操作成功"
-          });
-          row.status = 2;
-        });
-      });
+    typeHandle() {
+      this.GoodsCate(this.addForm.tplaceype)
     },
-    sortChange(data) {
-      const { prop, order } = data;
-      if (prop === "id") {
-        this.sortByID(order);
+    // 获取商品类型
+    async GoodsCate(id) {
+      const cateTypeId = { type: id }
+      const res = await getGoodsCate(cateTypeId)
+      if (res.code === 200) {
+        this.goodsCateList = res.data
+        this.addForm.category_name = res.data[0].name
       }
     },
-    sortByID(order) {
-      if (order === "ascending") {
-        this.listQuery.sort = "+id";
-      } else {
-        this.listQuery.sort = "-id";
-      }
-      this.handleFilter();
+    // 大图上传成功的回调
+    bigAvatarSuccess(file, fileList) {
+      this.imageUrl = URL.createObjectURL(fileList.raw)
+      this.addForm.images = fileList.response.data.imageUrl
     },
-    resetTemp() {
-      this.temp = {
-        discount: "",
-        qq: "",
-        user: ""
-      };
-    },
-    handleCreate() {
-      this.resetTemp();
-      this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm3"].clearValidate();
-      });
-    },
+    // 大图上传的信息验证
+    bigBeforeAvatarUpload(file) {
+      const isJPG =
+        file.type === 'image/png' ||
+        file.type === 'image/jpg' ||
+        file.type === 'image/jpeg'
+      const isLt1M = file.size / 1024 / 1024 < 1
 
-    getSortClass: function(key) {
-      const sort = this.listQuery.sort;
-      return sort === `+${key}`
-        ? "ascending"
-        : sort === `-${key}`
-        ? "descending"
-        : "";
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 image/jpeg/png/jpg格式!')
+      }
+      if (!isLt1M) {
+        this.$message.error('上传头像图片大小不能超过 1MB!')
+      }
+      return isJPG && isLt1M
     },
-    getStartTime() {
-      const date = new Date();
-      date.setMonth(date.getMonth() - 1);
-      const dateString =
-        date.getFullYear() +
-        "-" +
-        (date.getMonth() + 1) +
-        "-" +
-        date.getDate() +
-        "  " +
-        "8:00:00";
-      return Date.parse(dateString) / 1000;
+    // 缩略图上传成功的回调函数
+    smallAvatarSuccess(file, fileList) {
+      this.smallImageUrl = URL.createObjectURL(fileList.raw)
+      this.addForm.small_images = fileList.response.data.imageUrl
     },
-    getEndTime() {
-      const date = new Date();
-      return Date.parse(date) / 1000;
+    // 缩略图上传的信息验证
+    smallBeforeAvatarUpload(file) {
+      const isJPG =
+        file.type === 'image/png' ||
+        file.type === 'image/jpg' ||
+        file.type === 'image/jpeg'
+      const isLt1M = file.size / 1024 / 1024 < 1
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 image/jpeg/png/jpg格式!')
+      }
+      if (!isLt1M) {
+        this.$message.error('上传头像图片大小不能超过 1MB!')
+      }
+      return isJPG && isLt1M
     },
-    /*
-      显示详情
-    */
-    showCardInfo(row) {
-      this.cardInfo = {};
-      this.dialogShowCardVisible = true;
-      const postData = { card: row.cardnumber };
-      showCardInfo(postData).then(response => {
-        this.cardInfo = response.data;
-      });
-    },
-    back() {
-      this.listQuery.page = 1;
-      this.listQuery.card_user = "";
-      this.listQuery.cardtype = -1;
-      this.listQuery.cardstatus = -1;
-      this.getList();
+    // 提交添加表单
+    submitForm(form) {
+      console.log(this.addForm)
+
+      this.$refs[form].validate(async valid => {
+        if (valid) {
+          const res = await getGoodsAdd(this.addForm)
+          console.log(res)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
-};
-</script>
-<style lang="scss" scoped>
-/deep/.el-input--medium {
-  text-align: left !important;
 }
-.app-container {
-  background-color: #fff;
-  border-radius: 6px;
-  .cardDetails {
-    /deep/.el-dialog__title {
-      color: #2d6afa;
-      margin-right: 20px;
-    }
-    /deep/.el-form-item {
-      margin-bottom: 0;
-      height: 41px;
-    }
-    /deep/.el-form-item__label {
-      color: #2d6afa;
-      margin-right: 20px;
-    }
-  }
-  .pagestyle {
-    /deep/.el-input--medium .el-input__inner {
-      border: 1px solid rgba(230, 230, 230, 1);
-      border-radius: 4px;
-      width: 50px;
-    }
-  }
-  .title {
-    height: 36px;
-    line-height: 25px;
-    border-bottom: 1px #dce7ff dashed;
-    margin-bottom: 13px;
-    color: #3c70d5;
-    img {
-      position: relative;
-      top: 2px;
-    }
-  }
-  .filter-container {
-    .s_left {
-      float: left;
-    }
-    .addBtn {
-      width: 97px;
-      height: 38px;
-      border: 1px solid rgba(45, 135, 253, 1) !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: #2d87fd;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 5px;
-        top: 2px;
-      }
-    }
-    .s_card {
-      width: 97px;
-      height: 38px;
-      border-radius: 4px;
-      padding: 0;
-      background-color: transparent !important;
-      color: #2d87fd;
-      img {
-        position: relative;
-        margin-right: 5px;
-        top: 2px;
-      }
-    }
-    .sx {
-      width: 74px;
-      height: 38px;
-      border: 1px solid #9e77f1 !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: #9e77f1;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 5px;
-        top: 2px;
-      }
-    }
-    .cz {
-      width: 74px;
-      height: 38px;
-      border-radius: 4px;
-      background-color: #2d87fd;
-      color: #fff;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 5px;
-        top: 2px;
-      }
-    }
-    .cz:hover {
-      background-color: rgba(232, 132, 3, 0.1) !important;
-    }
-  }
-  .custom_table {
-    /deep/ thead {
-      color: #4296fb;
-      font-weight: 500;
-    }
-    /deep/ th {
-      background-color: #f4f7fe;
-      border-bottom: none;
-      font-weight: 500;
-    }
-    /deep/td {
-      border-bottom: 1px solid #f2f3f5;
-      color: #333;
-    }
-    .djUser {
-      width: 64px;
-      height: 30px;
-      border: 1px solid rgba(45, 135, 253, 1) !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: rgba(45, 135, 253, 1);
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 3px;
-      }
-    }
-    .djUser:hover {
-      background-color: rgba(45, 135, 253, 0.1) !important;
-    }
-    .jc {
-      width: 64px;
-      height: 30px;
-      border: 1px solid #0dc504 !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: #0dc504;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 3px;
-        top: 1px;
-      }
-    }
-    .jc:hover {
-      background-color: rgba(13, 197, 4, 0.1) !important;
-    }
-    .modify {
-      width: 64px;
-      height: 30px;
-      border: 1px solid #b37bec !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: #b37bec;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 3px;
-        top: 1px;
-      }
-    }
-    .modify:hover {
-      background-color: rgba(179, 123, 236, 0.1) !important;
-    }
-    .detale {
-      width: 64px;
-      height: 30px;
-      border: 1px solid #fd0012 !important;
-      border-radius: 4px;
-      background-color: transparent !important;
-      color: #fd0012;
-      padding: 0;
-      img {
-        position: relative;
-        margin-right: 3px;
-        top: 1px;
-      }
-    }
-    .detale:hover {
-      background-color: rgba(253, 0, 18, 0.1) !important;
-    }
-  }
-  .buyTable {
-    width: 420px;
-    margin: auto;
-    border: 1px solid #e6e6e6;
-    border-collapse: collapse;
-    tr td {
-      border: 1px #e6e6e6 solid;
-      height: 40px;
-      line-height: 40px;
-    }
-    tr td.t1 {
-      width: 101px;
-      text-align: center;
-      color: #2d6afa;
-    }
-    tr td.t2 {
-      width: 318px;
-      padding-left: 23px;
-      color: #333;
-    }
-  }
-  .card_btn {
-    text-align: center;
-    /deep/.el-button {
-      border: 1px solid rgba(53, 100, 192, 1);
-      border-radius: 4px;
-      color: #2d6afa;
-    }
-  }
+</script>
+
+<style lang="scss" scoped>
+@import "~@/styles/constomgoods.scss";
+.formContainer {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

@@ -2,19 +2,34 @@
   <div>
     <div class="app-container">
       <div class="title">
-        <img src="../../assets/icon/icon12.png" />
+        <img src="../../assets/icon/icon12.png">
         <span>商品列表</span>
       </div>
       <div class="box">
         <span>请输入自定义前端代码：</span>
-        <textarea class="custom"></textarea>
+        <!-- <textarea v-model="middle_page_code" class="custom" /> -->
+        <el-input v-model="middle_page_code" class="custom" type="textarea" />
+      </div>
+      <div class="coustompageFooter">
+        <el-button type="primary" @click="handleClick">确认保存</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      middle_page_code: ''
+    }
+  },
+  methods: {
+    handleClick() {
+      console.log(this.middle_page_code)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -23,6 +38,7 @@ export default {};
   border-radius: 6px;
   min-height: calc(100vh - 250px);
   .box {
+    height: 592px;
     span {
       font-size: 14px;
       float: left;
@@ -35,6 +51,9 @@ export default {};
       border-radius: 4px;
       float: left;
     }
+    /deep/.el-textarea__inner {
+      height: 592px;
+    }
   }
   .title {
     height: 36px;
@@ -46,6 +65,10 @@ export default {};
       position: relative;
       top: 2px;
     }
+  }
+  .coustompageFooter {
+    margin-top: 100px;
+    text-align: center;
   }
 }
 </style>
