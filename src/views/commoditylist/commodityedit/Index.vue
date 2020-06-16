@@ -380,12 +380,14 @@ export default {
     },
     // 获取商品类型
     async GoodsCate(id) {
-      const cateTypeId = { type: id }
+      const cateTypeId = { type: this.addForm.type }
       const res = await getGoodsCate(cateTypeId)
       if (res.code === 200) {
-        alert(33)
+        // alert(33)
         this.goodsCateList = res.data
-        this.addForm.category_category_name = res.data[0].name
+        // if (!this.goodsId.id) {
+        //   this.addForm.category_category_name = res.data[0].name
+        // }
       }
     },
     // 大图上传成功的回调

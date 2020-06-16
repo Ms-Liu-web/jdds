@@ -15,9 +15,27 @@
         />
       </div>
       <div class="coustompageFooter">
-        <el-button type="primary" @click="handleClick">确认保存</el-button>
+        <el-button type="primary" @click="AhandleClick">确认保存</el-button>
       </div>
     </div>
+    <!-- 保存成功提示框 -->
+    <m-dialog width="400px" height="288px" :visible.sync="visible">
+      <template v-slot:title>
+        <img class="imgSize" src="../../assets/success-images/tc1.png" alt="">
+      </template>
+      <template v-slot:content>
+        <p class="dialogContent">恭喜你,保存成功!</p>
+      </template>
+      <template v-slot:footer>
+        <div class="dialogFooterBtn">
+          <el-button
+type="primary"
+plain
+@click="handleClick"
+>我知道了</el-button>
+        </div>
+      </template>
+    </m-dialog>
   </div>
 </template>
 
@@ -26,6 +44,7 @@ import { configEdit, getUserConfig } from '@/api/agent'
 export default {
   data() {
     return {
+      visible: false,
       form: {
         middle_page_code: ''
       }
@@ -50,7 +69,7 @@ export default {
       }
     },
     // 提交
-    async handleClick() {
+    async AhandleClick() {
       const res = await configEdit(this.form)
       if (res.code !== 200) {
         this.$message({
@@ -58,11 +77,11 @@ export default {
           message: '设置失败'
         })
       } else {
-        this.$message({
-          type: 'success',
-          message: '保存成功'
-        })
+        this.visible = true
       }
+    },
+    handleClick() {
+      this.visible = false
     }
   }
 }

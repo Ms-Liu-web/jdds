@@ -79,6 +79,24 @@
         <el-button type="primary" @click="onSubmit('form')">确认保存</el-button>
       </div>
     </div>
+    <!-- 保存成功提示框 -->
+    <m-dialog width="400px" height="288px" :visible.sync="visible">
+      <template v-slot:title>
+        <img class="imgSize" src="../../assets/success-images/tc1.png" alt="">
+      </template>
+      <template v-slot:content>
+        <p class="dialogContent">恭喜你,保存成功!</p>
+      </template>
+      <template v-slot:footer>
+        <div class="dialogFooterBtn">
+          <el-button
+type="primary"
+plain
+@click="handleClick"
+>我知道了</el-button>
+        </div>
+      </template>
+    </m-dialog>
   </div>
 </template>
 
@@ -118,6 +136,7 @@ export default {
   directives: { waves },
   data() {
     return {
+      visible: false,
       form: {
         goods_sx_tb_source: 0,
         goods_sx_sale_num: '',
@@ -159,16 +178,8 @@ export default {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           const res = await configEdit(this.form)
-          if (res.code !== 200) {
-            this.$message({
-              type: 'error',
-              message: '设置失败'
-            })
-          } else {
-            this.$message({
-              type: 'success',
-              message: '保存成功'
-            })
+          if (res.code === 200) {
+            this.visible = true
           }
         } else {
           this.$message({
@@ -177,6 +188,9 @@ export default {
           })
         }
       })
+    },
+    handleClick() {
+      this.visible = false
     }
   }
 }
