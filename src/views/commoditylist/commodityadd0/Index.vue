@@ -5,28 +5,46 @@
     <div class="app-container">
       <div class="title">
         <img src="../../../assets/icon/icon12.png">
-        <!-- <span>编辑</span> -->
-        <span v-if="goodsId.id">编辑商品信息</span>
-        <span v-else>添加商品</span>
+        <span>添加商品</span>
         <!-- 表单内容 -->
       </div>
       <div class="formContainer">
-        <el-form ref="addForm" inline :model="addForm" :rules="addrules" label-width="200px">
+        <el-form
+          ref="addForm"
+          inline
+          :model="addForm"
+          :rules="addrules"
+          label-width="200px"
+        >
           <!-- 商品标题 -->
           <el-form-item label="商品标题：" prop="title">
-            <el-input v-model="addForm.title" class="inputWidth" placeholder="请输入商品标题" />
+            <el-input
+              v-model="addForm.title"
+              class="inputWidth"
+              placeholder="请输入商品标题"
+            />
           </el-form-item>
           <!-- 第三方商品id -->
           <el-form-item label="第三方商品id：" prop="item_id">
-            <el-input v-model.number="addForm.item_id" placeholder="请输入第三方id" />
+            <el-input
+              v-model.number="addForm.item_id"
+              placeholder="请输入第三方id"
+            />
           </el-form-item>
           <!-- 佣金率 -->
           <el-form-item label="佣金率：" prop="commission_rate">
-            <el-input v-model.number="addForm.commission_rate" placeholder="请输入佣金率，单位为：万分之" />
+            <el-input
+              v-model.number="addForm.commission_rate"
+              placeholder="请输入佣金率，单位为：万分之"
+            />
           </el-form-item>
           <!-- 平台 -->
           <el-form-item label="平台" prop="type">
-            <el-select v-model="addForm.type" placeholder="请选择" @change="typeHandle">
+            <el-select
+              v-model="addForm.type"
+              placeholder="请选择"
+              @change="typeHandle"
+            >
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -40,7 +58,7 @@
             <el-select v-model="addForm.category_id" placeholder="请选择">
               <el-option
                 v-for="item in goodsCateList"
-                :key="item.id"
+                :key="item.name"
                 :label="item.name"
                 :value="item.id"
               />
@@ -89,29 +107,43 @@
           <!-- 推荐按理由 -->
           <el-form-item label="推荐理由：">
             <div class="costomAddDesciption">
-              <el-input v-model="addForm.description" type="textarea" placeholder="请输入理由" />
+              <el-input
+                v-model="addForm.description"
+                type="textarea"
+                placeholder="请输入理由"
+              />
             </div>
           </el-form-item>
           <!-- 详情 -->
           <el-form-item label="详情：" prop="info">
             <div class="constomAddInfo">
-              <el-input v-model="addForm.info" type="textarea" placeholder="请输入详情" />
+              <el-input
+                v-model="addForm.info"
+                type="textarea"
+                placeholder="请输入详情"
+              />
             </div>
           </el-form-item>
           <!-- 30天销售总量 -->
           <el-form-item label="30天销售总量：" prop="sale_totals">
-            <el-input v-model="addForm.sale_totals" placeholder="30天销售总量" />
+            <el-input
+              v-model="addForm.sale_totals"
+              placeholder="30天销售总量"
+            />
           </el-form-item>
           <!-- 优惠卷面额 -->
           <el-form-item label="优惠卷面额：" prop="coupon_amount">
-            <el-input v-model="addForm.coupon_amount" placeholder="请输入优惠券面额" />
+            <el-input
+              v-model="addForm.coupon_amount"
+              placeholder="请输入优惠券面额"
+            />
           </el-form-item>
           <!-- 优惠券开始时间 -->
           <el-form-item label="优惠券开始时间：" prop="coupon_start_time">
             <!-- <el-input
               v-model="addForm.coupon_start_time"
               placeholder="请输入优惠开始时间"
-            />-->
+            /> -->
             <el-date-picker
               v-model="addForm.coupon_start_time"
               type="datetime"
@@ -134,15 +166,24 @@
           </span>
           <!-- 优惠券url -->
           <el-form-item label="优惠券url：" prop="coupon_url">
-            <el-input v-model="addForm.coupon_url" placeholder="请输入优惠券url" />
+            <el-input
+              v-model="addForm.coupon_url"
+              placeholder="请输入优惠券url"
+            />
           </el-form-item>
           <!-- 优惠券总量 -->
           <el-form-item label="优惠券总量：" prop="coupon_total_count">
-            <el-input v-model="addForm.coupon_total_count" placeholder="请输入优惠券总量" />
+            <el-input
+              v-model="addForm.coupon_total_count"
+              placeholder="请输入优惠券总量"
+            />
           </el-form-item>
           <!-- 优惠券剩余量 -->
           <el-form-item label="优惠券剩余量：" prop="coupon_remain_count">
-            <el-input v-model="addForm.coupon_remain_count" placeholder="请输入优惠券剩余量" />
+            <el-input
+              v-model="addForm.coupon_remain_count"
+              placeholder="请输入优惠券剩余量"
+            />
           </el-form-item>
           <!-- 展示位置 -->
           <div>
@@ -157,11 +198,17 @@
           <!-- 排序 -->
           <div>
             <el-form-item label="排序：">
-              <el-input v-model.number="addForm.order_num" placeholder="请输入0-100之间的排序值，值越大越靠前" />
+              <el-input
+                v-model.number="addForm.order_num"
+                placeholder="请输入0-100之间的排序值，值越大越靠前"
+              />
             </el-form-item>
           </div>
           <div class="constomAddBtn">
-            <el-button type="primary" @click="submitForm('addForm')">立即创建</el-button>
+            <el-button
+type="primary"
+@click="submitForm('addForm')"
+>立即创建</el-button>
           </div>
         </el-form>
       </div>
@@ -171,7 +218,7 @@
 
 <script>
 import waves from '@/directive/waves'
-import { getGoodsCate, getGoodsAdd, getGoodsInfo } from '@/api/agent'
+import { getGoodsCate, getGoodsAdd } from '@/api/agent'
 export default {
   name: 'GoodsAdd',
   // components: { contentTop },
@@ -192,9 +239,6 @@ export default {
           label: '京东'
         }
       ],
-      goodsId: {
-        id: ''
-      },
       goodsType: [],
       imageUrl: '',
       smallImageUrl: '',
@@ -207,7 +251,6 @@ export default {
         item_id: '',
         commission_rate: '',
         category_name: '',
-        category_id: '',
         type: 1,
         price: '',
         description: '',
@@ -277,49 +320,11 @@ export default {
     }
   },
   created() {
-    const infoId = this.$route.params.id.slice(1)
-    this.goodsId.id = infoId
-    this.goodsInfo(infoId)
+    this.GoodsCate(this.addForm.type)
     const header = JSON.parse(localStorage.getItem('userInfo'))
     this.headerObj.Authorization = header.token
-    if (!infoId) {
-      this.GoodsCate(1)
-    }
   },
   methods: {
-    // 获取商品信息
-    async goodsInfo(infoId) {
-      if (infoId) {
-        const res = await getGoodsInfo(this.goodsId)
-        console.log(res)
-        if (res.code === 200) {
-          this.addForm.title = res.data.title
-          this.addForm.item_id = res.data.itemId
-          this.addForm.commission_rate = res.data.commissionRate
-          this.addForm.type = res.data.type
-          this.GoodsCate(this.addForm.type)
-          this.addForm.price = res.data.price
-          this.addForm.description = res.data.description
-          this.addForm.info = res.data.info
-          this.addForm.sale_totals = res.data.sale_totals
-          this.addForm.coupon_start_time = res.data.couponStartTime
-          this.addForm.coupon_end_time = res.data.couponEndTime
-          this.addForm.coupon_total_count = res.data.couponTotalCount
-          this.addForm.coupon_remain_count = res.data.couponRemainCount
-          this.addForm.place = res.data.place
-          this.addForm.order_num = res.data.order_num
-          this.addForm.images = res.data.images
-          this.addForm.small_images = res.data.smallImages
-          this.addForm.coupon_url = res.data.couponUrl
-          this.addForm.coupon_amount = res.data.couponAmount
-          this.addForm.category_id = res.data.categoryId
-          this.addForm.category_name = res.data.categoryName
-        }
-      } else {
-        // this.GoodsCate(this.addForm.type)
-      }
-    },
-    // 展示位置选项
     placeHandle() {
       if (this.place === '精选') {
         this.addForm.place = 1
@@ -337,15 +342,14 @@ export default {
       const cateTypeId = { type: id }
       const res = await getGoodsCate(cateTypeId)
       if (res.code === 200) {
-        // alert(33)
         this.goodsCateList = res.data
         this.addForm.category_name = res.data[0].name
-        this.addForm.category_id = res.data[0].id
       }
     },
     // 大图上传成功的回调
     bigAvatarSuccess(file, fileList) {
       this.imageUrl = URL.createObjectURL(fileList.raw)
+      console.log(fileList, 'datu')
 
       if (fileList.response.code === 200) {
         // this.addForm.images = `//${fileList.response.data.imageUrl}`
@@ -376,6 +380,8 @@ export default {
     // 缩略图上传成功的回调函数
     smallAvatarSuccess(file, fileList) {
       this.smallImageUrl = URL.createObjectURL(fileList.raw)
+      console.log(fileList, 'datu')
+
       if (fileList.response.code === 200) {
         // this.addForm.small_images = `//${fileList.response.data.imageUrl}`
         this.addForm.small_images = fileList.response.data.imageUrl
@@ -404,14 +410,16 @@ export default {
     },
     // 提交添加表单
     submitForm(form) {
-      console.log(this.addForm)
       this.$refs[form].validate(async valid => {
         if (valid) {
           const res = await getGoodsAdd(this.addForm)
           if (res.code === 200) {
             this.$router.push('/shop/list')
+          } else {
+            return false
           }
         } else {
+          console.log('error submit!!')
           return false
         }
       })
