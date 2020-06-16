@@ -110,7 +110,6 @@ export default {
         this.form.kf_qq = data.kf_qq
         this.form.kf_phone = data.kf_phone
         this.form.kf_wx_qrcode = data.kf_wx_qrcode
-        console.log(11111)
       } else {
         this.$message({
           type: 'error',

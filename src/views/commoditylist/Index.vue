@@ -33,7 +33,7 @@
           <el-table-column label="品台" prop="type">
             <template slot-scope="{ row }">
               <span v-if="row.type === 1">淘宝</span>
-              <span v-else-if="row.type === 3">平多多</span>
+              <span v-else-if="row.type === 3">拼多多</span>
               <span v-else-if="row.type === 2">京东</span>
             </template>
           </el-table-column>
@@ -210,6 +210,7 @@ export default {
     // 每页显示条数
     handleSizeChange(val) {
       this.userInfo.pageSize = val
+      console.log(this.userInfo.pageSize)
       this.getGoodsListHandle(this.userInfo)
     },
     // 当前页

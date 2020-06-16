@@ -60,7 +60,7 @@
             <el-select v-model="addForm.category_id" placeholder="请选择">
               <el-option
                 v-for="item in goodsCateList"
-                :key="item.name"
+                :key="item.id"
                 :label="item.name"
                 :value="item.id"
               />
@@ -255,7 +255,8 @@ export default {
         title: '',
         item_id: '',
         commission_rate: '',
-        // category_name: '',
+        category_name: '',
+        category_id: '',
         type: 1,
         price: '',
         description: '',
@@ -342,16 +343,26 @@ export default {
           this.addForm.item_id = res.data.itemId
           this.addForm.commission_rate = res.data.commissionRate
           this.addForm.type = res.data.type
+          this.GoodsCate(this.addForm.type)
           this.addForm.price = res.data.price
           this.addForm.description = res.data.description
           this.addForm.info = res.data.info
           this.addForm.sale_totals = res.data.sale_totals
-          this.addForm.sale_totals = res.data.sale_totals
-          this.addForm.sale_totals = res.data.sale_totals
-          this.addForm.sale_totals = res.data.sale_totals
+          this.addForm.coupon_start_time = res.data.couponStartTime
+          this.addForm.coupon_end_time = res.data.couponEndTime
+          this.addForm.coupon_total_count = res.data.couponTotalCount
+          this.addForm.coupon_remain_count = res.data.couponRemainCount
+          this.addForm.place = res.data.place
+          this.addForm.order_num = res.data.order_num
+          this.addForm.images = res.data.images
+          this.addForm.small_images = res.data.smallImages
+          this.addForm.coupon_url = res.data.couponUrl
+          this.addForm.coupon_amount = res.data.couponAmount
+          this.addForm.category_id = res.data.categoryId
+          this.addForm.category_name = res.data.categoryName
         }
       } else {
-        this.GoodsCate(this.addForm.type)
+        // this.GoodsCate(this.addForm.type)
       }
     },
     // 展示位置选项
@@ -372,8 +383,9 @@ export default {
       const cateTypeId = { type: id }
       const res = await getGoodsCate(cateTypeId)
       if (res.code === 200) {
+        alert(33)
         this.goodsCateList = res.data
-        this.addForm.category_name = res.data[0].name
+        this.addForm.category_category_name = res.data[0].name
       }
     },
     // 大图上传成功的回调
@@ -437,10 +449,13 @@ export default {
     },
     // 提交添加表单
     submitForm(form) {
+      console.log(this.addForm)
       this.$refs[form].validate(async valid => {
         if (valid) {
           const res = await getGoodsAdd(this.addForm)
-          console.log(res)
+          if (res.code === 200) {
+            this.$router.push('/shop/list')
+          }
         } else {
           return false
         }
