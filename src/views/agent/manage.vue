@@ -95,7 +95,7 @@ plain
 
 <script>
 // 设置基础信息
-import { configEdit } from '@/api/agent'
+import { configEdit, getUserConfig } from '@/api/agent'
 import waves from '@/directive/waves' // waves directive
 var validateIp = (rule, value, callback) => {
   var reg1 = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/
@@ -135,7 +135,32 @@ export default {
       }
     }
   },
+  created() {
+    this.getConfigInfo()
+  },
   methods: {
+    // 获取基本参数
+    async getConfigInfo() {
+      const res = await getUserConfig()
+      const data = res.data
+      if (res.code === 200) {
+        this.form.wap_title = data.wap_title
+        this.form.wap_domain = data.ip
+        this.form.tb_pid = data.tb_pid
+        this.form.jd_pid = data.jd_pid
+        this.form.pdd_pid = data.pdd_pid
+        this.form.tb_token = data.tb_token
+        this.form.jd_token = data.jd_token
+        this.form.pdd_token = data.pdd_token
+        this.form.wap_notice = data.wap_notice
+        this.form.wap_tj_code = data.wap_tj_code
+      } else {
+        this.$message({
+          type: 'error',
+          message: '获取信息失败'
+        })
+      }
+    },
     // 修改基础设置
     onSubmit(formName) {
       this.$refs[formName].validate(async valid => {

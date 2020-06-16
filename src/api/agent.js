@@ -25,6 +25,7 @@ export function getGoodsCate(data) {
     data
   })
 }
+// 添加商品
 export function getGoodsAdd(data) {
   return request({
     url: '/admin/user/goodsAdd',
@@ -32,6 +33,39 @@ export function getGoodsAdd(data) {
     data
   })
 }
+// 商品详情
+export function getGoodsInfo(data) {
+  return request({
+    url: '/admin/user/goodsInfo',
+    method: 'post',
+    data
+  })
+}
+// 商品状态开启/停用
+export function getGoodsStatus(data) {
+  return request({
+    url: '/admin/user/goodsStatus',
+    method: 'post',
+    data
+  })
+}
+// 商品删除
+export function getDeleteStatus(data) {
+  return request({
+    url: '/admin/user/goodsDelete',
+    method: 'post',
+    data
+  })
+}
+// 获取基础信息
+export function getUserConfig(data) {
+  return request({
+    url: '/admin/user/config',
+    method: 'post',
+    data
+  })
+}
+
 // export function configEdit(data) {
 //   return request({
 //     url: '/admin/user/configEdit',

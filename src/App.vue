@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "App"
-};
+  name: 'App'
+}
 </script>
 <style>
 * {
@@ -36,11 +36,11 @@ export default {
 .el-message-box__title {
   color: #2d6afa;
 }
-.el-button--primary {
+/* .el-button--primary {
   color: #fff;
   background-color: #2d6afa !important;
   border-color: #2d6afa !important;
-}
+} */
 .el-input--medium .el-input__inner {
   height: 40px;
   line-height: 40px;
@@ -81,5 +81,4 @@ export default {
   min-height: 110px !important;
 }
 </style>
-
 

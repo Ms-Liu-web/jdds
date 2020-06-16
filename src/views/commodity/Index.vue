@@ -84,7 +84,7 @@
 
 <script>
 import waves from '@/directive/waves' // waves directive
-import { configEdit } from '@/api/agent'
+import { configEdit, getUserConfig } from '@/api/agent'
 var checkAge = (rule, value, callback) => {
   setTimeout(() => {
     if (!Number.isInteger(value)) {
@@ -133,21 +133,30 @@ export default {
       }
     }
   },
-  created() {},
-  mounted() {},
+  created() {
+    this.getConfigInfo()
+  },
   methods: {
+    // 获取基本参数
+    async getConfigInfo() {
+      const res = await getUserConfig()
+      const data = res.data
+      if (res.code === 200) {
+        this.form.goods_sx_tb_source = data.goods_sx_tb_source
+        this.form.goods_sx_sale_num = data.goods_sx_sale_num
+        this.form.goods_sx_commission = data.goods_sx_commission
+        this.form.goods_sx_price = data.goods_sx_price
+        console.log(11111)
+      } else {
+        this.$message({
+          type: 'error',
+          message: '获取信息失败'
+        })
+      }
+    },
+    // 提交
     onSubmit(formName) {
       this.$refs[formName].validate(async valid => {
-        // if (valid) {
-        //   setingUpdate(this.form).then(response => {
-        //     this.$message({
-        //       type: 'success',
-        //       message: '操作成功'
-        //     })
-        //   })
-        // } else {
-        //   return false
-        // }
         if (valid) {
           const res = await configEdit(this.form)
           if (res.code !== 200) {

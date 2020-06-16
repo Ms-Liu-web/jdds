@@ -56,6 +56,21 @@ export const constantRoutes = [
       }
     ]
   },
+  // {
+  //   path: '/goodsadd',
+  //   component: Layout,
+  //   redirect: '/goodsadd',
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: '/goodsadd',
+  //       component: () => import('@/views/commoditylist/commodityadd/Index'),
+  //       name: '首页',
+  //       hidden: true,
+  //       meta: { title: '首页', icon: 'index', affix: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/profile',
     component: Layout,
@@ -135,10 +150,37 @@ export const asyncRoutes = [
     redirect: '/shop',
     children: [
       {
-        path: 'base',
-        component: () => import('@/views/customshop/Index'),
+        path: 'list',
+        component: () => import('@/views/commoditylist/Index'),
         name: '自定义商品',
         meta: { title: '自定义商品', icon: 'sp', noCache: false }
+      }
+    ]
+  },
+  // {
+  //   path: '/goodsadd:id',
+  //   component: Layout,
+  //   redirect: '/goodsadd',
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: () => import('@/views/commoditylist/commodityadd/Index'),
+  //       name: '自定义商品',
+  //       meta: { title: '自定义商品', icon: 'sp', noCache: false }
+  //     }
+  //   ]
+  // },
+  {
+    path: '/goodsedit:id',
+    component: Layout,
+    redirect: '/goodsedit',
+    // hidden: false,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/commoditylist/commodityedit/Index')
+        // name: '自定义商品',
+        // meta: { title: '自定义商品', icon: 'sp', noCache: false }
       }
     ]
   },

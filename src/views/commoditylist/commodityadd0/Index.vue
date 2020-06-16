@@ -4,7 +4,7 @@
 
     <div class="app-container">
       <div class="title">
-        <img src="../../assets/icon/icon12.png">
+        <img src="../../../assets/icon/icon12.png">
         <span>添加商品</span>
         <!-- 表单内容 -->
       </div>
@@ -140,18 +140,30 @@
           </el-form-item>
           <!-- 优惠券开始时间 -->
           <el-form-item label="优惠券开始时间：" prop="coupon_start_time">
-            <el-input
+            <!-- <el-input
               v-model="addForm.coupon_start_time"
               placeholder="请输入优惠开始时间"
+            /> -->
+            <el-date-picker
+              v-model="addForm.coupon_start_time"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              placeholder="选择日期时间"
+              default-time="12:00:00"
             />
           </el-form-item>
-          <!-- 优惠券开始时间 -->
-          <el-form-item label="优惠券结束时间" prop="coupon_end_time">
-            <el-input
-              v-model="addForm.coupon_end_time"
-              placeholder="请输入优惠结束时间"
-            />
-          </el-form-item>
+          <!-- 优惠券结束时间 -->
+          <span class="goodAddCoupon">
+            <el-form-item label="优惠券结束时间：" prop="coupon_end_time">
+              <el-date-picker
+                v-model="addForm.coupon_end_time"
+                type="datetime"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                placeholder="选择日期时间"
+                default-time="12:00:00"
+              />
+            </el-form-item>
+          </span>
           <!-- 优惠券url -->
           <el-form-item label="优惠券url：" prop="coupon_url">
             <el-input
@@ -176,7 +188,7 @@
           <!-- 展示位置 -->
           <div>
             <el-form-item label="展示位置：">
-              <el-radio-group v-model="place" @change="fn">
+              <el-radio-group v-model="place" @change="placeHandle">
                 <el-radio label="精选" />
                 <el-radio label="热门搜索" />
                 <el-radio label="详情页推荐" />
@@ -237,7 +249,7 @@ export default {
       addForm: {
         title: '',
         item_id: '',
-        commission_rate: 1,
+        commission_rate: '',
         category_name: '',
         type: 1,
         price: '',
@@ -250,7 +262,7 @@ export default {
         coupon_url: '',
         coupon_total_count: '',
         coupon_remain_count: '',
-        place: '',
+        place: 1,
         order_num: '',
         images: '',
         small_images: ''
@@ -289,11 +301,11 @@ export default {
         ],
         coupon_start_time: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 3, max: 25, message: '请选择日期', trigger: 'blur' }
         ],
         coupon_end_time: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 3, max: 25, message: '请选择日期', trigger: 'blur' }
         ],
         coupon_total_count: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -313,7 +325,7 @@ export default {
     this.headerObj.Authorization = header.token
   },
   methods: {
-    fn() {
+    placeHandle() {
       if (this.place === '精选') {
         this.addForm.place = 1
       } else if (this.place === '热门搜索') {
@@ -323,7 +335,7 @@ export default {
       }
     },
     typeHandle() {
-      this.GoodsCate(this.addForm.tplaceype)
+      this.GoodsCate(this.addForm.type)
     },
     // 获取商品类型
     async GoodsCate(id) {
@@ -337,7 +349,17 @@ export default {
     // 大图上传成功的回调
     bigAvatarSuccess(file, fileList) {
       this.imageUrl = URL.createObjectURL(fileList.raw)
-      this.addForm.images = fileList.response.data.imageUrl
+      console.log(fileList, 'datu')
+
+      if (fileList.response.code === 200) {
+        // this.addForm.images = `//${fileList.response.data.imageUrl}`
+        this.addForm.images = fileList.response.data.imageUrl
+      } else {
+        this.$message({
+          type: 'error',
+          message: '主图片上传失败'
+        })
+      }
     },
     // 大图上传的信息验证
     bigBeforeAvatarUpload(file) {
@@ -358,7 +380,17 @@ export default {
     // 缩略图上传成功的回调函数
     smallAvatarSuccess(file, fileList) {
       this.smallImageUrl = URL.createObjectURL(fileList.raw)
-      this.addForm.small_images = fileList.response.data.imageUrl
+      console.log(fileList, 'datu')
+
+      if (fileList.response.code === 200) {
+        // this.addForm.small_images = `//${fileList.response.data.imageUrl}`
+        this.addForm.small_images = fileList.response.data.imageUrl
+      } else {
+        this.$message({
+          type: 'error',
+          message: '缩略图上传失败'
+        })
+      }
     },
     // 缩略图上传的信息验证
     smallBeforeAvatarUpload(file) {
@@ -378,12 +410,14 @@ export default {
     },
     // 提交添加表单
     submitForm(form) {
-      console.log(this.addForm)
-
       this.$refs[form].validate(async valid => {
         if (valid) {
           const res = await getGoodsAdd(this.addForm)
-          console.log(res)
+          if (res.code === 200) {
+            this.$router.push('/shop/list')
+          } else {
+            return false
+          }
         } else {
           console.log('error submit!!')
           return false
@@ -396,10 +430,4 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/constomgoods.scss";
-.formContainer {
-  width: 60%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-}
 </style>

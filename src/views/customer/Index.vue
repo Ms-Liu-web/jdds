@@ -61,13 +61,16 @@
 
 <script>
 import waves from '@/directive/waves'
-import { configEdit } from '@/api/agent'
+import { configEdit, getUserConfig } from '@/api/agent'
 export default {
   name: 'Seting',
   // components: { contentTop },
   directives: { waves },
   data() {
     return {
+      headerObj: {
+        Authorization: ''
+      },
       imageUrl: '',
       form: {
         kf_status: 1,
@@ -92,15 +95,42 @@ export default {
       }
     }
   },
-  created() {},
-  mounted() {},
+  created() {
+    const header = JSON.parse(localStorage.getItem('userInfo'))
+    this.getConfigInfo()
+    this.headerObj.Authorization = header.token
+  },
   methods: {
-    // 大图上传成功的回调
+    // 获取基本参数
+    async getConfigInfo() {
+      const res = await getUserConfig()
+      const data = res.data
+      if (res.code === 200) {
+        this.form.kf_status = data.kf_status
+        this.form.kf_qq = data.kf_qq
+        this.form.kf_phone = data.kf_phone
+        this.form.kf_wx_qrcode = data.kf_wx_qrcode
+        console.log(11111)
+      } else {
+        this.$message({
+          type: 'error',
+          message: '获取信息失败'
+        })
+      }
+    },
+    // 图上传成功的回调
     bigAvatarSuccess(file, fileList) {
       this.imageUrl = URL.createObjectURL(fileList.raw)
-      this.kf_wx_qrcode = fileList.response.data.imageUrl
+      if (fileList.response.code === 200) {
+        this.kf_wx_qrcode = fileList.response.data.imageUrl
+      } else {
+        this.$message({
+          type: 'error',
+          message: '图片上传失败'
+        })
+      }
     },
-    // 大图上传的信息验证
+    // 图上传的信息验证
     bigBeforeAvatarUpload(file) {
       const isJPG =
         file.type === 'image/png' ||

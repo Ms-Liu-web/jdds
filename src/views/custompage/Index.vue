@@ -8,7 +8,11 @@
       <div class="box">
         <span>请输入自定义前端代码：</span>
         <!-- <textarea v-model="middle_page_code" class="custom" /> -->
-        <el-input v-model="middle_page_code" class="custom" type="textarea" />
+        <el-input
+          v-model="form.middle_page_code"
+          class="custom"
+          type="textarea"
+        />
       </div>
       <div class="coustompageFooter">
         <el-button type="primary" @click="handleClick">确认保存</el-button>
@@ -18,15 +22,47 @@
 </template>
 
 <script>
+import { configEdit, getUserConfig } from '@/api/agent'
 export default {
   data() {
     return {
-      middle_page_code: ''
+      form: {
+        middle_page_code: ''
+      }
     }
   },
+  created() {
+    this.getConfigInfo()
+  },
   methods: {
-    handleClick() {
-      console.log(this.middle_page_code)
+    // 获取基本参数
+    async getConfigInfo() {
+      const res = await getUserConfig()
+      const data = res.data
+      if (res.code === 200) {
+        this.form.middle_page_code = data.middle_page_code
+        console.log(11111)
+      } else {
+        this.$message({
+          type: 'error',
+          message: '获取信息失败'
+        })
+      }
+    },
+    // 提交
+    async handleClick() {
+      const res = await configEdit(this.form)
+      if (res.code !== 200) {
+        this.$message({
+          type: 'error',
+          message: '设置失败'
+        })
+      } else {
+        this.$message({
+          type: 'success',
+          message: '保存成功'
+        })
+      }
     }
   }
 }
